@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/University-App/static/css/main.f855e6bc.css",
+    "main.js": "/University-App/static/js/main.568e5b21.js",
+    "static/js/453.5a5e4368.chunk.js": "/University-App/static/js/453.5a5e4368.chunk.js",
+    "static/media/logo.svg": "/University-App/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/University-App/index.html",
+    "main.f855e6bc.css.map": "/University-App/static/css/main.f855e6bc.css.map",
+    "main.568e5b21.js.map": "/University-App/static/js/main.568e5b21.js.map",
+    "453.5a5e4368.chunk.js.map": "/University-App/static/js/453.5a5e4368.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.568e5b21.js"
+  ]
+}
