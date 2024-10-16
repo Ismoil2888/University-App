@@ -79,7 +79,7 @@ const LibraryPage = () => {
         animate="visible" 
         className="navbar"
       >
-        <a href="#home">
+        <a href="#">
           <FaHome /> Главная
         </a>
         <a href="#library">

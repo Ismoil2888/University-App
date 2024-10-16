@@ -9,7 +9,7 @@ import NotfoundPage from './components/NotfoundPage';
 function App() {
   return (
         <Routes>
-          <Route path="/home" element={<WelcomePage />} />
+          <Route path="/" element={<WelcomePage />} />
           <Route path="/library" element={<LibraryPage />} />
           <Route path="/teachers" element={<TeachersPage />} />
           <Route path="/admin" element={<AdminPanel />} />
