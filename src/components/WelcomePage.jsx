@@ -1,9 +1,12 @@
 // WelcomePage.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { FaMoon, FaHome, FaBook, FaChalkboardTeacher } from 'react-icons/fa';
 
 const WelcomePage = () => {
-  // Варианты анимации для шапки
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Варианты анимации для шапки и навигации
   const headerVariants = {
     hidden: { opacity: 0, y: -50 },
     visible: { 
@@ -13,107 +16,72 @@ const WelcomePage = () => {
     },
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
+  const navbarVariants = {
+    hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.3, delayChildren: 1 },
+      y: 0,
+      transition: { duration: 0.8, type: 'spring', stiffness: 80 },
     },
   };
 
-  const textVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+    document.body.classList.toggle('dark-theme');
   };
 
   return (
-    <div style={styles.pageContainer}>
+    <div className="page-container">
       {/* Анимированная шапка */}
       <motion.header 
         variants={headerVariants} 
         initial="hidden" 
         animate="visible" 
-        style={styles.header}
+        className="header"
       >
-        <div style={styles.logo}>University App</div>
-        <nav style={styles.nav}>
-          <a href="#home" style={styles.navLink}>Главная</a>
-          <a href="#about" style={styles.navLink}>О нас</a>
-          <a href="#contact" style={styles.navLink}>Контакты</a>
-        </nav>
+        <div className="logo">University App</div>
+        <div className="icon-button" onClick={toggleTheme}>
+          <FaMoon />
+        </div>
       </motion.header>
 
       {/* Анимированное приветствие */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        style={styles.textContainer}
-      >
-        <motion.h1 variants={textVariants} style={styles.heading}>
-          Добро пожаловать на наш сайт!
+      <div className="text-container">
+        <motion.h1 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0, transition: { duration: 0.8 } }} 
+          className="heading"
+        >
+          Всё что нужно для счастья студента!
         </motion.h1>
-        <motion.p variants={textVariants} style={styles.paragraph}>
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.3 } }} 
+          className="paragraph"
+        >
           Мы рады видеть вас здесь. Начните свое путешествие с нами.
         </motion.p>
-      </motion.div>
+      </div>
+
+      {/* Навигационная панель */}
+      <motion.nav 
+        variants={navbarVariants} 
+        initial="hidden" 
+        animate="visible" 
+        className="navbar"
+      >
+        <a href="#home">
+          <FaHome /> Главная
+        </a>
+        <a href="#library">
+          <FaBook /> Библиотека
+        </a>
+        <a href="#teachers">
+          <FaChalkboardTeacher /> Преподаватели
+        </a>
+      </motion.nav>
     </div>
   );
-};
-
-const styles = {
-  pageContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    backgroundColor: '#f0f0f0',
-    padding: '0 20px',
-  },
-  header: {
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '20px 40px',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    backgroundColor: '#fff',
-    boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-  },
-  logo: {
-    fontSize: '1.8rem',
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  nav: {
-    display: 'flex',
-    gap: '20px',
-  },
-  navLink: {
-    fontSize: '1rem',
-    color: '#333',
-    textDecoration: 'none',
-    fontWeight: '500',
-    transition: 'color 0.3s',
-  },
-  navLinkHover: {
-    color: '#007bff',
-  },
-  textContainer: {
-    textAlign: 'center',
-    marginTop: '100px',
-  },
-  heading: {
-    fontSize: '3rem',
-    color: '#333',
-  },
-  paragraph: {
-    fontSize: '1.5rem',
-    color: '#555',
-  },
 };
 
 export default WelcomePage;
