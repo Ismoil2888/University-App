@@ -4,6 +4,7 @@ import WelcomePage from './components/WelcomePage';
 import LibraryPage from './components/LibraryPage';
 import TeachersPage from './components/TeachersPage';
 import AdminPanel from './components/AdminPanel';
+import AdminLogin from './components/AdminLogin';
 import NotfoundPage from './components/NotfoundPage';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
           <Route path="/library" element={<LibraryPage />} />
           <Route path="/teachers" element={<TeachersPage />} />
           <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/admin-login" element={<AdminLogin />} />
           <Route path="*" element={<NotfoundPage />} />
         </Routes>
   );
