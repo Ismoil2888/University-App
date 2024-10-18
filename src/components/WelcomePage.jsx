@@ -70,7 +70,7 @@ const WelcomePage = () => {
         animate="visible" 
         className="navbar"
       >
-        <a href="#">
+        <a href="/welcomepage">
           <FaHome /> Главная
         </a>
         <a href="#library">

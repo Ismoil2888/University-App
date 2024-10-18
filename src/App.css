@@ -322,3 +322,589 @@ body {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   font-size: 18px;
 }
+
+.section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(120deg, rgb(40, 40, 40), rgb(10, 10, 67), rgb(1, 21, 58));
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  /* animation: animateBg 5s linear infinite; */
+  }
+  
+  @keyframes animateBg {
+      100% {
+           filter: hue-rotate(360deg);
+  }
+  }
+
+.login-box {
+  position: relative;
+  width: 400px;
+  height: 450px;
+  background: rgb(5, 27, 56);
+  border: 2px solid rgba(255, 255, 255, .5);
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(15px);
+  }
+
+  .input-box input:focus{
+    border-bottom-color: rgb(34, 81, 236);
+  }
+
+  .input-box input:user-valid{
+    border-bottom-color: green;
+  }
+
+  .input-box input:user-invalid{
+    border-bottom-color: red;
+  }
+  
+  h2 {
+  font-size: 2em;
+  color: #fff;
+  text-align: center;
+  }
+    
+    .input-box {
+  position: relative;
+  width: 310px;
+  margin: 30px 0;
+  border-bottom: 2px solid #fff;
+  }
+  
+  .input-box label {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  font-size: 1em;
+  color: #fff;
+  pointer-events: none;
+  transition: .5s;
+  }
+  
+  .input-box input:focus~label, 
+  .input-box input:valid~label { 
+    top: -5px;
+    color: #22aaff; /* Цвет активного плейсхолдера */
+    font-size: 1em;  }
+
+    .input-box input {
+  width: 100%;
+  height: 50px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  color: #fff;
+  padding: 0 35px 0 5px;
+  }
+  
+  .input-box .icon {
+  position: absolute;
+  right: 8px;
+  color: #fff;
+  font-size: 1.2em;
+  line-height: 57px;
+  }
+    
+    .remember-forgot { 
+  margin: -20px 0 5px; 
+  display: flex; 
+  justify-content: space-between;
+  align-items: center;
+  font-size: .9em;
+  color: #fff;
+  }
+  
+  .remember-forgot label input { 
+    margin-right: 3px;
+  }
+  
+  .remember-forgot p { 
+    color: #fff; text-decoration: none; 
+  }
+    
+  .remember-forgot p:hover { 
+    text-decoration: underline;
+  }
+
+  .checkbox-p{
+    display: flex;
+  }
+    
+    button {
+  width: 100%;
+  height: 40px;
+  background: #fff;
+  border: none;
+  outline: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 1em;
+  color: #000;
+  font-weight: 500;
+  }
+
+  .register-link {
+    font-size: .9em;
+    color: #fff;
+    text-align: center;
+    margin: 17px;
+    }
+
+    .register-link .a  {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      }
+      
+      .register-link p:hover { 
+        text-decoration: underline;
+      }
+
+      .bodyauth{
+        background-color: rgb(65, 7, 7);
+        height: 100%;
+        width: 100%;
+        position: absolute;
+    }
+
+    .register-box {
+      position: relative;
+      width: 400px;
+      height: 540px;
+      background: rgb(5, 27, 56);
+      border: 2px solid rgba(255, 255, 255, .5);
+      border-radius: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(15px);
+      }
+        
+      .reg-input-box {
+        position: relative;
+        width: 310px;
+        margin: 30px 0;
+        border-bottom: 2px solid #fff;
+      }
+      
+      .reg-input-box input {
+        width: 100%;
+        height: 50px;
+        background: transparent;
+        border: none;
+        outline: none;
+        font-size: 1em;
+        color: #fff;
+        padding: 0 35px 0 5px;
+        transition: border-bottom 0.3s ease;
+      }
+      
+      .reg-input-box input:focus {
+        border-bottom-color: rgb(34, 81, 236);
+      }
+      
+      .reg-input-box input:valid {
+        border-bottom-color: green;
+      }
+      
+      .reg-input-box input:invalid {
+        border-bottom-color: red;
+      }
+      
+      .reg-input-box label {
+        position: absolute;
+        top: 50%;
+        left: 5px;
+        transform: translateY(-50%);
+        font-size: 1em;
+        color: #fff;
+        pointer-events: none;
+        transition: 0.5s;
+      }
+      
+      .reg-input-box input:focus ~ label, 
+      .reg-input-box input:valid ~ label {
+        top: -5px;
+        color: #22aaff; /* Цвет активного плейсхолдера */
+        font-size: 1em;
+      }
+      
+      .reg-input-box .icon {
+        position: absolute;
+        right: 8px;
+        color: #fff;
+        font-size: 1.2em;
+        line-height: 57px;
+        cursor: pointer;
+      }
+      
+
+
+      .signed-out {
+        text-align: center;
+        font-size: 16px;
+      }
+      
+      .authoutlink {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+      }  
+    
+      .profile-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #555;
+      }
+      
+      .profile-content {
+        width: 100%;
+        max-width: 500px;
+        background-color: #1a4148;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      .profile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .avatar-section {
+        position: relative;
+      }
+      
+      .avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        cursor: pointer;
+    }
+      
+      .avatar-upload-btn {
+        display: block;
+        margin-top: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        color: white;
+        text-align: center;
+        padding: 8px 12px;
+        background-color: #007bff;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+      
+      .avatar-upload-btn:hover {
+        background-color: #e1e1e1;
+      }
+    
+      .avatar-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8); /* Затемненный фон */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999; /* Поверх всех элементов */
+      }
+      
+      .avatar-overlay {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+      }  
+      
+      .full-size-avatar {
+        max-width: 90%;
+        max-height: 90%;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }  
+      
+      .username-section h2 {
+        font-size: 24px;
+        margin-bottom: 5px;
+        color: rgb(53, 107, 215);
+      }
+      
+      .username-section p {
+        font-size: 14px;
+        color: #777;
+      }
+      
+      .menu-icon {
+        cursor: pointer;
+        font-size: 24px;
+        color: #333;
+      }
+      
+      .menu-dropdown {
+        position: absolute;
+        top: 49px;
+        right: 10px;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        padding: 10px;
+        z-index: 1000;
+      }
+      
+      .menu-dropdown button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        background-color: transparent;
+        text-align: left;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+      
+      .menu-dropdown button:hover {
+        background-color: #f1f1f1;
+      }
+      
+      .edit-username-section {
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      .edit-username-section input {
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: 100%;
+      }
+      
+      .edit-username-section button {
+        padding: 8px 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      
+      .edit-username-section button:hover {
+        background-color: #0056b3;
+      }
+      
+      .profile-info {
+        margin-top: 20px;
+      }
+      
+      .info-section h3 {
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+      
+      .info-section p {
+        font-size: 14px;
+        color: #69e8bd;
+      }
+      
+      .settings {
+        margin-top: 20px;
+      }
+      
+      .settings ul {
+        list-style: none;
+        padding: 0;
+      }
+      
+      .settings li {
+        padding: 10px 0;
+        border-bottom: 1px solid #f1f1f1;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+      
+      .settings li:hover {
+        background-color: #f9f9f9;
+      }
+      
+      .signout-btn {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+      
+      .signout-btn:hover {
+        background-color: #c82333;
+      }
+      
+      /* Модальные окна */
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+      }
+      
+      .modal-confirm {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      .modal-confirm p {
+        font-size: 18px;
+        margin-bottom: 20px;
+      }
+      
+      .modal-confirm button {
+        margin: 0 10px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        transition: background-color 0.2s ease;
+      }
+      
+      .modal-confirm button:hover {
+        background-color: #0056b3;
+      }
+      
+      .modal-confirm button:last-child {
+        background-color: #6c757d;
+      }
+      
+      .modal-confirm button:last-child:hover {
+        background-color: #5a6268;
+      }  
+    
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        font-size: 14px;
+        animation: fadeInOut 3s ease-in-out;
+        z-index: 1000;
+      }
+    
+      @keyframes fadeInOut {
+        0% {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        10% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        90% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+      }
+    
+      .notification.success {
+        background-color: #4CAF50; /* Зеленый цвет для успеха */
+      }
+      
+      .notification.error {
+        background-color: #f44336; /* Красный цвет для ошибок */
+      }
+    
+      .ci-txt{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+    
+      .close-icon {
+        font-size: 25px;
+        cursor: pointer;
+        color: #999;
+        margin-bottom: 7px;
+      }
+      
+      .close-icon:hover {
+        color: #333;
+      }
+      
+      /* Стили для окна редактирования "О себе" */
+      .edit-aboutme-section {
+        display: flex;
+        flex-direction: column;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        cursor: pointer;
+      }
+      
+      .edit-aboutme-section textarea {
+        width: 92%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        resize: none;
+      }
+      
+      .edit-aboutme-section button {
+        align-self: flex-start;
+        padding: 8px 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      
+      .edit-aboutme-section button:hover {
+        background-color: #0056b3;
+      }
+
+      .osebe{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }      
