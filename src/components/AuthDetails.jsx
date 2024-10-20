@@ -5,6 +5,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { auth, database, storage } from "../firebase";
 import { Link } from "react-router-dom";
 import { FaEllipsisV, FaTimes, FaPen, FaArrowLeft } from "react-icons/fa"; // Иконка карандаша
+import { color } from "framer-motion";
 
 const AuthDetails = () => {
   const [authUser, setAuthUser] = useState(null);
@@ -217,7 +218,7 @@ const handleAboutMeChange = async () => {
             </div>
           )} {/* Уведомление */}
 
-          <Link className="back-button" to="/welcomepage">
+          <Link className="back-button" to="/about">
             <FaArrowLeft />
           </Link>
 
@@ -240,7 +241,7 @@ const handleAboutMeChange = async () => {
             </div>
             <div className="username-section">
               <h2>{username}</h2>
-              <p>{renderStatus()}</p>
+              <p style={{color: "lightgreen"}}>{renderStatus()}</p>
             </div>
 
             <div className="menu-icon" onClick={() => setShowMenu(!showMenu)}>
@@ -310,11 +311,9 @@ const handleAboutMeChange = async () => {
             <div className="settings">
               <h3>Настройки</h3>
               <ul>
-                <li>Настройки чатов</li>
                 <li>Конфиденциальность</li>
                 <li>Уведомления и звуки</li>
-                <li>Данные и память</li>
-                <li>Устройства</li>
+                <li>Пароль</li>
                 <li>Язык</li>
               </ul>
             </div>

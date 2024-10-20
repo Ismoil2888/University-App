@@ -1,0 +1,85 @@
+.tch-hero {
+    background-color: #1a1a1a; /* Цвет фона */
+    padding: 60px 0; /* Отступы сверху и снизу */
+    text-align: center; /* Выравнивание текста по центру */
+    background-image: url('cyber-background.jpg'); /* Фоновое изображение */
+    background-size: cover; /* Заполнение всего элемента */
+    background-position: center; /* Центрирование изображения */
+    height: 400px; /* Высота баннера */
+    position: relative; /* Установка контекста для абсолютного позиционирования */
+}
+
+.tch-hero h1 {
+    font-size: 2.5em; /* Размер шрифта заголовка */
+    margin: 0; /* Убираем отступы */
+    position: absolute; /* Позиционирование заголовка */
+    bottom: 10px; /* Отступ от низа */
+    left: 50%; /* Центрирование по горизонтали */
+    transform: translateX(-50%); /* Центрирование по горизонтали */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Тень для текста */
+    color: #ffffff; /* Цвет текста */
+}
+.teachers-section {
+    background-color: #0d0d0d;
+    color: #e0e0e0;
+    padding: 60px 0;
+}
+
+.teachers-section .tch-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.teacher-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 20px;
+    padding: 15px;
+    width: 300px;
+    text-align: center;
+    transition: transform 0.2s;
+    position: relative;
+    cursor: pointer;
+}
+
+.teacher-card:hover {
+    transform: scale(1.05);
+}
+
+.teacher-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.teacher-card h3 {
+    color: #1f6feb;
+    margin-bottom: 10px;
+}
+
+.teacher-card p {
+    font-size: 16px;
+    line-height: 1.4;
+    color: #cfcfcf;
+}
+
+.description {
+    display: none;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    margin-top: 10px;
+    animation: fadeIn 0.5s;
+}
+
+/* Анимация для появления описания */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
