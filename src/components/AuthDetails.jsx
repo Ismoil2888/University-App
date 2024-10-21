@@ -218,11 +218,12 @@ const handleAboutMeChange = async () => {
             </div>
           )} {/* Уведомление */}
 
+          <div className="profile-header">
+            
           <Link className="back-button" to="/home">
             <FaArrowLeft />
           </Link>
-
-          <div className="profile-header">
+           
             <div className="avatar-section">
               <img
                 src={avatarUrl}
@@ -239,6 +240,7 @@ const handleAboutMeChange = async () => {
                 style={{ display: 'none' }}
               />
             </div>
+
             <div className="username-section">
               <h2>{username}</h2>
               <p style={{color: "lightgreen"}}>{renderStatus()}</p>
@@ -255,6 +257,8 @@ const handleAboutMeChange = async () => {
                 <button onClick={() => setIsEditingUsername(true)}>Изменить имя пользователя</button>
               </div>
             )}
+
+
           </div>
 
           {isEditingUsername && (
@@ -282,7 +286,7 @@ const handleAboutMeChange = async () => {
              <p>{aboutMe}</p>
              </div>
              <FaPen
-               className="edit-icon"
+               className="edit-icon-auth"
                onClick={() => setIsEditingAboutMe(true)}
                style={{ marginLeft: '10px', cursor: 'pointer' }}
              />   

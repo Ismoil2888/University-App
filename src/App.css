@@ -1,10 +1,20 @@
 /* Основные стили */
-body {
-  font-family: 'Roboto', sans-serif;
-  background-color: #0d1117; /* Темный фон */
-  color: #c9d1d9; /* Светлый текст */
+*{
   margin: 0;
   padding: 0;
+  /* box-sizing: border-box; */
+  font-family: 'Poppins', sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  scrollbar-width: none;
+}
+
+body {
+  /* font-family: 'Roboto', sans-serif; */
+  background-color: #0d1117; /* Темный фон */
+  color: #c9d1d9; /* Светлый текст */
 }
 
 ::-webkit-scrollbar{
@@ -483,7 +493,7 @@ header nav ul li a:hover::before {
           width: 90%;
           height: 690px;
           max-width: 500px;
-          background-color: #1a4148;
+          background-color: #003968;
           color: white;
           padding: 20px 30px;
           border-radius: 10px;
@@ -493,7 +503,10 @@ header nav ul li a:hover::before {
         .profile-header {
           display: flex;
           justify-content: space-between;
-          align-items: center;
+          align-items: start;
+          padding-bottom: 10px;
+          /* border-bottom: 1px solid grey; */
+          box-shadow: 0 10px 5px -5px rgba(255, 255, 255, 0.2);
         }
         
         .avatar-section {
@@ -552,6 +565,10 @@ header nav ul li a:hover::before {
           border-radius: 10px;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }  
+
+        .username-section {
+          /* margin-bottom: 70px; */
+        }
         
         .username-section h2 {
           font-size: 24px;
@@ -630,6 +647,10 @@ header nav ul li a:hover::before {
         .profile-info {
           margin-top: 20px;
         }
+
+        .info-section{
+          margin-top: 20px;
+        }
         
         .info-section h3 {
           font-size: 18px;
@@ -663,7 +684,6 @@ header nav ul li a:hover::before {
           font-weight: bold;
           border-radius: 15px;
           text-align: center;
-          width: 520px;
         }
         
         .signout-btn {

@@ -34,7 +34,7 @@ function App() {
           <Route path="/library" element={<LibraryPage />} />
           <Route path="/teachers" element={<TeachersPage />} />
           <Route path="/admin" element={<AdminPrivateRoute> <AdminPanel /> </AdminPrivateRoute>} />
-          <Route path="/admin-login" element={<PrivateRoute> <AdminLogin /> </PrivateRoute>} />
+          <Route path="/admin-login" element={<AdminLogin />} />
           <Route path="*" element={<NotfoundPage />} />
         </Routes>
   );
