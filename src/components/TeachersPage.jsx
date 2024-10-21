@@ -45,7 +45,7 @@ const teachers = [
 const navbarVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
-      opacity: 1,
+      opacity: 2,
       y: 0,
       transition: { duration: 0.8, type: 'spring', stiffness: 80 },
     },

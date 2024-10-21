@@ -51,14 +51,14 @@ const Teachers = () => {
         </nav>
 
         <div className="burger-menu-icon" onClick={() => toggleMenu()}>
-          <span></span>
-          <span></span>
-          <span></span>
+          <span className="bm-span"></span>
+          <span className="bm-span"></span>
+          <span className="bm-span"></span>
         </div>
 
         <div className="burger-menu">
           <ul>
-            <li><Link to="/">Главная</Link></li>
+            <li><Link to="/home">Главная</Link></li>
             <li><Link to="/about">О факультете</Link></li>
             <li><Link to="/teachers">Преподаватели</Link></li>
             <li><Link to="/schedule">Расписание</Link></li>

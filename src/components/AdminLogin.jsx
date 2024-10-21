@@ -1,7 +1,7 @@
-// AdminLogin.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import "../AdminLogin.css";
 
 const AdminLogin = () => {
   const [password, setPassword] = useState('');
@@ -11,10 +11,12 @@ const AdminLogin = () => {
 
   const handleLogin = () => {
     if (password === 'admin') {
+      // Устанавливаем флаг входа администратора
+      localStorage.setItem('isAdminAuthenticated', 'true');
       setShowWelcome(true);
       setTimeout(() => {
         navigate('/admin'); // Перенаправление в административную панель
-      }, 2000); // Задержка на 2 секунды для отображения уведомления
+      }, 2000);
     } else {
       setError('Неверный пароль');
     }
@@ -44,7 +46,6 @@ const AdminLogin = () => {
         <button onClick={handleLogin}>Войти</button>
       </motion.div>
 
-      {/* Приветственное уведомление */}
       {showWelcome && (
         <motion.div
           className="welcome-popup"

@@ -14,13 +14,13 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
+.contact-container h2 {
     color: #333;
     text-align: start;
     font-size: 24px;
 }
 
-h1{
+.contact-container h1{
     color: #333;
 }
 
@@ -52,9 +52,9 @@ h1{
     color: #555;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="tel"],
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form input[type="tel"],
 textarea {
     width: 96%;
     padding: 10px;
@@ -64,7 +64,7 @@ textarea {
     font-size: 16px;
 }
 
-button {
+.contact-form button {
     background-color: #28a745;
     color: white;
     border: none;
@@ -75,7 +75,7 @@ button {
     width: 100%;
 }
 
-button:hover {
+.contact-form button:hover {
     background-color: #218838;
 }
 

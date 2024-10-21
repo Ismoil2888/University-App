@@ -92,8 +92,9 @@ footer {
   text-align: center;
   padding: 15px 0;
 }
+
 /* Анимации для кнопок */
-button, .btn {
+.btn {
   background-color: #58a6ff; /* Ярко-синий */
   color: #ffffff;
   border: none;
@@ -105,13 +106,13 @@ button, .btn {
 }
 
 /* Анимация при наведении */
-button:hover, .btn:hover {
+.btn:hover {
   background-color: #1f6feb; /* Темно-синий при наведении */
   transform: scale(1.05); /* Легкое увеличение размера */
 }
 
 /* Анимация нажатия */
-button:active, .btn:active {
+.btn:active {
   background-color: #0d90f3;
   transform: scale(0.95); /* Легкое уменьшение размера при клике */
 }
@@ -238,7 +239,7 @@ header nav ul li a:hover::before {
   align-items: center;
   width: 100%;
   height: 100vh;
-  background: linear-gradient(120deg, rgb(40, 40, 40), rgb(10, 10, 67), rgb(1, 21, 58));
+  background: linear-gradient(120deg, rgb(40, 40, 40), rgb(10, 10, 67), rgb(3, 43, 118));
   background-size: cover;
   background-position: center;
   overflow: hidden;
@@ -264,7 +265,7 @@ header nav ul li a:hover::before {
     backdrop-filter: blur(15px);
     }
   
-    .input-box input:focus{
+    /* .input-box input:focus{
       border-bottom-color: rgb(34, 81, 236);
     }
   
@@ -274,7 +275,7 @@ header nav ul li a:hover::before {
   
     .input-box input:user-invalid{
       border-bottom-color: red;
-    }
+    } */
     
     h2 {
     font-size: 2em;
@@ -419,7 +420,7 @@ header nav ul li a:hover::before {
           transition: border-bottom 0.3s ease;
         }
         
-        .reg-input-box input:focus {
+        /* .reg-input-box input:focus {
           border-bottom-color: rgb(34, 81, 236);
         }
         
@@ -429,7 +430,7 @@ header nav ul li a:hover::before {
         
         .reg-input-box input:invalid {
           border-bottom-color: red;
-        }
+        } */
         
         .reg-input-box label {
           position: absolute;
@@ -479,12 +480,12 @@ header nav ul li a:hover::before {
         }
         
         .profile-content {
-          width: 100%;
+          width: 90%;
           height: 690px;
           max-width: 500px;
           background-color: #1a4148;
           color: white;
-          padding: 20px;
+          padding: 20px 30px;
           border-radius: 10px;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
@@ -566,7 +567,11 @@ header nav ul li a:hover::before {
         .menu-icon {
           cursor: pointer;
           font-size: 24px;
-          color: #333;
+          color: #00eaff;
+        }
+
+        .back-button{
+          font-size: 25px;
         }
         
         .menu-dropdown {
@@ -654,6 +659,11 @@ header nav ul li a:hover::before {
         
         .settings li:hover {
           background-color: #f9f9f9;
+          color: #308ced;
+          font-weight: bold;
+          border-radius: 15px;
+          text-align: center;
+          width: 520px;
         }
         
         .signout-btn {
@@ -662,7 +672,7 @@ header nav ul li a:hover::before {
           background-color: #dc3545;
           color: white;
           border: none;
-          border-radius: 5px;
+          border-radius: 10px;
           cursor: pointer;
           transition: background-color 0.2s ease;
         }
@@ -1082,6 +1092,23 @@ color: transparent;
 
   nav{
       display: none;
+  }
+
+  .home-hero h1 {
+    font-size: 34px;
+    margin: 0;
+    color: #ffffff;
+  }
+  
+  .home-hero p {
+    font-size: 17px;
+    color: white;
+  }
+
+  .about-h1{
+    color: white;
+    font-size: 34px !important;
+    margin: 0;
   }
 
 }

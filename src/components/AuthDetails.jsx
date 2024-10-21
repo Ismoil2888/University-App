@@ -218,7 +218,7 @@ const handleAboutMeChange = async () => {
             </div>
           )} {/* Уведомление */}
 
-          <Link className="back-button" to="/about">
+          <Link className="back-button" to="/home">
             <FaArrowLeft />
           </Link>
 

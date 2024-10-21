@@ -4,6 +4,7 @@ import { auth } from "../firebase";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { IoEyeOutline, IoEyeOffOutline, IoMailOutline } from "react-icons/io5";
+import "../SignUp-SignIn.css";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");

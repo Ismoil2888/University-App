@@ -46,7 +46,7 @@ const About = () => {
       </header>
 
       <section className="about-hero">
-        <h1>О факультете информационной безопасности</h1>
+        <h1 className="about-h1">О факультете информационной безопасности</h1>
         <div className="faculty-image">
           <img style={{ height: "175px" }} width="175px" src={facultyLogo} alt="Фото факультета информационной безопасности" />
         </div>

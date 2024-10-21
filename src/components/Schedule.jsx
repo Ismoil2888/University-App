@@ -54,9 +54,9 @@ const Schedule = () => {
         </nav>
 
         <div className="burger-menu-icon" onClick={toggleMenu}>
-          <span></span>
-          <span></span>
-          <span></span>
+          <span className="bm-span"></span>
+          <span className="bm-span"></span>
+          <span className="bm-span"></span>
         </div>
 
         <div className="burger-menu">

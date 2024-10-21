@@ -11,7 +11,7 @@ const HomePage = () => {
   };
 
   return (
-    <div>
+    <div className="home-container">
       <header>
         <nav>
           <ul>
