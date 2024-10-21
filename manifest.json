@@ -2,7 +2,7 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#161b22",
-  "background_color": "#ffffff",
+  "background_color": "#161b22",
   "short_name": "University App",
   "name": "University",
   "icons": [
