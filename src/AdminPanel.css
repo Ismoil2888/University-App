@@ -1,11 +1,19 @@
 .admin-panel {
     padding: 20px;
   }
+
+  .admin-panel h1{
+    text-align: center;
+  }
   
   .admin-buttons {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-top: 50px;
+  }
+
+  .ap-buttons-add-edit{
+    width: 350px;
   }
   
   .teachers-list {
@@ -16,6 +24,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
+    margin-top: 15px;
   }
   
   .teacher-card {
@@ -149,4 +158,5 @@
     padding-left: 15px;
     border: none;
     border-radius: 15px;
+    margin-top: 20px;
   }

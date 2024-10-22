@@ -1131,4 +1131,22 @@ color: transparent;
     margin: 0;
   }
 
+  .admin-buttons{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.ap-buttons-add-edit{
+  width: 60px;
+  margin-top: 20px;
+}
+
+.admin-panel{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 }

@@ -3,7 +3,9 @@ import { motion } from 'framer-motion';
 import { FaEdit, FaTrash, FaPlus, FaHome, FaBook, FaChalkboardTeacher } from 'react-icons/fa';
 import { getStorage, ref as storageReference, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getDatabase, ref as dbRef, onValue, set, push, update, remove } from "firebase/database";
+import imageCompression from 'browser-image-compression'; // Импортируем библиотеку для сжатия
 import '../AdminPanel.css';
+import '../App.css';
 
 const AdminPanel = () => {
   const [teachers, setTeachers] = useState([]);
@@ -12,8 +14,8 @@ const AdminPanel = () => {
   const [photoFile, setPhotoFile] = useState(null);
   const [editingTeacherId, setEditingTeacherId] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(''); // Состояние для поиска
-  const [filteredTeachers, setFilteredTeachers] = useState([]); // Для отображения результатов поиска
+  const [searchQuery, setSearchQuery] = useState(''); 
+  const [filteredTeachers, setFilteredTeachers] = useState([]); 
 
   // Firebase setup
   const storage = getStorage();
@@ -27,12 +29,29 @@ const AdminPanel = () => {
       if (data) {
         const loadedTeachers = Object.keys(data).map(id => ({ id, ...data[id] }));
         setTeachers(loadedTeachers);
-        setFilteredTeachers(loadedTeachers); // Установим изначальный список преподавателей
+        setFilteredTeachers(loadedTeachers); 
       } else {
         setTeachers([]);
       }
     });
   }, [database]);
+
+  // Сжатие изображения перед загрузкой
+  const compressImage = async (file) => {
+    const options = {
+      maxSizeMB: 1, // Максимальный размер файла (в МБ)
+      maxWidthOrHeight: 1920, // Максимальная ширина/высота (в пикселях)
+      useWebWorker: true, // Использовать WebWorker для сжатия
+    };
+
+    try {
+      const compressedFile = await imageCompression(file, options);
+      return compressedFile;
+    } catch (error) {
+      console.log("Ошибка при сжатии изображения:", error);
+      return file; // В случае ошибки возвращаем исходный файл
+    }
+  };
 
   // Handle adding or updating teacher
   const handleSaveTeacher = async () => {
@@ -40,8 +59,11 @@ const AdminPanel = () => {
       let photoURL = '';
       
       if (photoFile) {
-        const fileRef = storageReference(storage, `teachers/${photoFile.name}`);
-        await uploadBytes(fileRef, photoFile);
+        // Сжимаем фото перед загрузкой
+        const compressedPhoto = await compressImage(photoFile);
+
+        const fileRef = storageReference(storage, `teachers/${compressedPhoto.name}`);
+        await uploadBytes(fileRef, compressedPhoto);
         photoURL = await getDownloadURL(fileRef);
       }
   
@@ -76,7 +98,7 @@ const AdminPanel = () => {
   const handleEditTeacher = (teacher) => {
     setNewTeacher(teacher);
     setEditingTeacherId(teacher.id);
-    setIsEditing(true);  // Open modal
+    setIsEditing(true);
   };
 
   // Handle delete
@@ -92,7 +114,6 @@ const AdminPanel = () => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
     
-    // Фильтруем преподавателей по имени
     const filtered = teachers.filter(teacher =>
       teacher.name.toLowerCase().includes(query)
     );
@@ -101,18 +122,17 @@ const AdminPanel = () => {
 
   // Handle selecting a teacher from search results
   const handleSelectTeacher = (teacher) => {
-    setFilteredTeachers([teacher]); // Отображаем только выбранного преподавателя
+    setFilteredTeachers([teacher]);
   };
 
   return (
     <div className="admin-panel">
       <h1>Административная панель</h1>
       <div className="admin-buttons">
-        <button onClick={() => setIsEditing(true)}><FaPlus /> Добавить преподавателя</button>
-        <button onClick={() => setShowTeachersList(!showTeachersList)}>Показать список преподавателей</button>
+        <button className='ap-buttons-add-edit' onClick={() => setIsEditing(true)}><FaPlus /> Добавить преподавателя</button>
+        <button className='ap-buttons-add-edit' onClick={() => setShowTeachersList(!showTeachersList)}>Показать список преподавателей</button>
       </div>
 
-      {/* Modal for adding/editing teacher */}
       {isEditing && (
         <div className="modal">
           <div className="modal-content">
@@ -166,12 +186,10 @@ const AdminPanel = () => {
         </div>
       )}
 
-      {/* Teachers List */}
       {showTeachersList && (
         <div className="teachers-list">
           <h2>Список преподавателей</h2>
           
-          {/* Search Input */}
           <input 
             className='search-teacherc-input'
             type="text" 
@@ -180,7 +198,6 @@ const AdminPanel = () => {
             onChange={handleSearchChange}
           />
 
-          {/* Предложения по преподавателям */}
           {searchQuery && (
             <div className="search-suggestions">
               {filteredTeachers.map(teacher => (

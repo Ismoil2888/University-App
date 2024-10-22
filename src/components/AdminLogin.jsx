@@ -11,8 +11,10 @@ const AdminLogin = () => {
 
   const handleLogin = () => {
     if (password === 'admin') {
-      // Устанавливаем флаг входа администратора
+      // Сохраняем флаг авторизации и время входа
       localStorage.setItem('isAdminAuthenticated', 'true');
+      localStorage.setItem('adminLoginTime', Date.now()); // Сохраняем текущее время
+
       setShowWelcome(true);
       setTimeout(() => {
         navigate('/admin'); // Перенаправление в административную панель
