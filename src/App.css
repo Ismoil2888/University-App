@@ -28,6 +28,15 @@ header {
   box-shadow: 0 4px 2px -2px gray;
 }
 
+header nav{
+  display: flex;
+  justify-content: space-between;
+}
+
+.user-icon{
+  font-size: 23px;
+}
+
 header nav ul {
   list-style-type: none;
   padding: 0;
@@ -499,6 +508,10 @@ header nav ul li a:hover::before {
           border-radius: 10px;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
+        .profile-content h3{
+          color: white;
+        }
         
         .profile-header {
           display: flex;
@@ -565,10 +578,6 @@ header nav ul li a:hover::before {
           border-radius: 10px;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }  
-
-        .username-section {
-          /* margin-bottom: 70px; */
-        }
         
         .username-section h2 {
           font-size: 24px;
@@ -645,11 +654,11 @@ header nav ul li a:hover::before {
         }
         
         .profile-info {
-          margin-top: 20px;
+          margin-top: 40px;
         }
 
         .info-section{
-          margin-top: 20px;
+          margin-top: 30px;
         }
         
         .info-section h3 {
@@ -673,7 +682,6 @@ header nav ul li a:hover::before {
         
         .settings li {
           padding: 10px 0;
-          border-bottom: 1px solid #f1f1f1;
           cursor: pointer;
           transition: background-color 0.2s ease;
         }
@@ -687,7 +695,7 @@ header nav ul li a:hover::before {
         }
         
         .signout-btn {
-          margin-top: 20px;
+          margin-top: 60px;
           padding: 10px 20px;
           background-color: #dc3545;
           color: white;
@@ -962,6 +970,7 @@ header nav ul li a:hover::before {
   right: 0;
   padding: 15px;
   z-index: 9999;
+
 }
 
 .bm-span {
@@ -1002,10 +1011,10 @@ header nav ul li a:hover::before {
 .burger-menu {
   display: none;
   position: fixed;
-  height: 500px;
-  width: 40%;
+  height: 100%;
+  width: 100%;
   color: white;
-  top: 10px;
+  top: 5px;
   left: 0;
   background: transparent; 
   backdrop-filter: blur(25px); 
@@ -1014,7 +1023,7 @@ header nav ul li a:hover::before {
   padding: 20px;
   transition: transform 0.3s ease-in-out;
   animation: slide-down 0.5s ease-in-out;
-  z-index: 9999;
+  z-index: 9998;
 }
 
 @keyframes slide-down {

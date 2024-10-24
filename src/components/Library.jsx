@@ -1,22 +1,98 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { getDatabase, ref as dbRef, onValue } from "firebase/database";
+import { FaTimes, FaUser } from "react-icons/fa"; // Импорт иконки крестика
+import bookIcon from '../book-icon.png'; // Иконка книги
 import "../App.css"; // Подключаем CSS
 import "../library.css";
 
 const Library = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [books, setBooks] = useState([]); // Здесь будут храниться книги
-  const [reviews, setReviews] = useState([]); // Здесь будут храниться отзывы
+  const [books, setBooks] = useState([]); // Список книг
+  const [filteredBooks, setFilteredBooks] = useState([]); // Фильтрованные книги
+  const [selectedBook, setSelectedBook] = useState(null); // Выбранная книга для показа в модальном окне
+  const [showModal, setShowModal] = useState(false);
+  const [searchHistory, setSearchHistory] = useState([]); // История поиска
+  const [isSearchFocused, setIsSearchFocused] = useState(false); // Фокус на поле поиска
 
-  const handleSearch = () => {
-    // Реализуйте поиск по книгам здесь
-    console.log("Поиск книг по запросу:", searchQuery);
+  const database = getDatabase();
+
+  useEffect(() => {
+    // Загружаем книги всех преподавателей из Firebase
+    const teachersRef = dbRef(database, 'teachers');
+    onValue(teachersRef, (snapshot) => {
+      const data = snapshot.val();
+      const loadedBooks = [];
+
+      if (data) {
+        Object.keys(data).forEach((teacherId) => {
+          const teacherBooks = data[teacherId].books;
+          if (teacherBooks) {
+            Object.keys(teacherBooks).forEach((bookId) => {
+              loadedBooks.push({
+                id: bookId,
+                ...teacherBooks[bookId],
+                teacherId, // Для ссылки на преподавателя
+                publishedDate: new Date().toLocaleDateString() // Добавляем дату публикации (можно сделать реальной, если есть)
+              });
+            });
+          }
+        });
+      }
+
+      setBooks(loadedBooks);
+      setFilteredBooks(loadedBooks); // Изначально отображаем все книги
+    });
+  }, [database]);
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    // Фильтруем книги по названию
+    const filtered = books.filter(book => 
+      book.title.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredBooks(filtered);
+  };
+
+  const clearSearch = () => {
+    setSearchQuery("");
+    setFilteredBooks(books); // Возвращаем полный список книг
+  };
+
+  const addToHistory = (bookTitle) => {
+    if (!searchHistory.includes(bookTitle)) {
+      setSearchHistory([...searchHistory, bookTitle]);
+    }
+  };
+
+  const removeFromHistory = (bookTitle) => {
+    setSearchHistory(searchHistory.filter(title => title !== bookTitle));
+  };
+
+  const clearHistory = () => {
+    setSearchHistory([]);
+  };
+
+  const openBookModal = (book) => {
+    setSelectedBook(book);
+    setShowModal(true);
+    addToHistory(book.title); // Добавляем книгу в историю при открытии
+  };
+
+  const closeBookModal = () => {
+    setShowModal(false);
+    setSelectedBook(null);
   };
 
   const toggleMenu = () => {
-    // Функция для открытия/закрытия бургер-меню
-    const menu = document.querySelector(".burger-menu");
-    menu.classList.toggle("open");
+    const menu = document.querySelector('.burger-menu');
+    menu.classList.toggle('open');
+  };
+
+  const handleHistoryClick = (title) => {
+    setSearchQuery(title); // Устанавливаем текст из истории в поле поиска
+    handleSearch(title); // Выполняем поиск по этому запросу
+    setIsSearchFocused(false); // Закрываем историю поиска
   };
 
   return (
@@ -30,6 +106,13 @@ const Library = () => {
             <li><Link to="/schedule">Расписание</Link></li>
             <li><Link to="/library">Библиотека</Link></li>
             <li><Link to="/contacts">Контакты</Link></li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/authdetails">
+              <FaUser className="user-icon"></FaUser>
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -59,21 +142,50 @@ const Library = () => {
             type="text"
             id="search-input"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              handleSearch(e.target.value);
+              setIsSearchFocused(false); // Скрываем историю поиска при вводе текста
+            }}
             placeholder="Поиск книг..."
+            onFocus={() => setIsSearchFocused(true)} // Устанавливаем фокус
+            onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)} // Скрываем историю после клика (timeout нужен для корректного удаления элемента)
           />
-          <button className="search-btn" onClick={handleSearch}>Поиск</button>
+          {searchQuery && (
+            <FaTimes className="clear-search-icon" onClick={clearSearch} /> // Иконка крестика для очистки
+          )}
+
+          {/* История поиска появляется только при фокусе и пустом поисковом запросе */}
+          {isSearchFocused && searchHistory.length > 0 && !searchQuery && (
+            <div className="search-history">
+              <h3>Недавнее</h3>
+              <button className="clear-all-btn" onClick={clearHistory}>Очистить все</button>
+              <ul>
+                {searchHistory.map((title, index) => (
+                  <li
+                    key={index}
+                    className="search-history-item"
+                    onClick={() => handleHistoryClick(title)} // При клике выполняем поиск
+                  >
+                    <span>{title}</span>
+                    <FaTimes className="remove-history-icon" onClick={() => removeFromHistory(title)} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </section>
 
-      <section className="book-grid" id="book-grid">
-        {books.length > 0 ? (
-          books.map((book, index) => (
-            <div key={index} className="book-card">
-              {/* Тут выводите карточки книг */}
-              <h3>{book.title}</h3>
-              <p>{book.author}</p>
-              {/* Добавьте здесь элементы отображения книги */}
+      <section className="book-grid">
+        {filteredBooks.length > 0 ? (
+          filteredBooks.map((book, index) => (
+            <div key={index} className="book-card" onClick={() => openBookModal(book)}>
+              <img src={bookIcon} alt="Book Icon" className="book-icon" />
+              <div className="book-info">
+                <h4>{book.title}</h4>
+                <p>{book.description}</p>
+                <p className="published-date">Опубликовано: {book.publishedDate}</p>
+              </div>
             </div>
           ))
         ) : (
@@ -81,22 +193,23 @@ const Library = () => {
         )}
       </section>
 
-      <section className="reviews-section">
-        <h2>Отзывы о книгах</h2>
-        <div id="reviews-list">
-          {reviews.length > 0 ? (
-            reviews.map((review, index) => (
-              <div key={index} className="review-card">
-                {/* Тут выводите отзывы о книгах */}
-                <h3>{review.bookTitle}</h3>
-                <p>{review.text}</p>
-              </div>
-            ))
-          ) : (
-            <p>Нет отзывов</p>
-          )}
+      {showModal && selectedBook && (
+        <div className="modal-book">
+          <div className="modal-content-book">
+            <h3>{selectedBook.title}</h3>
+            <p>{selectedBook.description}</p>
+            <div className="modal-book-buttons">
+              <a href={selectedBook.fileURL} target="_blank" rel="noopener noreferrer">
+                <button>Открыть</button>
+              </a>
+              <a href={selectedBook.fileURL} download>
+                <button>Скачать</button>
+              </a>
+              <button onClick={closeBookModal}>Закрыть</button>
+            </div>
+          </div>
         </div>
-      </section>
+      )}
 
       <footer>
         <p>&copy; 2024 Факультет Кибербезопасности. Все права защищены.</p>

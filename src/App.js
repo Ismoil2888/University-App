@@ -17,6 +17,8 @@ import NotfoundPage from './components/NotfoundPage';
 import About from './components/About';
 import PrivateRoute from "./components/PrivateRoute";
 import AdminPrivateRoute from "./components/AdminPrivateRoute";
+import TeacherLogin from './components/TeacherLogin';
+import TeacherProfile from './components/TeacherProfile';
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
           <Route path="/welcomepage" element={<WelcomePage />} />
           <Route path="/library" element={<LibraryPage />} />
           <Route path="/teachers" element={<TeachersPage />} />
+          <Route path="/teacher-login" element={<TeacherLogin />} />
+          <Route path="/teacher-profile/:id" element={<TeacherProfile />} />
           <Route path="/admin" element={<AdminPrivateRoute> <AdminPanel /> </AdminPrivateRoute>} />
           <Route path="/admin-login" element={<AdminLogin />} />
           <Route path="*" element={<NotfoundPage />} />

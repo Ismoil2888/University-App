@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaUser } from "react-icons/fa"; // Импорт иконки крестика
 import "../App.css";
 import "../schedule.css";
 
@@ -50,6 +51,13 @@ const Schedule = () => {
             <li><Link to="/schedule">Расписание</Link></li>
             <li><Link to="/library">Библиотека</Link></li>
             <li><Link to="/contacts">Контакты</Link></li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/authdetails">
+              <FaUser className="user-icon"></FaUser>
+              </Link>
+            </li>
           </ul>
         </nav>
 

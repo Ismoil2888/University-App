@@ -6,6 +6,7 @@ import { auth, database, storage } from "../firebase";
 import { Link } from "react-router-dom";
 import { FaEllipsisV, FaTimes, FaPen, FaArrowLeft } from "react-icons/fa"; // Иконка карандаша
 import { color } from "framer-motion";
+import imageCompression from 'browser-image-compression';
 
 const AuthDetails = () => {
   const [authUser, setAuthUser] = useState(null);
@@ -120,15 +121,31 @@ const handleAvatarChange = async (e) => {
   const file = e.target.files[0];
   if (file && authUser) {
     try {
+      // Опции для сжатия изображения
+      const options = {
+        maxSizeMB: 1, // Максимальный размер файла 1 МБ
+        maxWidthOrHeight: 800, // Максимальная ширина или высота изображения
+        useWebWorker: true,
+      };
+
+      // Сжимаем изображение
+      const compressedFile = await imageCompression(file, options);
+
+      // Загружаем сжатое изображение в Firebase
       const avatarStorageRef = storageRef(storage, `avatars/${authUser.uid}`);
-      const snapshot = await uploadBytes(avatarStorageRef, file);
+      const snapshot = await uploadBytes(avatarStorageRef, compressedFile);
       const downloadURL = await getDownloadURL(avatarStorageRef);
+
+      // Обновляем аватар пользователя
       setAvatarUrl(downloadURL);
       const userDatabaseRef = databaseRef(database, 'users/' + authUser.uid);
       await update(userDatabaseRef, { avatarUrl: downloadURL });
+
       setShowMenu(false);
+      showNotification("Фото профиля успешно обновлено.");
     } catch (error) {
       console.error("Ошибка при загрузке изображения:", error);
+      showNotificationError("Ошибка при загрузке фото.");
     }
   }
 };

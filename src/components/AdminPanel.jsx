@@ -3,7 +3,9 @@ import { motion } from 'framer-motion';
 import { FaEdit, FaTrash, FaPlus, FaHome, FaBook, FaChalkboardTeacher } from 'react-icons/fa';
 import { getStorage, ref as storageReference, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getDatabase, ref as dbRef, onValue, set, push, update, remove } from "firebase/database";
-import imageCompression from 'browser-image-compression'; // Импортируем библиотеку для сжатия
+import imageCompression from 'browser-image-compression';
+import { ToastContainer, toast } from 'react-toastify'; // Импортируем Toast для уведомлений
+import 'react-toastify/dist/ReactToastify.css'; // Стили для уведомлений
 import '../AdminPanel.css';
 import '../App.css';
 
@@ -14,8 +16,9 @@ const AdminPanel = () => {
   const [photoFile, setPhotoFile] = useState(null);
   const [editingTeacherId, setEditingTeacherId] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(''); 
-  const [filteredTeachers, setFilteredTeachers] = useState([]); 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredTeachers, setFilteredTeachers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false); // Для полоски загрузки
 
   // Firebase setup
   const storage = getStorage();
@@ -29,19 +32,18 @@ const AdminPanel = () => {
       if (data) {
         const loadedTeachers = Object.keys(data).map(id => ({ id, ...data[id] }));
         setTeachers(loadedTeachers);
-        setFilteredTeachers(loadedTeachers); 
+        setFilteredTeachers(loadedTeachers);
       } else {
         setTeachers([]);
       }
     });
   }, [database]);
 
-  // Сжатие изображения перед загрузкой
   const compressImage = async (file) => {
     const options = {
-      maxSizeMB: 1, // Максимальный размер файла (в МБ)
-      maxWidthOrHeight: 1920, // Максимальная ширина/высота (в пикселях)
-      useWebWorker: true, // Использовать WebWorker для сжатия
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
     };
 
     try {
@@ -49,78 +51,77 @@ const AdminPanel = () => {
       return compressedFile;
     } catch (error) {
       console.log("Ошибка при сжатии изображения:", error);
-      return file; // В случае ошибки возвращаем исходный файл
+      return file;
     }
   };
 
-  // Handle adding or updating teacher
   const handleSaveTeacher = async () => {
     if (newTeacher.name && newTeacher.surname && newTeacher.subject && newTeacher.login && newTeacher.password) {
+      setIsLoading(true); // Включаем индикатор загрузки
       let photoURL = '';
-      
-      if (photoFile) {
-        // Сжимаем фото перед загрузкой
-        const compressedPhoto = await compressImage(photoFile);
 
+      if (photoFile) {
+        const compressedPhoto = await compressImage(photoFile);
         const fileRef = storageReference(storage, `teachers/${compressedPhoto.name}`);
         await uploadBytes(fileRef, compressedPhoto);
         photoURL = await getDownloadURL(fileRef);
       }
-  
+
       const teacherData = { ...newTeacher, photo: photoURL };
-  
+
       if (editingTeacherId) {
         // Update existing teacher
         const updatedTeachers = teachers.map(t =>
           t.id === editingTeacherId ? { ...t, ...teacherData } : t
         );
         setTeachers(updatedTeachers);
-  
-        // Update in Firebase
+
         const teacherRef = dbRef(database, `teachers/${editingTeacherId}`);
         await update(teacherRef, teacherData);
+
+        // Показать уведомление об успешном изменении
+        toast.success('Преподаватель успешно изменен!');
       } else {
         // Add new teacher
         const teachersRef = dbRef(database, 'teachers');
         const newTeacherRef = push(teachersRef);
         await set(newTeacherRef, teacherData);
+
+        // Показать уведомление об успешном добавлении
+        toast.success('Преподаватель успешно добавлен!');
       }
-  
-      // Reset form
+
+      // Закрыть модальное окно и сбросить состояние
+      setIsEditing(false);
       setNewTeacher({ name: '', surname: '', subject: '', status: '', login: '', password: '' });
       setPhotoFile(null);
       setEditingTeacherId(null);
-      setIsEditing(false);
+      setIsLoading(false); // Отключаем индикатор загрузки
     }
   };
 
-  // Handle edit click
   const handleEditTeacher = (teacher) => {
     setNewTeacher(teacher);
     setEditingTeacherId(teacher.id);
     setIsEditing(true);
   };
 
-  // Handle delete
   const handleDeleteTeacher = async (id) => {
     setTeachers(teachers.filter(t => t.id !== id));
-
     const teacherRef = dbRef(database, `teachers/${id}`);
     await remove(teacherRef);
+    toast.success('Преподаватель успешно удален!');
   };
 
-  // Handle search query change
   const handleSearchChange = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
-    
     const filtered = teachers.filter(teacher =>
       teacher.name.toLowerCase().includes(query)
     );
     setFilteredTeachers(filtered);
   };
 
-  // Handle selecting a teacher from search results
   const handleSelectTeacher = (teacher) => {
     setFilteredTeachers([teacher]);
   };
@@ -133,9 +134,11 @@ const AdminPanel = () => {
         <button className='ap-buttons-add-edit' onClick={() => setShowTeachersList(!showTeachersList)}>Показать список преподавателей</button>
       </div>
 
-      {isEditing && (
-        <div className="modal">
-          <div className="modal-content">
+      {isLoading && <div className="loading-bar">Подождите немного...</div>}
+
+      {isEditing && !isLoading && (
+        <div className="adm-modal">
+          <div className="adm-modal-content">
             <h2>{editingTeacherId ? 'Редактировать преподавателя' : 'Добавить преподавателя'}</h2>
             <input 
               type="text" 
@@ -178,7 +181,7 @@ const AdminPanel = () => {
               accept="image/*" 
               onChange={(e) => setPhotoFile(e.target.files[0])} 
             />
-            <div className="modal-buttons">
+            <div className="adm-modal-buttons">
               <button onClick={handleSaveTeacher}>{editingTeacherId ? 'Сохранить изменения' : 'Добавить'}</button>
               <button onClick={() => setIsEditing(false)}>Отмена</button>
             </div>
@@ -251,6 +254,8 @@ const AdminPanel = () => {
         <a href="#library"><FaBook /> Библиотека</a>
         <a href="#teachers"><FaChalkboardTeacher /> Преподаватели</a>
       </motion.nav>
+
+      <ToastContainer /> {/* Контейнер для всплывающих уведомлений */}
     </div>
   );
 };

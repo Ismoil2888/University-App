@@ -27,7 +27,7 @@ const SignIn = () => {
         setError("");
         setEmail("");
         setPassword("");
-        window.location.href = "#/authdetails"; // Перенаправление после успешного входа
+        window.location.href = "#/home"; // Перенаправление после успешного входа
       })
       .catch((error) => {
         console.log(error);

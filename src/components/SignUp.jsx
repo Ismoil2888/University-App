@@ -45,7 +45,7 @@ const SignUp = () => {
         setPassword("");
         setCopyPassword("");
         setUsername("");
-        window.location.href = "#/authdetails";
+        window.location.href = "#/home";
       })
       .catch((error) => {
         switch (error.code) {

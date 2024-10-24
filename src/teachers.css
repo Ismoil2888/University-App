@@ -66,7 +66,7 @@
 .teacher-card p {
     font-size: 16px;
     line-height: 1.4;
-    color: #cfcfcf;
+    color: #579d21;
 }
 
 .description {
@@ -82,4 +82,18 @@
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+
+.search-bar{
+    display: flex;
+    justify-content: center;
+}
+
+.search-bar input{
+    width: 80%;
+    height: 20px;
+    border-radius: 25px;
+    padding: 15px;
+    font-size: 20px;
+    border: none;
 }

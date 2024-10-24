@@ -1,37 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { FaUser } from "react-icons/fa"; // Импорт иконки крестика
+import { getDatabase, ref as dbRef, onValue } from "firebase/database"; // Firebase
 import "../App.css";
 import "../teachers.css";
-import teacherimg from "../teacher.png";
-import karimzodaimg from "../Каримзода.jpg"
+import defaultTeacherImg from "../teacher.png"; // Изображение по умолчанию
 
 const Teachers = () => {
+  const [teachers, setTeachers] = useState([]);
+  const [filteredTeachers, setFilteredTeachers] = useState([]); // Фильтрованные преподаватели
+  const [searchQuery, setSearchQuery] = useState(""); // Поле для хранения запроса поиска
   const [activeDescription, setActiveDescription] = useState(null);
+
+  // Получаем данные преподавателей из Firebase при монтировании компонента
+  useEffect(() => {
+    const database = getDatabase();
+    const teachersRef = dbRef(database, 'teachers');
+    
+    onValue(teachersRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const loadedTeachers = Object.keys(data).map(id => ({ id, ...data[id] }));
+        setTeachers(loadedTeachers);
+        setFilteredTeachers(loadedTeachers); // Изначально отображаем всех преподавателей
+      } else {
+        setTeachers([]);
+        setFilteredTeachers([]);
+      }
+    });
+  }, []);
+
+  // Обработка изменений в поле поиска
+  const handleSearchChange = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+
+    // Фильтрация преподавателей по имени или фамилии
+    const filtered = teachers.filter(teacher =>
+      teacher.name.toLowerCase().includes(query) || teacher.surname.toLowerCase().includes(query)
+    );
+    setFilteredTeachers(filtered);
+  };
 
   const toggleDescription = (id) => {
     setActiveDescription(activeDescription === id ? null : id);
   };
 
-  const teachersData = [
-    {
-      id: "desc1",
-      name: "Каримзода Ҷамшед Ҳалим",
-      role: "Декан факультета, номзади илмҳои техникӣ, и.в. дотсент",
-      image: "images/Каримзода.jpg",
-      description: "Полное описание о преподавателе 1, его опыте, науках и курсах.",
-    },
-    {
-      id: "desc2",
-      name: "Имя Преподавателя 2",
-      role: "Краткая информация о преподавателе 2",
-      image: "images/Каримзода.jpg",
-      description: "Декани факултет, номзади илмҳои техникӣ, и.в. дотсент",
-    },
-    // Добавьте больше данных преподавателей по аналогии
-  ];
-
   const toggleMenu = () => {
-    // Логика открытия/закрытия бургер-меню
     const menu = document.querySelector(".burger-menu");
     menu.classList.toggle("open");
   };
@@ -47,6 +62,13 @@ const Teachers = () => {
             <li><Link to="/schedule">Расписание</Link></li>
             <li><Link to="/library">Библиотека</Link></li>
             <li><Link to="/contacts">Контакты</Link></li>
+          </ul>
+          <ul>
+            <li>
+              <Link to="/authdetails">
+              <FaUser className="user-icon"></FaUser>
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -71,25 +93,40 @@ const Teachers = () => {
 
       <section className="tch-hero">
         <div className="faculty-image">
-        <img style={{ height: "175px" }} width="255px" src={teacherimg} alt="Фото факультета информационной безопасности" />
+          <img style={{ height: "175px" }} width="255px" src={defaultTeacherImg} alt="Фото преподавателей" />
         </div>
         <h1>Преподаватели факультета информационной безопасности</h1>
       </section>
 
       <section className="teachers-section">
+        <div className="search-bar">
+          <input 
+            type="text" 
+            placeholder="Поиск преподавателя..." 
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="search-input"
+          />
+        </div>
+
         <div className="tch-container">
-          {teachersData.map((teacher) => (
-            <div className="teacher-card" key={teacher.id} onClick={() => toggleDescription(teacher.id)}>
-              <img src={karimzodaimg} alt={karimzodaimg} />
-              <h3>{teacher.name}</h3>
-              <p>{teacher.role}</p>
-              {activeDescription === teacher.id && (
-                <div className="description">
-                  <p>{teacher.description}</p>
-                </div>
-              )}
-            </div>
-          ))}
+          {filteredTeachers.length === 0 ? (
+            <p>Преподаватели не найдены.</p>
+          ) : (
+            filteredTeachers.map((teacher) => (
+              <div className="teacher-card" key={teacher.id} onClick={() => toggleDescription(teacher.id)}>
+                <img src={teacher.photo || defaultTeacherImg} alt={`${teacher.name} ${teacher.surname}`} />
+                <h3>{`${teacher.name} ${teacher.surname}`}</h3>
+                <p><strong>Предмет:</strong> {teacher.subject}</p>
+                <p><strong>Статус:</strong> {teacher.status}</p>
+                {activeDescription === teacher.id && (
+                  <div className="description">
+                    <p>Подробная информация о преподавателе будет доступна позже.</p>
+                  </div>
+                )}
+              </div>
+            ))
+          )}
         </div>
       </section>
 
