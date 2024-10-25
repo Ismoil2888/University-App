@@ -8,6 +8,7 @@
   height: 100vh;
   background-color: #f9f9f9;
   width: 100%;
+  overflow-x: hidden;
 }
 
 /* Заголовок */
@@ -34,8 +35,8 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 100%;
-  width: 100%;
+  /* max-width: 100%; */
+  width: 300px !important;
   text-align: center;
 }
 

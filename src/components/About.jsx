@@ -3,15 +3,24 @@ import { Link } from "react-router-dom"
 import { FaUser } from "react-icons/fa"; // Импорт иконки крестика
 import "../App.css";
 import "../about.css";
+import { useState } from 'react';
 import facultyLogo from "../logo.png";
 import teacherImage from "../teacher.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog } from "@fortawesome/free-solid-svg-icons";
 
 const About = () => {
-  const toggleMenu = () => {
-    // Функция для открытия/закрытия меню (бургер-меню)
-    const menu = document.querySelector('.burger-menu');
-    menu.classList.toggle('open');
-  };
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+    const toggleMenu = () => {
+      if (isMenuOpen) {
+        setTimeout(() => {
+          setIsMenuOpen(false);
+        }, 0); // Задержка для плавного исчезновения
+      } else {
+        setIsMenuOpen(true);
+      }
+    };
 
   return (
     <div>
@@ -34,23 +43,24 @@ const About = () => {
           </ul>
         </nav>
 
-        <div className="burger-menu-icon" onClick={toggleMenu}>
-          <span className="bm-span"></span>
-          <span className="bm-span"></span>
-          <span className="bm-span"></span>
-        </div>
+<div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu}>
+  <span className="bm-span"></span>
+  <span className="bm-span"></span>
+  <span className="bm-span"></span>
+</div>
 
-        <div className="burger-menu">
-          <ul>
-            <li><Link to="/home">Главная</Link></li>
-            <li><Link to="/about">О факультете</Link></li>
-            <li><Link to="/teachers">Преподаватели</Link></li>
-            <li><Link to="/schedule">Расписание</Link></li>
-            <li><Link to="/library">Библиотека</Link></li>
-            <li><Link to="/contacts">Контакты</Link></li>
-            <li><Link to="/authdetails">Настройки Профиля</Link></li>
-          </ul>
-        </div>
+
+      <div className={`burger-menu ${isMenuOpen ? 'open' : ''}`}>
+        <ul>
+          <li><Link to="/home"><FontAwesomeIcon icon={faHome} /> Главная</Link></li>
+          <li><Link to="/about"><FontAwesomeIcon icon={faInfoCircle} /> О факультете</Link></li>
+          <li><Link to="/teachers"><FontAwesomeIcon icon={faChalkboardTeacher} /> Преподаватели</Link></li>
+          <li><Link to="/schedule"><FontAwesomeIcon icon={faCalendarAlt} /> Расписание</Link></li>
+          <li><Link to="/library"><FontAwesomeIcon icon={faBook} /> Библиотека</Link></li>
+          <li><Link to="/contacts"><FontAwesomeIcon icon={faPhone} /> Контакты</Link></li>
+          <li><Link to="/authdetails"><FontAwesomeIcon icon={faUserCog} /> Настройки Профиля</Link></li>
+        </ul>
+      </div>
       </header>
 
       <section className="about-hero">
