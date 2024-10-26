@@ -7,6 +7,7 @@ import "../App.css"; // Подключаем CSS
 import "../library.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog } from "@fortawesome/free-solid-svg-icons";
+import { useSpring, animated } from 'react-spring';
 
 const Library = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -104,56 +105,16 @@ const Library = () => {
       }
     };
 
+    const bookGridRef = useRef(null);
 
-
-
-
-    const [isScrolling, setIsScrolling] = useState(false);
-    const [startY, setStartY] = useState(0);
-    const [currentY, setCurrentY] = useState(0);
-    const maxStretch = 100; // Maximum stretch distance
-    const mainRef = useRef(null);
-  
-    useEffect(() => {
-      const handleTouchStart = (e) => {
-        setStartY(e.touches[0].clientY);
-        setIsScrolling(false);
-      };
-  
-      const handleTouchMove = (e) => {
-        if (!isScrolling) {
-          setCurrentY(e.touches[0].clientY);
-          const diff = currentY - startY;
-  
-          if ((diff > 0 && window.scrollY === 0) || (diff < 0 && window.scrollY + window.innerHeight >= document.body.clientHeight)) {
-            e.preventDefault();
-            const stretchAmount = Math.min(Math.abs(diff), maxStretch) * Math.sign(diff);
-            mainRef.current.classList.add('elastic-effect');
-            mainRef.current.style.transform = `translateY(${stretchAmount}px)`;
-          } else {
-            setIsScrolling(true);
-          }
-        }
-      };
-  
-      const handleTouchEnd = () => {
-        mainRef.current.classList.remove('elastic-effect');
-        mainRef.current.style.transform = 'translateY(0)';
-      };
-  
-      document.addEventListener('touchstart', handleTouchStart);
-      document.addEventListener('touchmove', handleTouchMove);
-      document.addEventListener('touchend',   
-   handleTouchEnd);
-  
-      return () => {
-        document.removeEventListener('touchstart', handleTouchStart);
-        document.removeEventListener('touchmove',   
-   handleTouchMove);
-        document.removeEventListener('touchend', handleTouchEnd);   
-  
-      };
-    }, []);
+const { y } = useSpring({
+  y: 0, // Initial position
+  config: { mass: 1, tension: 300, friction: 12 }, // Spring configuration
+  onRest: () => {
+    // Reset position on animation end
+    set.y(0);
+  },
+});
 
   return (
     <div className="library-body">
@@ -235,10 +196,10 @@ const Library = () => {
         </div>
       </section>
 
-    <main ref={mainRef}>
-      <section className="book-grid">
+      <section className="book-grid" ref={bookGridRef}>
         {filteredBooks.length > 0 ? (
           filteredBooks.map((book, index) => (
+            <animated.div style={{ transform: y.interpolate(y => `translateY(${y}px)`) }}>
             <div key={index} className="book-card" onClick={() => openBookModal(book)}>
               <img src={bookIcon} alt="Book Icon" className="book-icon" />
               <div className="book-info">
@@ -247,12 +208,12 @@ const Library = () => {
                 <p className="published-date">Опубликовано: {book.publishedDate}</p>
               </div>
             </div>
+            </animated.div>
           ))
         ) : (
           <p>Книги не найдены</p>
         )}
       </section>
-      </main>
 
       {showModal && selectedBook && (
         <div className="modal-book">

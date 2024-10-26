@@ -111,7 +111,6 @@ nav ul li a {
   }
   
   main{
-    height: 63.5vh !important;
     overflow-x: scroll;
   }
   
