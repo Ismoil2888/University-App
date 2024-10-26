@@ -2,22 +2,22 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#161b22",
-  "background_color": "#6F91B4",
+  "background_color": "#260C31",
   "short_name": "University App",
   "name": "University",
   "icons": [
     {
-      "src": "appicon.jpeg",
+      "src": "logoapp.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "appicon.jpeg",
+      "src": "logoapp.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "appicon.jpeg",
+      "src": "logoapp.png",
       "type": "image/png",
       "sizes": "512x512"
     }

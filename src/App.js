@@ -1,4 +1,6 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate  } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { auth } from './firebase'; // Импорт Firebase auth
 import './App.css';
 import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
@@ -21,6 +23,24 @@ import TeacherLogin from './components/TeacherLogin';
 import TeacherProfile from './components/TeacherProfile';
 
 function App() {
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Состояние для отслеживания авторизации
+
+  useEffect(() => {
+    // Проверка авторизации пользователя при запуске приложения
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setIsAuthenticated(true); // Пользователь авторизован
+        navigate('/home'); // Перенаправляем на главную страницу
+      } else {
+        setIsAuthenticated(false); // Пользователь не авторизован
+        navigate('/'); // Перенаправляем на страницу входа
+      }
+    });
+
+    return () => unsubscribe(); // Отписка при размонтировании
+  }, [navigate]);
+
   return (
         <Routes>
           <Route path="/" element={<SignIn />} />
