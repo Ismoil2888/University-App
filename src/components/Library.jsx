@@ -235,7 +235,7 @@ const Library = () => {
         </div>
       </section>
 
-    <main>
+    <main ref={mainRef}>
       <section className="book-grid">
         {filteredBooks.length > 0 ? (
           filteredBooks.map((book, index) => (
