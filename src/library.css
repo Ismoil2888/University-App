@@ -5,7 +5,7 @@
     color: #fff;
     margin: 0;
     padding: 0;
-    height: 100vh;
+    height: 100%;
 }
 
 .library-head {
@@ -110,6 +110,9 @@ nav ul li a {
     cursor: pointer;
   }
   
+  main{
+    height: 100%;
+  }
   
 
 .book-grid {
@@ -119,6 +122,7 @@ nav ul li a {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
   }
   
   .book-card {
@@ -258,6 +262,12 @@ nav ul li a {
     border-radius: 8px;
     padding: 15px;
     margin: 10px 0;
+}
+
+@media (width > 940px) {
+  .library-body {
+    height: 100vh;
+}
 }
 
 @media (width < 940px) {

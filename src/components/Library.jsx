@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { getDatabase, ref as dbRef, onValue } from "firebase/database";
 import { FaTimes, FaUser } from "react-icons/fa"; // Импорт иконки крестика
@@ -104,6 +104,57 @@ const Library = () => {
       }
     };
 
+
+
+
+
+    const [isScrolling, setIsScrolling] = useState(false);
+    const [startY, setStartY] = useState(0);
+    const [currentY, setCurrentY] = useState(0);
+    const maxStretch = 100; // Maximum stretch distance
+    const mainRef = useRef(null);
+  
+    useEffect(() => {
+      const handleTouchStart = (e) => {
+        setStartY(e.touches[0].clientY);
+        setIsScrolling(false);
+      };
+  
+      const handleTouchMove = (e) => {
+        if (!isScrolling) {
+          setCurrentY(e.touches[0].clientY);
+          const diff = currentY - startY;
+  
+          if ((diff > 0 && window.scrollY === 0) || (diff < 0 && window.scrollY + window.innerHeight >= document.body.clientHeight)) {
+            e.preventDefault();
+            const stretchAmount = Math.min(Math.abs(diff), maxStretch) * Math.sign(diff);
+            mainRef.current.classList.add('elastic-effect');
+            mainRef.current.style.transform = `translateY(${stretchAmount}px)`;
+          } else {
+            setIsScrolling(true);
+          }
+        }
+      };
+  
+      const handleTouchEnd = () => {
+        mainRef.current.classList.remove('elastic-effect');
+        mainRef.current.style.transform = 'translateY(0)';
+      };
+  
+      document.addEventListener('touchstart', handleTouchStart);
+      document.addEventListener('touchmove', handleTouchMove);
+      document.addEventListener('touchend',   
+   handleTouchEnd);
+  
+      return () => {
+        document.removeEventListener('touchstart', handleTouchStart);
+        document.removeEventListener('touchmove',   
+   handleTouchMove);
+        document.removeEventListener('touchend', handleTouchEnd);   
+  
+      };
+    }, []);
+
   return (
     <div className="library-body">
       <header className="library-head">
@@ -184,6 +235,7 @@ const Library = () => {
         </div>
       </section>
 
+    <main>
       <section className="book-grid">
         {filteredBooks.length > 0 ? (
           filteredBooks.map((book, index) => (
@@ -191,7 +243,7 @@ const Library = () => {
               <img src={bookIcon} alt="Book Icon" className="book-icon" />
               <div className="book-info">
                 <h4>{book.title}</h4>
-                <p>{book.description}</p>
+                <p style={{color: "gray"}}>{book.description}</p>
                 <p className="published-date">Опубликовано: {book.publishedDate}</p>
               </div>
             </div>
@@ -200,6 +252,7 @@ const Library = () => {
           <p>Книги не найдены</p>
         )}
       </section>
+      </main>
 
       {showModal && selectedBook && (
         <div className="modal-book">
