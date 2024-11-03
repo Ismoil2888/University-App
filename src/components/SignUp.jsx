@@ -125,9 +125,9 @@ const SignUp = () => {
             <label htmlFor="confirmPassword">Подтвердите пароль</label>
           </div>
           <div className="remember-forgot">
-            <label className="checkbox-p">
+            {/* <label className="checkbox-p">
               <input type="checkbox" /> <p>Запомнить меня</p>
-            </label>
+            </label> */}
             <p>Забыли пароль?</p>
           </div>
           <button type="submit">Register</button>

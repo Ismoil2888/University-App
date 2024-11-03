@@ -1,6 +1,6 @@
 .tch-hero {
     background-color: #1a1a1a; /* Цвет фона */
-    padding: 60px 0; /* Отступы сверху и снизу */
+    padding: 10px 0; /* Отступы сверху и снизу */
     text-align: center; /* Выравнивание текста по центру */
     background-image: url('cyber-background.jpg'); /* Фоновое изображение */
     background-size: cover; /* Заполнение всего элемента */
@@ -22,7 +22,7 @@
 .teachers-section {
     background-color: #0d0d0d;
     color: #e0e0e0;
-    padding: 60px 0;
+    padding: 40px 0;
 }
 
 .teachers-section .tch-container {
@@ -32,6 +32,9 @@
     flex-wrap: wrap;
     justify-content: space-around;
     padding: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 25px;
 }
 
 .teacher-card {
@@ -52,8 +55,9 @@
 }
 
 .teacher-card img {
-    max-width: 100%;
-    height: auto;
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
     border-radius: 8px;
     margin-bottom: 10px;
 }

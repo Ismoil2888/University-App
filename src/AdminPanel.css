@@ -1,9 +1,12 @@
 .admin-panel {
     padding: 20px;
+    background: linear-gradient(120deg, rgb(15, 32, 39), rgb(32, 58, 67), rgb(44, 83, 100));   
+    min-height: 100vh;
   }
 
   .admin-panel h1{
     text-align: center;
+    color: white;
   }
   
   .admin-buttons {
@@ -48,12 +51,13 @@
   
   .edit-icon {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    color: #3c85c9;
+    top: 0px;
+    right: 0px;
+    color: #d43d3d;
     border-radius: 50%;
     padding: 10px;
     cursor: pointer;
+    font-size: 30px;
   }
   
   .card-body {
@@ -155,9 +159,128 @@
 
   .search-teacherc-input{
     width: 300px;
-    height: 30px;
+    height: 35px;
     padding-left: 15px;
+    padding-right: 10px;
     border: none;
     border-radius: 15px;
     margin-top: 20px;
   }
+
+  /* Стили для карточек заявок */
+.ident-requests {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+}
+
+.ident-requests-cards{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 50px;
+  gap: 20px;
+}
+
+.request-card p {
+  margin: 5px 0;
+}
+
+.request-card-photo {
+  /* max-width: 300px;
+  max-height: 200px; */
+  width: 300px;
+  height: 200px;
+  /* object-fit: cover; */
+  border-radius: 15px;
+  /* margin: 10px 0; */
+}
+
+.request-card button {
+  margin-top: 10px;
+  background-color: #3c85c9; /* Принять - зеленый цвет */
+  color: white;
+}
+
+.request-card button:hover {
+  background-color: #218838; /* Принять - темно-зеленый цвет */
+}
+
+.new-request-count-basic{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 90px;
+  right: 0;
+  color: rgb(255, 255, 255);
+  font-weight: bolder;
+  background: #ff0000;
+  width: 25px;
+  height: 25px;
+  margin: 10px;
+  border-radius: 50%;
+}
+
+/* Общий стиль для карточек */
+.request-card, .compact-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.request-card {
+  padding: 15px;
+  height: 420px;
+  width: 310px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.compact-card {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  max-width: 300px;
+  height: 50px;
+}
+
+.compact-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.compact-photo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+  /* object-fit: cover; */
+}
+
+.compact-info {
+  flex-grow: 1;
+}
+
+.status-label {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.status-label.accepted {
+  color: green;
+}
+
+.status-label.rejected {
+  color: red;
+}
+
+.edit-icon {
+  color: #007bff;
+  cursor: pointer;
+  margin-left: 10px;
+}

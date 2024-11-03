@@ -31,7 +31,7 @@ const SignIn = () => {
       })
       .catch((error) => {
         console.log(error);
-        setError("Учетная запись не найдена или неверный пароль!");
+        setError("Учетная запись или пароль неверны!");
       });
   };
 
@@ -67,9 +67,9 @@ const SignIn = () => {
             <label htmlFor="password">Пароль</label>
           </div>
           <div className="remember-forgot">
-            <label className="checkbox-p">
+            {/* <label className="checkbox-p">
               <input type="checkbox" /> <p>Запомнить меня</p>
-            </label>
+            </label> */}
             <p>Забыли пароль?</p>
           </div>
           <button type="submit">Login</button>

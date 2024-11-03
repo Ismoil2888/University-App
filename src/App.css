@@ -345,9 +345,9 @@ header nav ul li a:hover::before {
     }
       
       .remember-forgot { 
-    margin: -20px 0 5px; 
+    margin: -10px 0 15px; 
     display: flex; 
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     font-size: .9em;
     color: #fff;
@@ -480,12 +480,19 @@ header nav ul li a:hover::before {
   
   
         .signed-out {
+          display: flex;
+          justify-content: center;
+          align-items: center;
           text-align: center;
-          font-size: 16px;
+          flex-direction: column;
+          font-size: 25px;
+          width: 100%;
+          height: 100vh;
+          background: linear-gradient(120deg, rgb(40, 40, 40), rgb(10, 10, 67), rgb(3, 43, 118));     
         }
         
         .authoutlink {
-          color: #007bff;
+          color: #00e1ff;
           text-decoration: none;
           font-weight: bold;
         }  
@@ -669,6 +676,76 @@ header nav ul li a:hover::before {
           font-size: 14px;
           color: #69e8bd;
         }
+
+        .ident-block-basic{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          color: red;
+        }
+
+        /* Стили для модального окна формы */
+.request-form-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.form-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 400px;
+}
+
+.form-content h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #003968;
+}
+
+.form-content input[type="text"],
+input[type="file"] {
+  width: 95%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.form-content button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 5px;
+  transition: background-color 0.3s;
+}
+
+.form-content button:hover {
+  background-color: #0056b3;
+}
+
+.form-content button:nth-child(2) {
+  background-color: #dc3545; /* Закрыть - красный цвет */
+}
+
+.form-content button:nth-child(2):hover {
+  background-color: #c82333; /* Закрыть - темно-красный цвет */
+}
         
         .settings {
           margin-top: 20px;
@@ -692,9 +769,104 @@ header nav ul li a:hover::before {
           border-radius: 15px;
           text-align: center;
         }
+
+        .edit-password{
+          display: flex;
+          justify-content: space-between;
+        }
+
+        /* Общий стиль модального окна */
+.password-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.password-modal-content {
+  background: #ffffff;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.password-modal h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.password-input-container {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.password-input-container input {
+  width: 87%;
+  padding: 12px;
+  padding-right: 40px; /* место для иконки */
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #1eb4ad;
+}
+
+.password-modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.password-modal-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin: 5px;
+}
+
+.password-modal-buttons button:first-child {
+  background-color: #3477b7; /* Цвет кнопки Изменить */
+  color: white;
+}
+
+.password-modal-buttons button:last-child {
+  background-color: #f44336; /* Цвет кнопки Отмена */
+  color: white;
+}
+
+
+        .edit-password:hover {
+          background-color: #f9f9f9;
+          color: #308ced;
+          font-weight: bold;
+          border-radius: 15px;
+          text-align: center;
+        }
+
+        .error-text{
+          color: red;
+        }
         
         .signout-btn {
-          margin-top: 60px;
+          margin-top: 20px;
           padding: 10px 20px;
           background-color: #dc3545;
           color: white;
@@ -741,7 +913,7 @@ header nav ul li a:hover::before {
           border: none;
           border-radius: 5px;
           cursor: pointer;
-          background-color: #007bff;
+          background-color: #3477b7;
           color: white;
           transition: background-color 0.2s ease;
         }
@@ -812,7 +984,7 @@ header nav ul li a:hover::before {
         }
         
         .close-icon:hover {
-          color: #333;
+          color: #ffffff;
         }
         
         /* Стили для окна редактирования "О себе" */
@@ -1165,6 +1337,16 @@ color: transparent;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.ident-requests, .ident-requests-cards {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 50px;
 }
 
 }
