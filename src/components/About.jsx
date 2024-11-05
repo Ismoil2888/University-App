@@ -22,6 +22,10 @@ const About = () => {
       }
     };
 
+    const handleContextMenu = (event) => {
+      event.preventDefault();
+    }
+
   return (
     <div>
       <header>
@@ -46,7 +50,7 @@ const About = () => {
 
         <ul className="logo-app" style={{color: "#58a6ff", fontSize: "35px"}}>T I K</ul>
 
-<div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu}>
+<div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu} onContextMenu={handleContextMenu}>
   <span className="bm-span"></span>
   <span className="bm-span"></span>
   <span className="bm-span"></span>
@@ -69,7 +73,7 @@ const About = () => {
       <section className="about-hero">
         <h1 className="about-h1">О факультете Цифровые технологии системы и Защита Информации</h1>
         <div className="faculty-image">
-          <img style={{ height: "175px" }} width="175px" src={facultyLogo} alt="Фото факультета информационной безопасности" />
+          <img style={{ height: "175px" }} width="175px" src={facultyLogo} alt="Фото факультета информационной безопасности" onContextMenu={handleContextMenu}/>
         </div>
       </section>
 
@@ -105,10 +109,10 @@ const About = () => {
       </footer>
 
       <div className="footer-nav">
-        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" /></Link>
-        <Link to="/about"><FontAwesomeIcon icon={faSearch} className="footer-icon" style={{color: "red"}}/></Link>
-        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>
-        <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" /></Link>
+        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/about"><FontAwesomeIcon icon={faSearch} className="footer-icon" style={{color: "red"}} onContextMenu={handleContextMenu}/></Link>
+        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
       </div>
     </div>
   );

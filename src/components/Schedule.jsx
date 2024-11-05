@@ -49,6 +49,10 @@ const Schedule = () => {
       }
     };
 
+    const handleContextMenu = (event) => {
+      event.preventDefault();
+    }
+
   return (
     <div className="glav-container">
       <header>
@@ -73,7 +77,8 @@ const Schedule = () => {
 
         <ul className="logo-app" style={{color: "#58a6ff", fontSize: "35px"}}>T I K</ul>
 
-        <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu}>          <span className="bm-span"></span>
+        <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu} onContextMenu={handleContextMenu}>         
+          <span className="bm-span"></span>
           <span className="bm-span"></span>
           <span className="bm-span"></span>
         </div>
@@ -136,10 +141,10 @@ const Schedule = () => {
       </footer>
 
       <div className="footer-nav">
-        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" /></Link>
-        <Link to="/about"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
-        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>
-        <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" /></Link>
+        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/about"><FontAwesomeIcon icon={faSearch} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
       </div>
     </div>
   );

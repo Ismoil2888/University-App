@@ -349,6 +349,10 @@ const handleAboutMeChange = async () => {
     }
   };
 
+  const handleContextMenu = (event) => {
+    event.preventDefault();
+  }
+
   return (
     <div className="profile-container">
       {authUser ? (
@@ -371,6 +375,7 @@ const handleAboutMeChange = async () => {
                 alt="Avatar"
                 className="avatar"
                 onClick={() => setIsAvatarModalOpen(true)}
+                onContextMenu={handleContextMenu}
               />
               <label htmlFor="avatarInput" className="avatar-upload-btn">Загрузить фото</label>
               <input
@@ -545,6 +550,7 @@ const handleAboutMeChange = async () => {
                  alt="Avatar"
                  className="full-size-avatar"
                  onClick={() => setIsAvatarModalOpen(false)}
+                 onContextMenu={handleContextMenu}
                />
              </div>
            </div>

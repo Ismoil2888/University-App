@@ -60,6 +60,10 @@ const Teachers = () => {
       }
     };
 
+    const handleContextMenu = (event) => {
+      event.preventDefault();
+    }
+
   return (
     <div className="glav-cotainer">
       <header>
@@ -84,7 +88,8 @@ const Teachers = () => {
 
         <ul className="logo-app" style={{color: "#58a6ff", fontSize: "35px"}}>T I K</ul>
 
-        <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu}>          <span className="bm-span"></span>
+        <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu} onContextMenu={handleContextMenu}>          
+          <span className="bm-span"></span>
           <span className="bm-span"></span>
           <span className="bm-span"></span>
         </div>
@@ -104,7 +109,7 @@ const Teachers = () => {
 
       <section className="tch-hero">
         <div className="faculty-image">
-          <img style={{ height: "175px" }} width="255px" src={defaultTeacherImg} alt="Фото преподавателей" />
+          <img style={{ height: "175px" }} width="255px" src={defaultTeacherImg} alt="Фото преподавателей" onContextMenu={handleContextMenu}/>
         </div>
         <h1>Преподаватели факультета информационной безопасности</h1>
       </section>
@@ -126,7 +131,7 @@ const Teachers = () => {
           ) : (
             filteredTeachers.map((teacher) => (
               <div className="teacher-card" key={teacher.id} onClick={() => toggleDescription(teacher.id)}>
-                <img src={teacher.photo || defaultTeacherImg} alt={`${teacher.name} ${teacher.surname}`} />
+                <img src={teacher.photo || defaultTeacherImg} alt={`${teacher.name} ${teacher.surname}`} onContextMenu={handleContextMenu}/>
                 <h3>{`${teacher.name} ${teacher.surname}`}</h3>
                 <p><strong>Предмет:</strong> {teacher.subject}</p>
                 <p><strong>Статус:</strong> {teacher.status}</p>
@@ -146,10 +151,10 @@ const Teachers = () => {
       </footer>
 
       <div className="footer-nav">
-        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" /></Link>
-        <Link to="/about"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
-        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>
-        <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" /></Link>
+        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/about"><FontAwesomeIcon icon={faSearch} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
       </div>
     </div>
   );

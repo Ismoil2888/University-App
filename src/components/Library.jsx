@@ -191,6 +191,10 @@ const Library = ({ userId }) => {
     }
   };
 
+  const handleContextMenu = (event) => {
+    event.preventDefault();
+  }
+
 
   // Проверяем статус и отображаем сообщение при отсутствии идентификации
   if (identificationStatus === "не идентифицирован") {
@@ -226,7 +230,8 @@ const Library = ({ userId }) => {
 
         <ul className="logo-app" style={{color: "#58a6ff", fontSize: "35px"}}>T I K</ul>
 
-        <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu}>          <span className="bm-span"></span>
+        <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu} onContextMenu={handleContextMenu}>          
+          <span className="bm-span"></span>
           <span className="bm-span"></span>
           <span className="bm-span"></span>
         </div>
@@ -295,7 +300,7 @@ const Library = ({ userId }) => {
 
             return (
               <div key={index} className="book-card" onClick={() => openBookModal(book)}>
-                <img src={bookIcon} alt="Book Icon" className="book-icon" />
+                <img src={bookIcon} alt="Book Icon" className="book-icon" onContextMenu={handleContextMenu}/>
                 <div className="book-info">
                   <h4>{book.title}</h4>
                   <p style={{ color: "gray" }}>{book.description}</p>
@@ -384,10 +389,10 @@ const Library = ({ userId }) => {
       </footer>
 
       <div className="footer-nav">
-        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" /></Link>
-        <Link to="/about"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
-        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" style={{color: "red"}}/></Link>
-        <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" /></Link>
+        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/about"><FontAwesomeIcon icon={faSearch} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" style={{color: "red"}} onContextMenu={handleContextMenu}/></Link>
+        <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
       </div>
     </div>
   );
