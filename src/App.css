@@ -17,8 +17,13 @@
 
 /* Навигация */
 header {
+  position: fixed;
+  width: 100%;
   background-color: #161b22;
+  z-index: 1999;
   padding: 10px 0;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
   box-shadow: 0 4px 2px -2px gray;
 }
 
@@ -108,7 +113,52 @@ footer {
   background-color: #161b22;
   color: #8b949e;
   text-align: center;
-  padding: 15px 0;
+  height: 33px;
+  padding-top: 15px;
+}
+
+/* Основной футер для десктопа */
+/* Футер для десктопа */
+.footer-desktop {
+  display: block;
+}
+
+.footer-nav {
+  display: none;
+}
+
+/* Мобильная навигация футера */
+@media (max-width: 768px) {
+  .footer-desktop {
+    display: none;
+  }
+
+  .footer-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    padding: 10px 0;
+    background-color: #161b22;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    color: #fff;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .footer-icon {
+    font-size: 24px;
+    color: #42ccdb;
+    transition: color 0.3s;
+  }
+
+  .footer-icon:hover {
+    color: #58a6ff;
+  }
 }
 
 /* Анимации для кнопок */
@@ -148,12 +198,12 @@ a:hover {
 }
 
 /* Анимация для заголовков */
-h1, h2, h3 {
+/* h1, h2, h3 {
   position: relative;
   overflow: hidden;
-}
+} */
 
-h1::after, h2::after, h3::after {
+/* h1::after, h2::after, h3::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -162,11 +212,11 @@ h1::after, h2::after, h3::after {
   height: 3px;
   background-color: #58a6ff;
   transition: width 0.3s ease-in-out;
-}
+} */
 
-h1:hover::after, h2:hover::after, h3:hover::after {
-  width: 100%; /* Полоса под заголовком при наведении */
-}
+/* h1:hover::after, h2:hover::after, h3:hover::after {
+  width: 100%; 
+} */
 
 /* Анимация для карточек и блоков */
 .card {
@@ -257,7 +307,8 @@ header nav ul li a:hover::before {
   align-items: center;
   width: 100%;
   height: 100vh;
-  background: linear-gradient(120deg, rgb(40, 40, 40), rgb(10, 10, 67), rgb(3, 43, 118));
+  background: #223243;
+  /* background: linear-gradient(120deg, rgb(40, 40, 40), rgb(10, 10, 67), rgb(3, 43, 118)); */
   background-size: cover;
   background-position: center;
   overflow: hidden;
@@ -274,8 +325,14 @@ header nav ul li a:hover::before {
     position: relative;
     width: 400px;
     height: 450px;
-    background: rgb(5, 27, 56);
-    border: 2px solid rgba(255, 255, 255, .5);
+    background: #223243;
+    /* background: rgb(5, 27, 56); */
+    /* border: 2px solid rgba(255, 255, 255, .5); */
+    border: 8px solid #223243;
+    box-shadow: -5px -5px 15px rgba(255, 255, 255, 0.1),
+    5px 5px 15px rgba(0, 0, 0, 0.35), 
+    inset -5px -5px 15px rgba(255, 255, 255, 0.1),
+    inset 5px 5px 15px rgba(0, 0, 0, 0.35);
     border-radius: 20px;
     display: flex;
     justify-content: center;
@@ -410,13 +467,19 @@ header nav ul li a:hover::before {
         position: relative;
         width: 400px;
         height: 540px;
-        background: rgb(5, 27, 56);
-        border: 2px solid rgba(255, 255, 255, .5);
+        /* background: rgb(5, 27, 56);
+        border: 2px solid rgba(255, 255, 255, .5); */
         border-radius: 20px;
         display: flex;
         justify-content: center;
         align-items: center;
         backdrop-filter: blur(15px);
+
+        border: 8px solid #223243;
+        box-shadow: -5px -5px 15px rgba(255, 255, 255, 0.1),
+        5px 5px 15px rgba(0, 0, 0, 0.35), 
+        inset -5px -5px 15px rgba(255, 255, 255, 0.1),
+        inset 5px 5px 15px rgba(0, 0, 0, 0.35);
         }
           
         .reg-input-box {
@@ -506,7 +569,7 @@ header nav ul li a:hover::before {
         
         .profile-content {
           width: 90%;
-          height: 690px;
+          height: 700px;
           max-width: 500px;
           background-color: #003968;
           color: white;
@@ -1042,7 +1105,7 @@ a:hover {
 }
 
 /* Анимация для заголовков */
-.glav-container h1, h2, h3 {
+/* .glav-container h1, h2, h3 {
     position: relative;
     overflow: hidden;
 }
@@ -1059,8 +1122,8 @@ a:hover {
 }
 
 .glav-container h1:hover::after, .glav-container h2:hover::after, .glav-container h3:hover::after {
-    width: 100%; /* Полоса под заголовком при наведении */
-}
+    width: 100%;
+} */
 
 
 
@@ -1190,12 +1253,12 @@ header nav ul li a:hover::before {
   display: flex;
   align-items: center;
   gap: 12px;
-  transition: color 0.3s;
+  transition: all 0.2s ease-in-out;
 }
 
 .burger-menu li a:hover {
   color: #40c9ff;
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .bm-span {
@@ -1260,6 +1323,72 @@ content: ">";
 color: transparent;
 }
 
+
+/* Loading Animation Styles */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #10161a;
+  color: #4af626;
+  font-family: 'Roboto', sans-serif;
+  overflow: hidden;
+}
+
+.loading-text {
+  margin-top: 20px;
+  font-size: 1.5em;
+  color: #4af626;
+  text-shadow: 0 0 8px rgba(74, 246, 38, 0.5), 0 0 15px rgba(74, 246, 38, 0.5);
+  animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+.loading-circuit {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  animation: fadeInUp 2s ease forwards;
+}
+
+@keyframes fadeInUp {
+  0% { transform: translateY(50px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.loading-circuit .circle {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: #4af626;
+  box-shadow: 0 0 8px rgba(74, 246, 38, 0.8), 0 0 15px rgba(74, 246, 38, 0.5);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.loading-circuit .line {
+  width: 50px;
+  height: 3px;
+  background-color: #4af626;
+  animation: stretch 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 8px rgba(74, 246, 38, 0.8), 0 0 15px rgba(74, 246, 38, 0.5); }
+  50% { transform: scale(1.5); box-shadow: 0 0 12px rgba(74, 246, 38, 0.8), 0 0 25px rgba(74, 246, 38, 0.7); }
+}
+
+@keyframes stretch {
+  0%, 100% { width: 50px; }
+  50% { width: 70px; }
+}
+
+
 @media (width > 984px) {
 
   .burger-menu-icon{
@@ -1269,6 +1398,10 @@ color: transparent;
   nav{
       display: flex;
   }
+
+  .logo-app{
+    display: none;
+  }
 }
 
 @media (width < 984px) {
@@ -1277,7 +1410,7 @@ color: transparent;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 50px;
+      height: 40px;
       width: 100%;
   }
 

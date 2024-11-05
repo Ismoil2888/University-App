@@ -4,7 +4,7 @@ import { ref as databaseRef, onValue, push, update, get, query, orderByChild, eq
 import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
 import React, { useEffect, useState, useRef } from "react";
 import { auth, database, storage } from "../firebase";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaEllipsisV, FaTimes, FaPen, FaArrowLeft, FaLock, FaEye, FaEyeSlash } from "react-icons/fa"; // Иконка карандаша
 import { color } from "framer-motion";
 import imageCompression from 'browser-image-compression';
@@ -16,7 +16,7 @@ const AuthDetails = () => {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("offline");
   const [lastActive, setLastActive] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState("../default-image.png");
+  const [avatarUrl, setAvatarUrl] = useState("./default-image.png");
   const [showMenu, setShowMenu] = useState(false);
   const [newUsername, setNewUsername] = useState("");
   const [isEditingUsername, setIsEditingUsername] = useState(false);
@@ -34,6 +34,8 @@ const AuthDetails = () => {
   const [passwordError, setPasswordError] = useState("");
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
+
+  const navigate = useNavigate();
 
   const [identificationStatus, setIdentificationStatus] = useState("не идентифицирован");
   const [requestId, setRequestId] = useState(null); // New state for tracking request ID
@@ -128,7 +130,7 @@ const AuthDetails = () => {
             setPhoneNumber(data.phoneNumber || "+Введите номер телефона");
             setStatus(data.status || "offline");
             setLastActive(data.lastActive || "");
-            setAvatarUrl(data.avatarUrl || "../default-image.png");
+            setAvatarUrl(data.avatarUrl || "./default-image.png");
             setAboutMe(data.aboutMe || "Информация не указана");
           }
         });
@@ -186,7 +188,7 @@ const AuthDetails = () => {
         setPhoneNumber("");
         setStatus("offline");
         setLastActive("");
-        setAvatarUrl("../default-image.png");
+        setAvatarUrl("./default-image.png");
       }
     });
 
@@ -256,8 +258,8 @@ const deleteAvatar = async () => {
       const avatarStorageRef = storageRef(storage, `avatars/${authUser.uid}`);
       await deleteObject(avatarStorageRef);
       const userDatabaseRef = databaseRef(database, 'users/' + authUser.uid);
-      await update(userDatabaseRef, { avatarUrl: "../default-image.png" });
-      setAvatarUrl("../default-image.png");
+      await update(userDatabaseRef, { avatarUrl: "./default-image.png" });
+      setAvatarUrl("./default-image.png");
       setShowMenu(false);
     } catch (error) {
       console.error("Ошибка при удалении изображения:", error);
@@ -359,7 +361,7 @@ const handleAboutMeChange = async () => {
 
           <div className="profile-header">
             
-          <Link className="back-button" to="/home">
+          <Link className="back-button" onClick={() => navigate(-1)}>
             <FaArrowLeft />
           </Link>
            
@@ -458,20 +460,20 @@ const handleAboutMeChange = async () => {
             </div>
             </div>
 
-      {isRequestFormOpen && (
-        <div className="request-form-modal">
-          <div className="form-content">
-            <h2>Идентификация студента</h2>
-            <input type="text" name="fio" placeholder="ФИО" onChange={handleInputChange} required />
-            <input type="text" name="faculty" placeholder="Факультет" onChange={handleInputChange} required />
-            <input type="text" name="course" placeholder="Курс" onChange={handleInputChange} required />
-            <input type="text" name="group" placeholder="Группа" onChange={handleInputChange} required />
-            <input type="file" name="photo" accept="image/*" onChange={handleFileChange} />
-            <button onClick={handleSubmitRequest}>Отправить</button>
-            <button onClick={handleCloseForm}>Закрыть</button>
-          </div>
-        </div>
-      )}
+            {isRequestFormOpen && (
+              <div className="request-form-modal">
+                <div className="form-content">
+                  <h2>Идентификация студента</h2>
+                  <input type="text" name="fio" placeholder="ФИО" onChange={handleInputChange} required />
+                  <input type="text" name="faculty" placeholder="Факультет" onChange={handleInputChange} required />
+                  <input type="text" name="course" placeholder="Курс" onChange={handleInputChange} required />
+                  <input type="text" name="group" placeholder="Группа" onChange={handleInputChange} required />
+                  <input type="file" name="photo" accept="image/*" onChange={handleFileChange} />
+                  <button onClick={handleSubmitRequest}>Отправить</button>
+                  <button onClick={handleCloseForm}>Закрыть</button>
+                </div>
+              </div>
+            )}
 
             <div className="info-section">
               <h3>Конфиденциальность</h3>
@@ -492,35 +494,35 @@ const handleAboutMeChange = async () => {
               <div className="password-modal-content">
                 <h2>Изменение пароля</h2>
                 <div className="password-input-container">
-  <input
-    type={showCurrentPassword ? "text" : "password"}
-    value={currentPassword}
-    onChange={(e) => setCurrentPassword(e.target.value)}
-    placeholder="Введите текущий пароль"
-  />
-  <div
-    className="eye-icon"
-    onClick={() => setShowCurrentPassword((prev) => !prev)}
-  >
-    {showCurrentPassword ? <FaEyeSlash /> : <FaEye />}
-  </div>
-</div>
+                <input
+                  type={showCurrentPassword ? "text" : "password"}
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  placeholder="Введите текущий пароль"
+                />
+                <div
+                  className="eye-icon"
+                  onClick={() => setShowCurrentPassword((prev) => !prev)}
+                >
+                  {showCurrentPassword ? <FaEyeSlash /> : <FaEye />}
+                </div>
+              </div>
 
-{/* Поле для нового пароля */}
-<div className="password-input-container">
-  <input
-    type={showNewPassword ? "text" : "password"}
-    value={newPassword}
-    onChange={(e) => setNewPassword(e.target.value)}
-    placeholder="Введите новый пароль"
-  />
-  <div
-    className="eye-icon"
-    onClick={() => setShowNewPassword((prev) => !prev)}
-  >
-    {showNewPassword ? <FaEyeSlash /> : <FaEye />}
-  </div>
-</div>
+               {/* Поле для нового пароля */}
+               <div className="password-input-container">
+                 <input
+                   type={showNewPassword ? "text" : "password"}
+                   value={newPassword}
+                   onChange={(e) => setNewPassword(e.target.value)}
+                   placeholder="Введите новый пароль"
+                 />
+                 <div
+                   className="eye-icon"
+                   onClick={() => setShowNewPassword((prev) => !prev)}
+                 >
+                   {showNewPassword ? <FaEyeSlash /> : <FaEye />}
+                 </div>
+               </div>
                 <div className="password-modal-buttons">
                   <button onClick={handleChangePassword}>Изменить</button>
                   <button onClick={() => setIsPasswordModalOpen(false)}>Отмена</button>
@@ -556,7 +558,7 @@ const handleAboutMeChange = async () => {
      )}
    </div>
   );
-};
+};      
 
 export default AuthDetails;
 

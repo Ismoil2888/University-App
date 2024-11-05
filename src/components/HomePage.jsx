@@ -5,7 +5,7 @@ import "../App.css"; // Импортируем стили
 import facultyLogo from "../logo.png";
 import { useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const HomePage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,6 +32,7 @@ const HomePage = () => {
             <li><Link to="/library">Библиотека</Link></li>
             <li><Link to="/contacts">Контакты</Link></li>
           </ul>
+          <ul style={{color: "#58a6ff", fontSize: "25px"}}>TIK</ul>
           <ul>
             <li>
               <Link to="/authdetails">
@@ -40,6 +41,8 @@ const HomePage = () => {
             </li>
           </ul>
         </nav>
+
+        <ul className="logo-app" style={{color: "#58a6ff", fontSize: "35px"}}>T I K</ul>
 
         <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu}>          
           <span className="bm-span"></span>
@@ -89,9 +92,16 @@ const HomePage = () => {
         </section>
       </main>
 
-      <footer>
+      <footer className="footer-desktop">
         <p>&copy; 2024 Факультет Кибербезопасности. Все права защищены.</p>
       </footer>
+
+      <div className="footer-nav">
+        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" style={{color: "red"}}/></Link>
+        <Link to="/about"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
+        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>
+        <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" /></Link>
+      </div>
     </div>
   );
 };

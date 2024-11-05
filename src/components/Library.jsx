@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getDatabase, ref as dbRef, onValue, set, push, update } from "firebase/database";
+import { auth, database } from "../firebase";
 import { FaTimes, FaUser, FaHeart, FaComment } from "react-icons/fa";
 import bookIcon from '../book-icon.png';
 import "../App.css";
 import "../library.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const Library = ({ userId }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,6 +23,32 @@ const Library = ({ userId }) => {
   const [commentText, setCommentText] = useState("");
 
   const database = getDatabase();
+  const navigate = useNavigate();
+  const [identificationStatus, setIdentificationStatus] = useState(null);
+
+
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (user) {
+      // Проверяем статус идентификации пользователя
+      const requestRef = dbRef(database, `requests`);
+      onValue(requestRef, (snapshot) => {
+        const requests = snapshot.val();
+        const userRequest = Object.values(requests || {}).find(
+          (request) => request.email === user.email
+        );
+        
+        if (userRequest) {
+          // Обновляем статус идентификации пользователя
+          setIdentificationStatus(
+            userRequest.status === "accepted" ? "идентифицирован" : "не идентифицирован"
+          );
+        } else {
+          setIdentificationStatus("не идентифицирован");
+        }
+      });
+    }
+  }, []);
 
   useEffect(() => {
     const teachersRef = dbRef(database, 'teachers');
@@ -47,7 +74,7 @@ const Library = ({ userId }) => {
       setBooks(loadedBooks);
       setFilteredBooks(loadedBooks);
     });
-  }, [database]);
+  }, [database, identificationStatus]);
 
   useEffect(() => {
     const likesRef = dbRef(database, `likes`);
@@ -165,6 +192,16 @@ const Library = ({ userId }) => {
   };
 
 
+  // Проверяем статус и отображаем сообщение при отсутствии идентификации
+  if (identificationStatus === "не идентифицирован") {
+    return (
+      <div className="not-identified">
+        <p>Пройдите идентификацию, чтобы пользоваться библиотекой!</p>
+        <p style={{color: "skyblue", marginTop: "15px"}} onClick={() => navigate(-1)}>Назад</p>
+      </div>
+    );
+  }
+
   return (
     <div className="library-body">
       <header className="library-head">
@@ -177,6 +214,7 @@ const Library = ({ userId }) => {
             <li><Link to="/library">Библиотека</Link></li>
             <li><Link to="/contacts">Контакты</Link></li>
           </ul>
+          <ul style={{color: "#58a6ff", fontSize: "25px"}}>TIK</ul>
           <ul>
             <li>
               <Link to="/authdetails">
@@ -185,6 +223,8 @@ const Library = ({ userId }) => {
             </li>
           </ul>
         </nav>
+
+        <ul className="logo-app" style={{color: "#58a6ff", fontSize: "35px"}}>T I K</ul>
 
         <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu}>          <span className="bm-span"></span>
           <span className="bm-span"></span>
@@ -204,6 +244,7 @@ const Library = ({ userId }) => {
         </div>
       </header>
 
+<div className="library-main">
       <section className="library-header">
         <h1>Библиотека Факультета Информационной Безопасности</h1>
         <div className="search-filter">
@@ -336,9 +377,18 @@ const Library = ({ userId }) => {
   </div>
 )}
 
-      <footer>
+</div>
+
+      <footer className="footer-desktop">
         <p>&copy; 2024 Факультет Кибербезопасности. Все права защищены.</p>
       </footer>
+
+      <div className="footer-nav">
+        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" /></Link>
+        <Link to="/about"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
+        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" style={{color: "red"}}/></Link>
+        <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" /></Link>
+      </div>
     </div>
   );
 };

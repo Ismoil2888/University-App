@@ -3,12 +3,13 @@
     margin: 0;
     padding: 0;
     background-color: #abdfeb;
+    height: 100vh;
 }
 
 .contact-container {
     max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
+    margin: auto;
+    padding: 15px 15px;
     background: rgb(247, 250, 250);
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
