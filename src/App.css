@@ -141,7 +141,7 @@ footer {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 30px;
+    height: 35px;
     padding: 10px 0;
     background-color: #161b22;
     border-top-left-radius: 25px;
@@ -542,7 +542,7 @@ header nav ul li a:hover::before {
         
   
   
-        .signed-out {
+        /* .signed-out {
           display: flex;
           justify-content: center;
           align-items: center;
@@ -552,12 +552,62 @@ header nav ul li a:hover::before {
           width: 100%;
           height: 100vh;
           background: linear-gradient(120deg, rgb(40, 40, 40), rgb(10, 10, 67), rgb(3, 43, 118));     
+        } */
+
+        .signed-out-container{
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          height: 100vh;
+          box-sizing: border-box;
+          font-family: 'Poppins', sans-serif;
+        }
+        
+        .signed-out{
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 100vh;
+          background-color: #111;
+          font-weight: bold;
+        }
+        
+        .signed-out-h2{
+          position: relative;
+          font-size: 8em;
+          color: #222;
+          letter-spacing: 0.1em;
+        }
+        
+        .signed-out-h2::before{
+          content: attr(data-text);
+          position: absolute;
+          color: #fff;
+          width: 350px;
+          overflow: hidden;
+          white-space: nowrap;
+          border-right: 2px solid #fff;
+          animation: anim 8s linear infinite;
+          filter: drop-shadow(0 0 5px #fff) 
+          drop-shadow(0 0 10px #fff);
+        }
+        
+        @keyframes anim{
+          0%, 10%, 100%{
+              width: 0;
+          }
+          70%, 90%{
+              width: 100%;
+          }
         }
         
         .authoutlink {
           color: #00e1ff;
           text-decoration: none;
           font-weight: bold;
+          font-size: 25px;
         }  
       
         .profile-container {
@@ -569,7 +619,7 @@ header nav ul li a:hover::before {
         
         .profile-content {
           width: 90%;
-          height: 700px;
+          /* height: 700px; */
           max-width: 500px;
           background-color: #003968;
           color: white;
@@ -647,6 +697,102 @@ header nav ul li a:hover::before {
           border-radius: 10px;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }  
+
+        .modal-phone-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background: rgba(0, 0, 0, 0.6);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1000;
+          animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-phone {
+          background-color: #fff;
+          padding: 2rem;
+          width: 90%;
+          max-width: 400px;
+          border-radius: 12px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+          position: relative;
+          text-align: center;
+          animation: slideIn 0.3s ease;
+        }
+        
+        .modal-phone h2 {
+          font-size: 1.5rem;
+          color: #333;
+          margin-bottom: 1rem;
+        }
+        
+        .modal-phone input[type="text"] {
+          width: 90%;
+          padding: 0.8rem;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          font-size: 1rem;
+          margin-top: 1rem;
+          margin-bottom: 1.5rem;
+          transition: border-color 0.2s ease;
+        }
+        
+        .modal-phone input[type="text"]:focus {
+          border-color: #007bff;
+          outline: none;
+        }
+        
+        .modal-phone button {
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          border-radius: 8px;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: background-color 0.2s ease;
+        }
+        
+        .modal-phone button:hover {
+          background-color: #0056b3;
+        }
+        
+        .modal-phone .close-icon {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          font-size: 1.2rem;
+          color: #888;
+          cursor: pointer;
+          transition: color 0.2s ease;
+        }
+        
+        .modal-phone .close-icon:hover {
+          color: #333;
+        }
+        
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        
+        @keyframes slideIn {
+          from {
+            transform: translateY(-20px);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }        
         
         .username-section h2 {
           font-size: 24px;
@@ -678,6 +824,7 @@ header nav ul li a:hover::before {
           border-radius: 5px;
           padding: 10px;
           z-index: 1000;
+          animation: slideIn 0.3s ease;
         }
         
         .menu-dropdown button {
@@ -759,6 +906,7 @@ header nav ul li a:hover::before {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  animation: fadeIn 0.3s ease;
 }
 
 .form-content {
@@ -767,6 +915,7 @@ header nav ul li a:hover::before {
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   width: 400px;
+  animation: slideIn 0.3s ease;
 }
 
 .form-content h2 {
@@ -788,7 +937,8 @@ input[type="file"] {
 .form-content button {
   width: 100%;
   padding: 10px;
-  background-color: #007bff;
+  /* background-color: #007bff; */
+  background: #3477b7;
   color: white;
   border: none;
   border-radius: 4px;
@@ -850,6 +1000,7 @@ input[type="file"] {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  animation: fadeIn 0.3s ease;
 }
 
 .password-modal-content {
@@ -860,6 +1011,7 @@ input[type="file"] {
   border-radius: 8px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
+  animation: slideIn 0.3s ease;
 }
 
 .password-modal h2 {
@@ -992,6 +1144,12 @@ input[type="file"] {
         .modal-confirm button:last-child:hover {
           background-color: #5a6268;
         }  
+
+        .account{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
       
         .notification {
           position: fixed;
@@ -1044,10 +1202,11 @@ input[type="file"] {
           cursor: pointer;
           color: #999;
           margin-bottom: 7px;
+          transition: color 0.2s ease;
         }
         
         .close-icon:hover {
-          color: #ffffff;
+          color: #000000;
         }
         
         /* Стили для окна редактирования "О себе" */
@@ -1060,6 +1219,7 @@ input[type="file"] {
           border-radius: 8px;
           background-color: #f9f9f9;
           cursor: pointer;
+          animation: slideIn 0.3s ease;
         }
         
         .edit-aboutme-section textarea {
@@ -1074,11 +1234,13 @@ input[type="file"] {
         .edit-aboutme-section button {
           align-self: flex-start;
           padding: 8px 12px;
-          background-color: #007bff;
+          /* background-color: #007bff; */
+          background: #3477b7;
           color: white;
           border: none;
           border-radius: 5px;
           cursor: pointer;
+          transition: background-color 0.3s ease;
         }
         
         .edit-aboutme-section button:hover {

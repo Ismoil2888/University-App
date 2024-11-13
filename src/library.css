@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 /* Основные стили для библиотеки */
 .library-body {
     font-family: Arial, sans-serif;
@@ -428,7 +430,7 @@ nav ul li a {
   flex-direction: column;
 }
 
-.not-identified{
+/* .not-identified{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -438,6 +440,53 @@ nav ul li a {
   height: 100vh;
   font-size: 20px;
   background: linear-gradient(120deg, rgb(40, 40, 40), rgb(10, 10, 67), rgb(3, 43, 118));
+} */
+
+.not-identified-container{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+.not-identified{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: #111;
+  font-weight: bold;
+}
+
+.not-identified-h2{
+  position: relative;
+  font-size: 8em;
+  color: #222;
+  letter-spacing: 0.1em;
+}
+
+.not-identified-h2::before{
+  content: attr(data-text);
+  position: absolute;
+  color: #fff;
+  width: 350px;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid #fff;
+  animation: anim 8s linear infinite;
+  filter: drop-shadow(0 0 5px #fff) 
+  drop-shadow(0 0 10px #fff);
+}
+
+@keyframes anim{
+  0%, 10%, 100%{
+      width: 0;
+  }
+  70%, 90%{
+      width: 100%;
+  }
 }
 
 

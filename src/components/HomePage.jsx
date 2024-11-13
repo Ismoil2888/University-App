@@ -102,7 +102,7 @@ const HomePage = () => {
 
       <div className="footer-nav">
         <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" style={{color: "red"}} onContextMenu={handleContextMenu}/></Link>
-        <Link to="/about"><FontAwesomeIcon icon={faSearch} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
         <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
       </div>

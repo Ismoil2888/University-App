@@ -197,12 +197,21 @@ const Library = ({ userId }) => {
 
 
   // Проверяем статус и отображаем сообщение при отсутствии идентификации
-  if (identificationStatus === "не идентифицирован") {
-    return (
-      <div className="not-identified">
-        <p>Пройдите идентификацию, чтобы пользоваться библиотекой!</p>
-        <p style={{color: "skyblue", marginTop: "15px"}} onClick={() => navigate(-1)}>Назад</p>
-      </div>
+      if (identificationStatus === "не идентифицирован") {
+        return (
+          // <div className="not-identified">
+          //   <p>Пройдите идентификацию, чтобы пользоваться библиотекой!</p>
+          //   <p style={{color: "skyblue", marginTop: "15px"}} onClick={() => navigate(-1)}>Назад</p>
+          // </div>
+    
+    
+          <div className="not-identified-container">
+            <div className="not-identified">
+            <h2 className="not-identified-h2" data-text="T I K">T I K</h2>
+            <p style={{color: "#008cb3", textAlign: "center", fontSize: "18px", marginTop: "15px"}}>Пройдите идентификацию, чтобы пользоваться библиотекой!</p>
+            <p style={{color: "skyblue", marginTop: "15px"}} onClick={() => navigate(-1)}>Назад</p>
+            </div>
+          </div>
     );
   }
 
@@ -390,7 +399,7 @@ const Library = ({ userId }) => {
 
       <div className="footer-nav">
         <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
-        <Link to="/about"><FontAwesomeIcon icon={faSearch} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" style={{color: "red"}} onContextMenu={handleContextMenu}/></Link>
         <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
       </div>

@@ -37,15 +37,15 @@ function App() {
 
   if (isLoading) {
     // Показываем загрузочный экран, пока идет проверка
-    return <div class="loading-container">
-    <div class="loading-circuit">
-        <div class="circle"></div>
-        <div class="line"></div>
-        <div class="circle"></div>
-        <div class="line"></div>
-        <div class="circle"></div>
+    return <div className="loading-container">
+    <div className="loading-circuit">
+        <div className="circle"></div>
+        <div className="line"></div>
+        <div className="circle"></div>
+        <div className="line"></div>
+        <div className="circle"></div>
     </div>
-    <p class="loading-text">Securing Connection...</p>
+    <p className="loading-text">Securing Connection...</p>
 </div>;
   }
 
