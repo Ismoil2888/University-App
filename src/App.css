@@ -127,6 +127,13 @@ footer {
   display: none;
 }
 
+.footer-avatar{
+  border-radius: 50%;
+  width: 37px;
+  height: 37px;
+  object-fit: cover;
+}
+
 /* Мобильная навигация футера */
 @media (max-width: 768px) {
   .footer-desktop {

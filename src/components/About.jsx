@@ -3,7 +3,9 @@ import { Link } from "react-router-dom"
 import { FaUser } from "react-icons/fa"; // Импорт иконки крестика
 import "../App.css";
 import "../about.css";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { auth } from "../firebase";
+import { getDatabase, ref as dbRef, onValue, set, push, update } from "firebase/database";
 import facultyLogo from "../logo.png";
 import teacherImage from "../teacher.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +13,26 @@ import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPho
 
 const About = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [userAvatarUrl, setUserAvatarUrl] = useState(null);
+
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (user) {
+
+      // Получаем URL аватарки пользователя
+      const db = getDatabase();
+      const userRef = dbRef(db, `users/${user.uid}`);
+      onValue(userRef, (snapshot) => {
+        const userData = snapshot.val();
+        if (userData && userData.avatarUrl) {
+          setUserAvatarUrl(userData.avatarUrl);
+        } else {
+          setUserAvatarUrl("./default-image.png"); // Изображение по умолчанию
+        }
+      });
+
+    }
+  }, []);
   
     const toggleMenu = () => {
       if (isMenuOpen) {
@@ -112,7 +134,14 @@ const About = () => {
         <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
         <Link to="/about"><FontAwesomeIcon icon={faSearch} className="footer-icon" style={{color: "red"}} onContextMenu={handleContextMenu}/></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
-        <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/authdetails">
+          <img 
+            src={userAvatarUrl} 
+            alt="User Avatar" 
+            className="footer-avatar" 
+            onContextMenu={handleContextMenu}
+          />
+        </Link>
       </div>
     </div>
   );

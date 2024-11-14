@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaUser } from "react-icons/fa"; // Импорт иконки крестика
 import "../App.css"; // Импортируем стили
 import facultyLogo from "../logo.png";
-import { useState } from 'react';
+import { getDatabase, ref as dbRef, onValue, set, push, update } from "firebase/database";
+import { auth } from "../firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const HomePage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [userAvatarUrl, setUserAvatarUrl] = useState(null);
   
     const toggleMenu = () => {
       if (isMenuOpen) {
@@ -19,6 +21,25 @@ const HomePage = () => {
         setIsMenuOpen(true);
       }
     };
+
+    useEffect(() => {
+      const user = auth.currentUser;
+      if (user) {
+
+        // Получаем URL аватарки пользователя
+        const db = getDatabase();
+        const userRef = dbRef(db, `users/${user.uid}`);
+        onValue(userRef, (snapshot) => {
+          const userData = snapshot.val();
+          if (userData && userData.avatarUrl) {
+            setUserAvatarUrl(userData.avatarUrl);
+          } else {
+            setUserAvatarUrl("./default-image.png"); // Изображение по умолчанию
+          }
+        });
+
+      }
+    }, []);
 
       const handleContextMenu = (event) => {
         event.preventDefault();
@@ -104,7 +125,14 @@ const HomePage = () => {
         <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" style={{color: "red"}} onContextMenu={handleContextMenu}/></Link>
         <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
-        <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/authdetails">
+          <img 
+            src={userAvatarUrl} 
+            alt="User Avatar" 
+            className="footer-avatar" 
+            onContextMenu={handleContextMenu}
+          />
+        </Link>   
       </div>
     </div>
   );

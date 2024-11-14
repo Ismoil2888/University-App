@@ -3,13 +3,12 @@ import { FaEllipsisV, FaSearch, FaTimes, FaUser } from "react-icons/fa";
 import { getDatabase, ref as databaseRef, onValue, query, orderByChild, startAt, endAt, get } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import '../ChatPage.css';
+import '../SearchPage.css';
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch, faUser } from "@fortawesome/free-solid-svg-icons";
 
-
-const ChatPage = () => {
+const SearchPage = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -20,6 +19,7 @@ const ChatPage = () => {
   const navigate = useNavigate();
   const [userUid, setUserUid] = useState(null);
   const [messages, setMessages] = useState([]);
+  const [userAvatarUrl, setUserAvatarUrl] = useState(null);
 
   useEffect(() => {
     const db = getDatabase();
@@ -50,6 +50,18 @@ const ChatPage = () => {
       if (user) {
         // Пользователь вошел в систему, используем его UID
         setUserUid(user.uid);
+
+                // Получаем URL аватарки пользователя
+                const db = getDatabase();
+                const userRef = databaseRef(db, `users/${user.uid}`);
+                onValue(userRef, (snapshot) => {
+                  const userData = snapshot.val();
+                  if (userData && userData.avatarUrl) {
+                    setUserAvatarUrl(userData.avatarUrl);
+                  } else {
+                    setUserAvatarUrl("./default-image.png"); // Изображение по умолчанию
+                  }
+                });
 
         // Загружаем историю поиска для конкретного пользователя
         const savedHistory = JSON.parse(localStorage.getItem(`searchHistory_${user.uid}`)) || [];
@@ -245,6 +257,7 @@ const ChatPage = () => {
                   key={user.uid}
                   className="chat-page-chat-item"
                 >
+                  <div style={{display: "flex", alignItems: "center"}}>
                   <img src={user.avatarUrl || "./default-image.png"} alt={user.username} className="chat-page-avatarka" />
                   <div 
                     className="chat-page-chat-info"
@@ -253,7 +266,10 @@ const ChatPage = () => {
                     <h3 style={{color: "white"}}>{user.username}</h3>
                     <p>{user.aboutMe || "Информация не указана"}</p>
                   </div>
+                  </div>
+                  <div style={{marginLeft: "15px"}}>
                   <FaTimes className="chat-page-remove-from-history" onClick={() => removeFromHistory(user.uid)} />
+                    </div>
                 </div>
               ))}
             </div>
@@ -274,7 +290,7 @@ const ChatPage = () => {
               </div>
             ))
           ) : (
-            searchQuery.trim() !== "" && <p>No results found</p>
+            searchQuery.trim() !== "" && <p style={{color: "whitesmoke"}}>Ничего не найдено</p>
           )}
         </div>
       )}
@@ -284,14 +300,20 @@ const ChatPage = () => {
         <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
         <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" style={{color: "red"}} onContextMenu={handleContextMenu}/></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
-        <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
-      </div>
+        <Link to="/authdetails">
+          <img 
+            src={userAvatarUrl} 
+            alt="User Avatar" 
+            className="footer-avatar" 
+            onContextMenu={handleContextMenu}
+          />
+        </Link>
+     </div>
     </div>
   );
 };
 
-export default ChatPage;
-
+export default SearchPage;
 
 
 

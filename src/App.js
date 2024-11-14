@@ -20,7 +20,8 @@ import PrivateRoute from "./components/PrivateRoute";
 import AdminPrivateRoute from "./components/AdminPrivateRoute";
 import TeacherLogin from './components/TeacherLogin';
 import TeacherProfile from './components/TeacherProfile';
-import ChatPage  from './components/ChatPage';
+import SearchPage  from './components/SearchPage';
+import UserProfile from './components/UserProfile';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -54,13 +55,13 @@ function App() {
       <Route path="/" element={isAuthenticated ? <HomePage /> : <SignIn />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/authdetails" element={<AuthDetails />} />
-      <Route path="/about" element={<PrivateRoute> <About /> </PrivateRoute>} />
+      <Route path="/profile/:userId" element={<UserProfile />} />      <Route path="/about" element={<PrivateRoute> <About /> </PrivateRoute>} />
       <Route path="/home" element={<PrivateRoute>  <HomePage /> </PrivateRoute>} />
       <Route path="/schedule" element={<PrivateRoute> <Schedule /> </PrivateRoute>} />
       <Route path="/teachers" element={<PrivateRoute> <Teachers /> </PrivateRoute>} />
       <Route path="/library" element={<PrivateRoute> <Library /> </PrivateRoute>} />
       <Route path="/contacts" element={<PrivateRoute> <Contacts /> </PrivateRoute>} />
-      <Route path="/searchpage" element={<PrivateRoute> <ChatPage /> </PrivateRoute>} />
+      <Route path="/searchpage" element={<PrivateRoute> <SearchPage /> </PrivateRoute>} />
       <Route path="/welcomepage" element={<WelcomePage />} />
       <Route path="/teachers" element={<TeachersPage />} />
       <Route path="/teacher-login" element={<TeacherLogin />} />

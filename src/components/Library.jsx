@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getDatabase, ref as dbRef, onValue, set, push, update } from "firebase/database";
-import { auth, database } from "../firebase";
+import { getDatabase, ref as dbRef, onValue, set, push } from "firebase/database";
+import { auth } from "../firebase";
 import { FaTimes, FaUser, FaHeart, FaComment } from "react-icons/fa";
 import bookIcon from '../book-icon.png';
 import "../App.css";
 import "../library.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const Library = ({ userId }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -21,6 +21,7 @@ const Library = ({ userId }) => {
   const [comments, setComments] = useState({});
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [commentText, setCommentText] = useState("");
+  const [userAvatarUrl, setUserAvatarUrl] = useState(null);
 
   const database = getDatabase();
   const navigate = useNavigate();
@@ -47,6 +48,18 @@ const Library = ({ userId }) => {
           setIdentificationStatus("не идентифицирован");
         }
       });
+
+                      // Получаем URL аватарки пользователя
+                      const db = getDatabase();
+                      const userRef = dbRef(db, `users/${user.uid}`);
+                      onValue(userRef, (snapshot) => {
+                        const userData = snapshot.val();
+                        if (userData && userData.avatarUrl) {
+                          setUserAvatarUrl(userData.avatarUrl);
+                        } else {
+                          setUserAvatarUrl("./default-image.png"); // Изображение по умолчанию
+                        }
+                      });
     }
   }, []);
 
@@ -401,7 +414,15 @@ const Library = ({ userId }) => {
         <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
         <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" style={{color: "red"}} onContextMenu={handleContextMenu}/></Link>
-        <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        {/* <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" onContextMenu={handleContextMenu}/></Link> */}
+        <Link to="/authdetails">
+          <img 
+            src={userAvatarUrl} 
+            alt="User Avatar" 
+            className="footer-avatar" 
+            onContextMenu={handleContextMenu}
+          />
+        </Link>   
       </div>
     </div>
   );

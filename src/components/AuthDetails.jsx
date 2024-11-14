@@ -1,3 +1,350 @@
+// import { onAuthStateChanged, signOut, reauthenticateWithCredential, EmailAuthProvider, updatePassword } from "firebase/auth";
+// import { ref as storageRef, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+// import { ref as databaseRef, onValue, push, update, get, query, orderByChild, equalTo } from "firebase/database";
+// import React, { useEffect, useState, useRef } from "react";
+// import { auth, database, storage } from "../firebase";
+// import { Link, useNavigate } from "react-router-dom";
+// import { FaEllipsisV, FaTimes, FaPen, FaArrowLeft, FaLock, FaEye, FaEyeSlash, FaRegAddressBook } from "react-icons/fa"; // Иконка карандаша
+// import imageCompression from 'browser-image-compression';
+
+// const AuthDetails = () => {
+//   const [authUser, setAuthUser] = useState(null);
+//   const [username, setUsername] = useState("");
+//   const [phoneNumber, setPhoneNumber] = useState("");
+//   const [email, setEmail] = useState("");
+//   const [status, setStatus] = useState("offline");
+//   const [lastActive, setLastActive] = useState("");
+//   const [avatarUrl, setAvatarUrl] = useState("./default-image.png");
+//   const [showMenu, setShowMenu] = useState(false);
+//   const [newUsername, setNewUsername] = useState("");
+//   const [isEditingUsername, setIsEditingUsername] = useState(false);
+//   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
+//   const [aboutMe, setAboutMe] = useState("Информация не указана");
+//   const [newAboutMe, setNewAboutMe] = useState("");
+//   const [isEditingAboutMe, setIsEditingAboutMe] = useState(false);
+//   const [notification, setNotification] = useState(""); // Для уведомления
+//   const [notificationType, setNotificationType] = useState(""); // Для типа уведомления
+//   const menuRef = useRef(null);
+//   const navigate = useNavigate();
+
+//   const [identificationStatus, setIdentificationStatus] = useState("не идентифицирован");
+//   const [requestId, setRequestId] = useState(null); // New state for tracking request ID
+//   const user = auth.currentUser;
+
+//    // Состояние для формы заявки
+//    const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
+//    const [studentInfo, setStudentInfo] = useState({
+//      fio: "",
+//      faculty: "",
+//      course: "",
+//      group: "",
+//      photo: null,
+//    });
+ 
+//    const handleOpenForm = () => {
+//     if (identificationStatus === "не идентифицирован") {
+//       setIsRequestFormOpen(true);
+//     } else {
+//       showNotification("Вы уже идентифицированы.");
+//     }
+//   };
+//    const handleCloseForm = () => setIsRequestFormOpen(false);
+ 
+//    const handleInputChange = (e) => {
+//      const { name, value } = e.target;
+//      setStudentInfo((prev) => ({ ...prev, [name]: value }));
+//    };
+ 
+//    const handleFileChange = (e) => {
+//      setStudentInfo((prev) => ({ ...prev, photo: e.target.files[0] }));
+//    };
+ 
+//    const handleSubmitRequest = async () => {
+//     const { fio, faculty, course, group, photo } = studentInfo;
+    
+//     // Проверка на пустые поля
+//     if (!fio || !faculty || !course || !group || !photo) {
+//       showNotificationError("Все поля обязательны к заполнению.");
+//       return;
+//     }
+  
+//     try {
+//       // Отправка фото студента в Firebase Storage (если выбрано)
+//       let photoUrl = "";
+//       if (photo) {
+//         const storageReference = ref(storage, `request_photos/${Date.now()}_${photo.name}`);
+//         const snapshot = await uploadBytes(storageReference, photo);
+//         photoUrl = await getDownloadURL(snapshot.ref);
+//       }
+  
+//       // Сохранение данных заявки в Firebase Database
+//       const requestRef = push(databaseRef(database, "requests"));
+//       await update(requestRef, {
+//         fio,
+//         faculty,
+//         course,
+//         group,
+//         photoUrl,
+//         status: "pending",
+//         email: authUser.email // Save the user's email to link request with user
+//       });
+  
+//       setRequestId(requestRef.key); // Set the request ID state
+//       handleCloseForm();
+//       showNotification("Заявка отправлена успешно.");
+//     } catch (error) {
+//       console.error("Ошибка отправки заявки:", error);
+//       showNotificationError("Ошибка отправки заявки.");
+//     }
+//   };
+ 
+
+//   useEffect(() => {
+//     const handleClickOutside = (e) => {
+//       if (menuRef.current && !menuRef.current.contains(e.target)) {
+//         setShowMenu(false);
+//       }
+//     };
+//     document.addEventListener("mousedown", handleClickOutside);
+
+//     const listen = onAuthStateChanged(auth, (user) => {
+//       if (user) {
+//         setAuthUser(user);
+//         setEmail(user.email);
+
+//         const userRef = databaseRef(database, 'users/' + user.uid);
+//         onValue(userRef, (snapshot) => {
+//           const data = snapshot.val();
+//           if (data) {
+//             setUsername(data.username || "User");
+//             setPhoneNumber(data.phoneNumber || "+Введите номер телефона");
+//             setStatus(data.status || "offline");
+//             setLastActive(data.lastActive || "");
+//             setAvatarUrl(data.avatarUrl || "./default-image.png");
+//             setAboutMe(data.aboutMe || "Информация не указана");
+//           }
+//         });
+
+
+//                 // Подписка на изменения статуса заявки пользователя
+//                 const requestRef = query(
+//                   databaseRef(database, "requests"),
+//                   orderByChild("email"),
+//                   equalTo(user.email)
+//                 );
+//                 onValue(requestRef, (snapshot) => {
+//                   if (snapshot.exists()) {
+//                     const requestData = Object.values(snapshot.val())[0];
+//                     setRequestId(requestData.id); // Get request ID
+//                     setIdentificationStatus(
+//                       requestData.status === "accepted" ? "идентифицирован" : "не идентифицирован"
+//                     );
+//                   } else {
+//                     setRequestId(null); // No request found
+//                     setIdentificationStatus("не идентифицирован");
+//                   }
+//                 });
+
+//         // Устанавливаем статус "online" при входе
+//         update(userRef, { status: "online" });
+
+//         // Отслеживаем активность приложения
+//         const handleVisibilityChange = () => {
+//           if (document.visibilityState === "hidden") {
+//             // Когда вкладка не активна
+//             update(userRef, { 
+//               status: "offline", 
+//               lastActive: new Date().toLocaleString() 
+//             });
+//           } else {
+//             // Когда вкладка активна
+//             update(userRef, { status: "online" });
+//           }
+//         };
+
+//         document.addEventListener('visibilitychange', handleVisibilityChange);
+
+//         // Обновляем статус при закрытии окна
+//         window.addEventListener('beforeunload', () => {
+//           update(userRef, { 
+//             status: "offline", 
+//             lastActive: new Date().toLocaleString() 
+//           });
+//         });
+//       } else {
+//         setAuthUser(null);
+//         setUsername("");
+//         setEmail("");
+//         setPhoneNumber("");
+//         setStatus("offline");
+//         setLastActive("");
+//         setAvatarUrl("./default-image.png");
+//       }
+//     });
+
+//     return () => {
+//       listen();
+//       document.removeEventListener("mousedown", handleClickOutside);
+//     };
+//   }, []);
+
+//  // Функция для успешных уведомлений
+//  const showNotification = (message) => {
+//   setNotificationType("success");
+//   setNotification(message);
+//   setTimeout(() => {
+//     setNotification("");
+//     setNotificationType("");
+//   }, 3000);
+// };
+
+// // Функция для ошибочных уведомлений
+// const showNotificationError = (message) => {
+//   setNotificationType("error");
+//   setNotification(message);
+//   setTimeout(() => {
+//     setNotification("");
+//     setNotificationType("");
+//   }, 3000);
+// };
+
+// const handleAvatarChange = async (e) => {
+//   const file = e.target.files[0];
+//   if (file && authUser) {
+//     try {
+//       // Опции для сжатия изображения
+//       const options = {
+//         maxSizeMB: 1, // Максимальный размер файла 1 МБ
+//         maxWidthOrHeight: 800, // Максимальная ширина или высота изображения
+//         useWebWorker: true,
+//       };
+
+//       // Сжимаем изображение
+//       const compressedFile = await imageCompression(file, options);
+
+//       // Загружаем сжатое изображение в Firebase
+//       const avatarStorageRef = storageRef(storage, `avatars/${authUser.uid}`);
+//       const snapshot = await uploadBytes(avatarStorageRef, compressedFile);
+//       const downloadURL = await getDownloadURL(avatarStorageRef);
+
+//       // Обновляем аватар пользователя
+//       setAvatarUrl(downloadURL);
+//       const userDatabaseRef = databaseRef(database, 'users/' + authUser.uid);
+//       await update(userDatabaseRef, { avatarUrl: downloadURL });
+
+//       setShowMenu(false);
+//       showNotification("Фото профиля успешно обновлено.");
+//     } catch (error) {
+//       console.error("Ошибка при загрузке изображения:", error);
+//       showNotificationError("Ошибка при загрузке фото.");
+//     }
+//   }
+// };
+
+//   const renderStatus = () => {
+//     if (status === "online") {
+//       return <span className="status-online">в сети</span>;
+//     } else {
+//       return <span className="status-offline">был(а) в сети: {lastActive}</span>;
+//     }
+//   };
+
+//   const handleContextMenu = (event) => {
+//     event.preventDefault();
+//   }
+
+//   return (
+//     <div className="profile-container">
+//       {authUser ? (
+//         <div className="profile-content">
+//           {notification && (
+//             <div className={`notification ${notificationType}`}>
+//               {notification}
+//             </div>
+//           )} {/* Уведомление */}
+
+//           <div className="profile-header">
+            
+//           <Link className="back-button" onClick={() => navigate(-1)}>
+//             <FaArrowLeft />
+//           </Link>
+           
+//             <div className="avatar-section">
+//               <img
+//                 src={avatarUrl}
+//                 alt="Avatar"
+//                 className="avatar"
+//                 onClick={() => setIsAvatarModalOpen(true)}
+//                 onContextMenu={handleContextMenu}
+//               />
+//               <input
+//                 type="file"
+//                 id="avatarInput"
+//                 accept="image/*"
+//                 style={{ display: 'none' }}
+//               />
+//             </div>
+
+//             <div className="username-section">
+//               <h2>{username}</h2>
+//               <p style={{color: "lightgreen"}}>{renderStatus()}</p>
+//             </div>
+
+//             <div className="menu-icon" onClick={() => setShowMenu(!showMenu)}>
+//               <FaEllipsisV />
+//             </div>
+
+//           </div>
+
+//           <div className="profile-info">
+//             <div className="info-section account">
+//               <div>
+//               <h3>Номер телефона</h3>
+//               <p>{phoneNumber}</p>
+//               </div>
+//               <FaRegAddressBook style={{fontSize: "22px"}} />
+//             </div>
+
+//             <div className="info-section osebe" 
+//             onClick={() => setIsEditingAboutMe(true)}>
+//              <div>
+//              <h3>О себе</h3>
+//              <p>{aboutMe}</p>
+//              </div>
+//              <FaPen
+//                className="edit-icon-auth"
+//                style={{ marginLeft: '10px', cursor: 'pointer' }}
+//              />   
+//            </div>
+
+//             <div className="info-section">
+//             <div className="ident-block-basic" onClick={handleOpenForm}>
+//                 <div className="ident-block1">
+//               <h3>Идентификация</h3>
+//               <p>{identificationStatus}</p>
+//                 </div>
+//                 <div className="ident-block2">
+//                 <FaLock style={{ color: identificationStatus === "идентифицирован" ? '#0AFFFF' : 'red' }} />
+//                 </div>
+//             </div>
+//             </div>
+
+//           </div>
+//        </div>
+//      ) : (
+//         <h2 className="signed-out-h2" data-text="T I K">T I K</h2>
+//      )}
+//    </div>
+//   );
+// };      
+
+// export default AuthDetails;
+
+
+
+
+
+
 import { onAuthStateChanged, signOut, reauthenticateWithCredential, EmailAuthProvider, updatePassword } from "firebase/auth";
 import { ref as storageRef, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { ref as databaseRef, onValue, push, update, get, query, orderByChild, equalTo } from "firebase/database";
@@ -433,7 +780,6 @@ const handleAboutMeChange = async () => {
               </div>
             )}
 
-
           </div>
 
           {isEditingUsername && (
@@ -452,7 +798,7 @@ const handleAboutMeChange = async () => {
           <div className="profile-info">
             <div className="info-section account" onClick={handlePhoneModalOpen}>
               <div>
-              <h3>Аккаунт</h3>
+              <h3>Номер телефона</h3>
               <p>{phoneNumber}</p>
               </div>
               <FaRegAddressBook style={{fontSize: "22px"}} />
@@ -530,7 +876,7 @@ const handleAboutMeChange = async () => {
             )}
 
             <div className="info-section">
-              <h3>Конфиденциальность</h3>
+              <h3>Электронная почта</h3>
               <p>{email}</p>
             </div>
 
@@ -606,10 +952,6 @@ const handleAboutMeChange = async () => {
          )}
        </div>
      ) : (
-      //  <div className="signed-out">
-      //    <p style={{color: "white"}}>Вы вышли из аккаунта</p>
-      //    <Link className="authoutlink" to="/">Войти в аккаунт</Link>
-      //  </div>
         <div className="signed-out-container">
         <div className="signed-out">
         <h2 className="signed-out-h2" data-text="T I K">T I K</h2>

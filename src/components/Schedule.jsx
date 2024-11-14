@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { FaUser } from "react-icons/fa"; // Импорт иконки крестика
 import "../App.css";
 import "../schedule.css";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { auth } from "../firebase";
+import { getDatabase, ref as dbRef, onValue } from "firebase/database";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const Schedule = () => {
   const scheduleData = [
@@ -38,6 +40,26 @@ const Schedule = () => {
   ];
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [userAvatarUrl, setUserAvatarUrl] = useState(null);
+
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (user) {
+
+      // Получаем URL аватарки пользователя
+      const db = getDatabase();
+      const userRef = dbRef(db, `users/${user.uid}`);
+      onValue(userRef, (snapshot) => {
+        const userData = snapshot.val();
+        if (userData && userData.avatarUrl) {
+          setUserAvatarUrl(userData.avatarUrl);
+        } else {
+          setUserAvatarUrl("./default-image.png"); // Изображение по умолчанию
+        }
+      });
+
+    }
+  }, []);
   
     const toggleMenu = () => {
       if (isMenuOpen) {
@@ -144,7 +166,14 @@ const Schedule = () => {
         <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
         <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
-        <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/authdetails">
+          <img 
+            src={userAvatarUrl} 
+            alt="User Avatar" 
+            className="footer-avatar" 
+            onContextMenu={handleContextMenu}
+          />
+        </Link>
       </div>
     </div>
   );
