@@ -61,13 +61,17 @@ const UserProfile = () => {
     <div className="up-profile-container">
       <div className="up-profile-header">
         <FaChevronLeft className="up-back-icon" onClick={() => navigate(-1)} />
+          <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", minWidth: "320px"}}>
         <img
           src={userData.avatarUrl || "./default-image.png"}
           alt={userData.username}
           className="up-user-avatar"
         />
+        <div>
         <h2 className="username">{userData.username}</h2>
         {renderStatus()}
+        </div>
+        </div>
         <FaEllipsisV className="up-menu-icon" />
       </div>
 

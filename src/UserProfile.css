@@ -4,16 +4,18 @@
     color: white;
     border-radius: 15px;
     padding: 20px;
-    width: 90%;
+    height: 100vh;
+    width: 94.8%;
     /* max-width: 400px; */
-    margin: 20px auto;
+    /* margin: 20px auto; */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
   
   /* Profile header styling */
   .up-profile-header {
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
+    justify-content: space-around;
     align-items: center;
     position: relative;
     margin-bottom: 20px;

@@ -113,6 +113,8 @@
 
   .chat-page-search-history {
     margin-bottom: 20px;
+    overflow-y: scroll;
+    max-width: 100;;
   }
   
   .chat-page-history-header {
