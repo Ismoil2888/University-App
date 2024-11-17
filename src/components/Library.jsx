@@ -240,17 +240,17 @@ const Library = ({ userId }) => {
             <li><Link to="/library">Библиотека</Link></li>
             <li><Link to="/contacts">Контакты</Link></li>
           </ul>
-          <ul style={{color: "#58a6ff", fontSize: "25px"}}>TIK</ul>
+          <ul style={{color: "#58a6ff", fontSize: "25px"}}>Библиотека</ul>
           <ul>
             <li>
-              <Link to="/authdetails">
+              <Link to="/myprofile">
               <FaUser className="user-icon"></FaUser>
               </Link>
             </li>
           </ul>
         </nav>
 
-        <ul className="logo-app" style={{color: "#58a6ff", fontSize: "35px"}}>T I K</ul>
+        <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Библиотека</ul>
 
         <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu} onContextMenu={handleContextMenu}>          
           <span className="bm-span"></span>
@@ -414,8 +414,7 @@ const Library = ({ userId }) => {
         <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
         <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" style={{color: "red"}} onContextMenu={handleContextMenu}/></Link>
-        {/* <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" onContextMenu={handleContextMenu}/></Link> */}
-        <Link to="/authdetails">
+        <Link to="/myprofile">
           <img 
             src={userAvatarUrl} 
             alt="User Avatar" 

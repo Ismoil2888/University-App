@@ -22,6 +22,7 @@ import TeacherLogin from './components/TeacherLogin';
 import TeacherProfile from './components/TeacherProfile';
 import SearchPage  from './components/SearchPage';
 import UserProfile from './components/UserProfile';
+import MyProfile from './components/MyProfile';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -55,7 +56,9 @@ function App() {
       <Route path="/" element={isAuthenticated ? <HomePage /> : <SignIn />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/authdetails" element={<AuthDetails />} />
-      <Route path="/profile/:userId" element={<UserProfile />} />      <Route path="/about" element={<PrivateRoute> <About /> </PrivateRoute>} />
+      <Route path="/myprofile" element={<MyProfile />} />
+      <Route path="/profile/:userId" element={<UserProfile />} />      
+      <Route path="/about" element={<PrivateRoute> <About /> </PrivateRoute>} />
       <Route path="/home" element={<PrivateRoute>  <HomePage /> </PrivateRoute>} />
       <Route path="/schedule" element={<PrivateRoute> <Schedule /> </PrivateRoute>} />
       <Route path="/teachers" element={<PrivateRoute> <Teachers /> </PrivateRoute>} />

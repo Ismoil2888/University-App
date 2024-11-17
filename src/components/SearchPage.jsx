@@ -6,7 +6,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import '../SearchPage.css';
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const SearchPage = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -193,17 +193,17 @@ const SearchPage = () => {
             <li><Link to="/library">Библиотека</Link></li>
             <li><Link to="/contacts">Контакты</Link></li>
           </ul>
-          <ul style={{color: "#58a6ff", fontSize: "25px"}}>TIK</ul>
+          <ul style={{color: "#58a6ff", fontSize: "25px"}}>Поиск</ul>
           <ul>
             <li>
-              <Link to="/authdetails">
+              <Link to="/myprofile">
               <FaUser className="user-icon"></FaUser>
               </Link>
             </li>
           </ul>
         </nav>
 
-        <ul className="logo-app" style={{color: "#58a6ff", fontSize: "35px"}}>T I K</ul>
+        <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Поиск</ul>
 
 <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu} onContextMenu={handleContextMenu}>
   <span className="bm-span"></span>
@@ -318,7 +318,7 @@ const SearchPage = () => {
         <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
         <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" style={{color: "red"}} onContextMenu={handleContextMenu}/></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
-        <Link to="/authdetails">
+        <Link to="/myprofile">
           <img 
             src={userAvatarUrl} 
             alt="User Avatar" 

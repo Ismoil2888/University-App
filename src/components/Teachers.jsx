@@ -79,7 +79,7 @@ const Teachers = () => {
           <ul style={{color: "#58a6ff", fontSize: "25px"}}>TIK</ul>
           <ul>
             <li>
-              <Link to="/authdetails">
+              <Link to="/myprofile">
               <FaUser className="user-icon"></FaUser>
               </Link>
             </li>
@@ -154,7 +154,7 @@ const Teachers = () => {
         <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
         <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
-        <Link to="/authdetails"><FontAwesomeIcon icon={faUser} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/myprofile"><FontAwesomeIcon icon={faUser} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
       </div>
     </div>
   );

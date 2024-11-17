@@ -63,7 +63,7 @@ const About = () => {
           <ul style={{color: "#58a6ff", fontSize: "25px"}}>TIK</ul>
           <ul>
             <li>
-              <Link to="/authdetails">
+              <Link to="/myprofile">
               <FaUser className="user-icon"></FaUser>
               </Link>
             </li>
@@ -134,7 +134,7 @@ const About = () => {
         <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
         <Link to="/about"><FontAwesomeIcon icon={faSearch} className="footer-icon" style={{color: "red"}} onContextMenu={handleContextMenu}/></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
-        <Link to="/authdetails">
+        <Link to="/myprofile">
           <img 
             src={userAvatarUrl} 
             alt="User Avatar" 
