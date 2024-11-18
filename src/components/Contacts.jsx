@@ -51,7 +51,7 @@ const Contacts = () => {
     }
 
   return (
-    <div className="contact-body">
+    <div className="contact-body" onContextMenu={handleContextMenu}>
       <header>
         <nav>
           <ul>
@@ -74,7 +74,7 @@ const Contacts = () => {
 
         <ul className="logo-app" style={{color: "#58a6ff", fontSize: "35px"}}>T I K</ul>
 
-        <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu} onContextMenu={handleContextMenu}>          
+        <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu}>          
           <span className="bm-span"></span>
           <span className="bm-span"></span>
           <span className="bm-span"></span>
@@ -155,10 +155,10 @@ const Contacts = () => {
       </footer>
 
       <div className="footer-nav">
-        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
-        <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
-        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
-        <Link to="/myprofile"><FontAwesomeIcon icon={faUser} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" /></Link>
+        <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
+        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>
+        <Link to="/myprofile"><FontAwesomeIcon icon={faUser} className="footer-icon" /></Link>
       </div>
     </div>
   );

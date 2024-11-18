@@ -6,6 +6,7 @@ import { FaTimes, FaUser, FaHeart, FaComment } from "react-icons/fa";
 import bookIcon from '../book-icon.png';
 import "../App.css";
 import "../library.css";
+import basiclogo from "../basic-logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
 
@@ -229,9 +230,9 @@ const Library = ({ userId }) => {
   }
 
   return (
-    <div className="library-body">
+    <div className="library-body" onContextMenu={handleContextMenu}>
       <header className="library-head">
-        <nav>
+      <nav>
           <ul>
             <li><Link to="/home">Главная</Link></li>
             <li><Link to="/about">О факультете</Link></li>
@@ -250,17 +251,21 @@ const Library = ({ userId }) => {
           </ul>
         </nav>
 
+        <div className="header-nav-2">
+
+        <img src={basiclogo} width="50px" alt="logo" style={{marginLeft: "10px"}} />
+
         <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Библиотека</ul>
 
-        <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu} onContextMenu={handleContextMenu}>          
+        <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu}>          
           <span className="bm-span"></span>
           <span className="bm-span"></span>
           <span className="bm-span"></span>
         </div>
 
-        <div className={`burger-menu ${isMenuOpen ? 'open' : ''}`}>     
-        <ul>   
-          <li><Link to="/home"><FontAwesomeIcon icon={faHome} /> Главная</Link></li>
+        <div className={`burger-menu ${isMenuOpen ? 'open' : ''}`}>         
+        <ul>
+           <li><Link to="/home"><FontAwesomeIcon icon={faHome} /> Главная</Link></li>
            <li><Link to="/about"><FontAwesomeIcon icon={faInfoCircle} /> О факультете</Link></li>
            <li><Link to="/teachers"><FontAwesomeIcon icon={faChalkboardTeacher} /> Преподаватели</Link></li>
            <li><Link to="/schedule"><FontAwesomeIcon icon={faCalendarAlt} /> Расписание</Link></li>
@@ -268,6 +273,8 @@ const Library = ({ userId }) => {
            <li><Link to="/contacts"><FontAwesomeIcon icon={faPhone} /> Контакты</Link></li>
            <li><Link to="/authdetails"><FontAwesomeIcon icon={faUserCog} /> Настройки Профиля</Link></li>
         </ul>
+        </div>
+
         </div>
       </header>
 
@@ -411,15 +418,14 @@ const Library = ({ userId }) => {
       </footer>
 
       <div className="footer-nav">
-        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
-        <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
-        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" style={{color: "red"}} onContextMenu={handleContextMenu}/></Link>
+        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" /></Link>
+        <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
+        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" style={{color: "red"}} /></Link>
         <Link to="/myprofile">
           <img 
             src={userAvatarUrl} 
             alt="User Avatar" 
             className="footer-avatar" 
-            onContextMenu={handleContextMenu}
           />
         </Link>   
       </div>

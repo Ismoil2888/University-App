@@ -11,6 +11,8 @@ const UserProfile = () => {
   const [identificationStatus, setIdentificationStatus] = useState("не идентифицирован");
   const [status, setStatus] = useState("offline");
   const [lastActive, setLastActive] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("./default-image.png");
+  const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,6 +26,7 @@ const UserProfile = () => {
         setUserData(data);
         setStatus(data.status || "offline");
         setLastActive(data.lastActive || "");
+        setAvatarUrl(data.avatarUrl || "./default-image.png");
       }
     });
 
@@ -57,8 +60,12 @@ const UserProfile = () => {
     );
   };
 
+  const handleContextMenu = (event) => {
+    event.preventDefault();
+  }
+
   return (
-    <div className="up-profile-container">
+    <div className="up-profile-container" onContextMenu={handleContextMenu}>
       <div className="up-profile-header">
         <FaChevronLeft className="up-back-icon" onClick={() => navigate(-1)} />
           <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", minWidth: "320px"}}>
@@ -66,6 +73,7 @@ const UserProfile = () => {
           src={userData.avatarUrl || "./default-image.png"}
           alt={userData.username}
           className="up-user-avatar"
+          onClick={() => setIsAvatarModalOpen(true)}
         />
         <div>
         <h2 className="username">{userData.username}</h2>
@@ -74,6 +82,19 @@ const UserProfile = () => {
         </div>
         <FaEllipsisV className="up-menu-icon" />
       </div>
+
+      {isAvatarModalOpen && (
+           <div className="avatar-modal" onClick={() => setIsAvatarModalOpen(false)}>
+             <div className="avatar-overlay">
+               <img
+                 src={avatarUrl}
+                 alt="Avatar"
+                 className="full-size-avatar"
+                 onClick={() => setIsAvatarModalOpen(false)}
+               />
+             </div>
+           </div>
+         )}
 
       <div className="up-info-card">
         <div className="up-info-title">

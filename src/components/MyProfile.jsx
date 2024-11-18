@@ -7,6 +7,7 @@ import { FaEllipsisV, FaArrowLeft, FaLock, FaRegAddressBook, FaUser } from "reac
 import { FcAbout } from "react-icons/fc";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { RiSettingsLine } from "react-icons/ri";
 import "../MyProfile.css";
 import "../App.css";
 
@@ -157,7 +158,7 @@ const MyProfile = () => {
   };
 
   return (
-    <div className="my-profile-container">
+    <div className="my-profile-container" onContextMenu={handleContextMenu}>
 
 <header>
         <nav>
@@ -179,6 +180,12 @@ const MyProfile = () => {
           </ul>
         </nav>
 
+<div className="header-nav-2">
+
+       <Link to="/authdetails">
+        <RiSettingsLine style={{color: "green", fontSize: "25px", marginLeft: "15px"}} />
+       </Link>
+
         <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Профиль</ul>
 
 <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu} onContextMenu={handleContextMenu}>
@@ -199,6 +206,8 @@ const MyProfile = () => {
           <li><Link to="/authdetails"><FontAwesomeIcon icon={faUserCog} /> Настройки Профиля</Link></li>
         </ul>
       </div>
+
+      </div>
       </header>
 
       {authUser ? (
@@ -213,7 +222,11 @@ const MyProfile = () => {
             </Link>
 
             <div className="avatar-section">
-              <img src={avatarUrl} alt="Avatar" className="avatar" onClick={() => setIsAvatarModalOpen(true)} />
+              <img 
+                src={avatarUrl} 
+                alt="Avatar" className="avatar" 
+                onClick={() => setIsAvatarModalOpen(true)}
+              />
             </div>
 
             {isAvatarModalOpen && (
@@ -224,7 +237,6 @@ const MyProfile = () => {
                  alt="Avatar"
                  className="full-size-avatar"
                  onClick={() => setIsAvatarModalOpen(false)}
-                 onContextMenu={handleContextMenu}
                />
              </div>
            </div>
@@ -254,7 +266,9 @@ const MyProfile = () => {
                 <h3>Номер телефона</h3>
                 <p>{phoneNumber}</p>
               </div>
-              <FaRegAddressBook style={{ fontSize: "22px" }} />
+              <FaRegAddressBook 
+              style={{ fontSize: "22px" }} 
+              />
             </div>
 
             <div className="info-section osebe">
@@ -262,7 +276,10 @@ const MyProfile = () => {
                 <h3>О себе</h3>
                 <p>{aboutMe}</p>
               </div>
-              <FcAbout className="edit-icon-auth" style={{ fontSize: "25px", cursor: "pointer" }} />
+              <FcAbout 
+              className="edit-icon-auth" 
+              style={{ fontSize: "25px", cursor: "pointer" }} 
+              />
             </div>
 
             <div className="info-section">

@@ -4,6 +4,7 @@ import { getDatabase, ref as databaseRef, onValue, query, orderByChild, startAt,
 import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import '../SearchPage.css';
+import basiclogo from "../basic-logo.png";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -182,9 +183,9 @@ const SearchPage = () => {
   }
 
   return (
-    <div className="chat-page">
+    <div className="chat-page" onContextMenu={handleContextMenu}>
             <header>
-        <nav>
+            <nav>
           <ul>
             <li><Link to="/home">Главная</Link></li>
             <li><Link to="/about">О факультете</Link></li>
@@ -203,26 +204,31 @@ const SearchPage = () => {
           </ul>
         </nav>
 
+        <div className="header-nav-2">
+
+        <img src={basiclogo} width="50px" alt="logo" style={{marginLeft: "10px"}} />
+
         <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Поиск</ul>
 
-<div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu} onContextMenu={handleContextMenu}>
-  <span className="bm-span"></span>
-  <span className="bm-span"></span>
-  <span className="bm-span"></span>
-</div>
+        <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu}>          
+          <span className="bm-span"></span>
+          <span className="bm-span"></span>
+          <span className="bm-span"></span>
+        </div>
 
-
-      <div className={`burger-menu ${isMenuOpen ? 'open' : ''}`}>
+        <div className={`burger-menu ${isMenuOpen ? 'open' : ''}`}>         
         <ul>
-          <li><Link to="/home"><FontAwesomeIcon icon={faHome} /> Главная</Link></li>
-          <li><Link to="/about"><FontAwesomeIcon icon={faInfoCircle} /> О факультете</Link></li>
-          <li><Link to="/teachers"><FontAwesomeIcon icon={faChalkboardTeacher} /> Преподаватели</Link></li>
-          <li><Link to="/schedule"><FontAwesomeIcon icon={faCalendarAlt} /> Расписание</Link></li>
-          <li><Link to="/library"><FontAwesomeIcon icon={faBook} /> Библиотека</Link></li>
-          <li><Link to="/contacts"><FontAwesomeIcon icon={faPhone} /> Контакты</Link></li>
-          <li><Link to="/authdetails"><FontAwesomeIcon icon={faUserCog} /> Настройки Профиля</Link></li>
+           <li><Link to="/home"><FontAwesomeIcon icon={faHome} /> Главная</Link></li>
+           <li><Link to="/about"><FontAwesomeIcon icon={faInfoCircle} /> О факультете</Link></li>
+           <li><Link to="/teachers"><FontAwesomeIcon icon={faChalkboardTeacher} /> Преподаватели</Link></li>
+           <li><Link to="/schedule"><FontAwesomeIcon icon={faCalendarAlt} /> Расписание</Link></li>
+           <li><Link to="/library"><FontAwesomeIcon icon={faBook} /> Библиотека</Link></li>
+           <li><Link to="/contacts"><FontAwesomeIcon icon={faPhone} /> Контакты</Link></li>
+           <li><Link to="/authdetails"><FontAwesomeIcon icon={faUserCog} /> Настройки Профиля</Link></li>
         </ul>
-      </div>
+        </div>
+
+        </div>
       </header>
 
       <div className="chat-page-header">
@@ -315,15 +321,14 @@ const SearchPage = () => {
 
 
     <div className="footer-nav">
-        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
-        <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" style={{color: "red"}} onContextMenu={handleContextMenu}/></Link>
-        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" /></Link>
+        <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" style={{color: "red"}} /></Link>
+        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>
         <Link to="/myprofile">
           <img 
             src={userAvatarUrl} 
             alt="User Avatar" 
             className="footer-avatar" 
-            onContextMenu={handleContextMenu}
           />
         </Link>
      </div>

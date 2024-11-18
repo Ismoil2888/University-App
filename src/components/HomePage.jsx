@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaUser } from "react-icons/fa"; // Импорт иконки крестика
 import "../App.css"; // Импортируем стили
 import facultyLogo from "../logo.png";
+import basiclogo from "../basic-logo.png";
 import { getDatabase, ref as dbRef, onValue, set, push, update } from "firebase/database";
 import { auth } from "../firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -46,7 +47,7 @@ const HomePage = () => {
       }
 
   return (
-    <div className="home-container">
+    <div className="home-container" onContextMenu={handleContextMenu}>
       <header>
         <nav>
           <ul>
@@ -67,9 +68,13 @@ const HomePage = () => {
           </ul>
         </nav>
 
+        <div className="header-nav-2">
+
+        <img src={basiclogo} width="50px" alt="logo" style={{marginLeft: "10px"}} />
+
         <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Главная</ul>
 
-        <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu} onContextMenu={handleContextMenu}>          
+        <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu}>          
           <span className="bm-span"></span>
           <span className="bm-span"></span>
           <span className="bm-span"></span>
@@ -86,6 +91,8 @@ const HomePage = () => {
            <li><Link to="/authdetails"><FontAwesomeIcon icon={faUserCog} /> Настройки Профиля</Link></li>
         </ul>
         </div>
+
+        </div>
       </header>
 
       <main>
@@ -95,7 +102,7 @@ const HomePage = () => {
         </section>
 
         <div className="faculty-image">
-          <img style={{ width: "300px", height: "300px"}} src={facultyLogo} alt="Фото факультета информационной безопасности" onContextMenu={handleContextMenu}/>
+          <img style={{ width: "300px", height: "300px"}} src={facultyLogo} alt="Фото факультета информационной безопасности" />
         </div>
 
         <section className="news">
@@ -122,15 +129,14 @@ const HomePage = () => {
       </footer>
 
       <div className="footer-nav">
-        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" style={{color: "red"}} onContextMenu={handleContextMenu}/></Link>
-        <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
-        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" onContextMenu={handleContextMenu}/></Link>
+        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" style={{color: "red"}} /></Link>
+        <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
+        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>
         <Link to="/myprofile">
           <img 
             src={userAvatarUrl} 
             alt="User Avatar" 
             className="footer-avatar" 
-            onContextMenu={handleContextMenu}
           />
         </Link>   
       </div>

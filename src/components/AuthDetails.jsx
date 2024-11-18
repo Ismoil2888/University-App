@@ -730,7 +730,7 @@ const handleAboutMeChange = async () => {
   }
 
   return (
-    <div className="profile-container">
+    <div className="profile-container" onContextMenu={handleContextMenu}>
       {authUser ? (
         <div className="profile-content">
           {notification && (
