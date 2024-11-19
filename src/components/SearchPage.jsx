@@ -257,7 +257,7 @@ const SearchPage = () => {
         <>
           <div className="chat-page-search-bar">
           <input
-            type="text"
+            type="search"
             value={searchQuery}
             onChange={(e) => handleSearch(e.target.value)}
             onFocus={() => setIsInputFocused(true)}

@@ -62,7 +62,7 @@ const Contacts = () => {
             <li><Link to="/library">Библиотека</Link></li>
             <li><Link to="/contacts">Контакты</Link></li>
           </ul>
-          <ul style={{color: "#58a6ff", fontSize: "25px"}}>TIK</ul>
+          <ul style={{color: "#58a6ff", fontSize: "25px"}}>Контакты</ul>
           <ul>
             <li>
               <Link to="/myprofile">
@@ -72,7 +72,7 @@ const Contacts = () => {
           </ul>
         </nav>
 
-        <ul className="logo-app" style={{color: "#58a6ff", fontSize: "35px"}}>T I K</ul>
+        <ul className="logo-app" style={{color: "#58a6ff", fontSize: "35px"}}>Контакты</ul>
 
         <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu}>          
           <span className="bm-span"></span>

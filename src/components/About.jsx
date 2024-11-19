@@ -61,7 +61,7 @@ const About = () => {
             <li><Link to="/library">Библиотека</Link></li>
             <li><Link to="/contacts">Контакты</Link></li>
           </ul>
-          <ul style={{color: "#58a6ff", fontSize: "25px"}}>Главная</ul>
+          <ul style={{color: "#58a6ff", fontSize: "25px"}}>О факультете</ul>
           <ul>
             <li>
               <Link to="/myprofile">
