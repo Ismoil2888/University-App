@@ -38,7 +38,7 @@ const ContactsPage = () => {
             <li><Link to="/library">Библиотека</Link></li>
             <li><Link to="/contacts">Контакты</Link></li>
           </ul>
-          <ul style={{color: "#58a6ff", fontSize: "25px"}}>Преподаватели</ul>
+          <ul style={{color: "#58a6ff", fontSize: "25px"}}>Контакты</ul>
           <ul>
             <li>
               <Link to="/myprofile">
@@ -52,7 +52,7 @@ const ContactsPage = () => {
 
         <img src={basiclogo} width="50px" alt="logo" style={{marginLeft: "10px"}} />
 
-        <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Преподаватели</ul>
+        <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Контакты</ul>
 
         <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu}>          
           <span className="bm-span"></span>
@@ -81,6 +81,8 @@ const ContactsPage = () => {
           <h1>Контакты</h1>
         </div>
       </div>
+
+      <div className="cont-tors">
 
       {/* Main Content */}
       <main>
@@ -167,6 +169,8 @@ const ContactsPage = () => {
           </div>
         </section>
       </main>
+
+      </div>
 
       {/* Footer */}
       <footer>
