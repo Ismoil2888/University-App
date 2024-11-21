@@ -103,7 +103,7 @@ const Teachers = () => {
         <ul>
            <li><Link to="/home"><FontAwesomeIcon icon={faHome} /> Главная</Link></li>
            <li><Link to="/about"><FontAwesomeIcon icon={faInfoCircle} /> О факультете</Link></li>
-           <li><Link to="/teachers"><FontAwesomeIcon icon={faChalkboardTeacher} /> Преподаватели</Link></li>
+           <li><Link to="/teachers"><FontAwesomeIcon icon={faChalkboardTeacher} style={{color: "red"}} /> Преподаватели</Link></li>
            <li><Link to="/schedule"><FontAwesomeIcon icon={faCalendarAlt} /> Расписание</Link></li>
            <li><Link to="/library"><FontAwesomeIcon icon={faBook} /> Библиотека</Link></li>
            <li><Link to="/contacts"><FontAwesomeIcon icon={faPhone} /> Контакты</Link></li>
@@ -124,7 +124,7 @@ const Teachers = () => {
       <section className="teachers-section">
         <div className="search-bar">
           <input 
-            type="text" 
+            type="search" 
             placeholder="Поиск преподавателя..." 
             value={searchQuery}
             onChange={handleSearchChange} // Добавляем обработчик изменения
@@ -159,7 +159,7 @@ const Teachers = () => {
 
       <div className="footer-nav">
         <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" /></Link>
-        <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
+        <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" style={{color: "red"}}/></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>
         <Link to="/myprofile"><FontAwesomeIcon icon={faUser} className="footer-icon" /></Link>
       </div>

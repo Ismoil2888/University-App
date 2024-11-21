@@ -23,6 +23,7 @@ import TeacherProfile from './components/TeacherProfile';
 import SearchPage  from './components/SearchPage';
 import UserProfile from './components/UserProfile';
 import MyProfile from './components/MyProfile';
+import SearchStudents from './components/SearchStudents';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -65,6 +66,7 @@ function App() {
       <Route path="/library" element={<PrivateRoute> <Library /> </PrivateRoute>} />
       <Route path="/contacts" element={<PrivateRoute> <Contacts /> </PrivateRoute>} />
       <Route path="/searchpage" element={<PrivateRoute> <SearchPage /> </PrivateRoute>} />
+      <Route path="/searchstudents" element={<PrivateRoute> <SearchStudents /> </PrivateRoute>} />
       <Route path="/welcomepage" element={<WelcomePage />} />
       <Route path="/teachers" element={<TeachersPage />} />
       <Route path="/teacher-login" element={<TeacherLogin />} />

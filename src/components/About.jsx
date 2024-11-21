@@ -86,7 +86,7 @@ const About = () => {
         <div className={`burger-menu ${isMenuOpen ? 'open' : ''}`}>         
         <ul>
            <li><Link to="/home"><FontAwesomeIcon icon={faHome} /> Главная</Link></li>
-           <li><Link to="/about"><FontAwesomeIcon icon={faInfoCircle} /> О факультете</Link></li>
+           <li><Link to="/about"><FontAwesomeIcon icon={faInfoCircle} style={{color: "red"}} /> О факультете</Link></li>
            <li><Link to="/teachers"><FontAwesomeIcon icon={faChalkboardTeacher} /> Преподаватели</Link></li>
            <li><Link to="/schedule"><FontAwesomeIcon icon={faCalendarAlt} /> Расписание</Link></li>
            <li><Link to="/library"><FontAwesomeIcon icon={faBook} /> Библиотека</Link></li>

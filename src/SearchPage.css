@@ -9,9 +9,37 @@
     scrollbar-width: none;
     overflow-x: hidden;
   }
+
+  .chat-page-header{
+    background-color: #191c20;
+  }
+
+  .search-main{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  .h2-icon-block{
+    display: flex;
+    height: 400px;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .h2-icon-block h2{
+    color: #ffffff;
+    background-color: #222932;
+    position: absolute;
+    margin-top: 150px;
+    font-size: 27px;
+  }
   
   .chat-page-header {
-    background-color: #131313;
     width: 95%;
     display: flex;
     justify-content: space-around;
@@ -46,6 +74,11 @@
     from { opacity: 0; }
     to { opacity: 1; }
   }
+
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
   
   .chat-page-menu-dropdown ul {
     list-style: none;
@@ -64,7 +97,15 @@
     padding: 10px;
     align-items: center;
     justify-content: space-around;
+    animation: fadeIn 0.6s ease-out;
     /* background-color: #fff; */
+  }
+
+  .search-page-search-icon{
+    color: #64696e;
+    font-size: 180px;
+    z-index: -1;
+    margin-top: 220px;
   }
   
   .chat-page-search-bar input {
@@ -84,7 +125,7 @@
 
   .chat-page-chat-list{
     max-height: 1000px;
-    overflow-y: auto;
+    overflow-y: scroll;
     margin-bottom: 65px;
   }
 
@@ -120,7 +161,9 @@
   .chat-page-search-history {
     margin-bottom: 20px;
     overflow-y: scroll;
-    max-width: 100;;
+    max-width: 100;
+    max-height: 10000px;
+    animation: fadeIn 0.6s ease-out;
   }
   
   .chat-page-history-header {
@@ -155,7 +198,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-right: 595px; /* Отступы между историями */
+    margin-right: 595px;
     cursor: pointer;
   }
   
@@ -163,19 +206,48 @@
   .chat-page-story-avatar {
     width: 40px;
     height: 40px;
-    border-radius: 50%; /* Круглая аватарка */
-    border: 2px solid #4caf50; /* Зеленый круг вокруг аватарки */
+    border-radius: 50%;
+    border: 2px solid #4caf50;
     object-fit: cover; /* Обрезка изображения */
-    background-color: #e0e0e0; /* Цвет фона по умолчанию, если нет изображения */
+    background-color: #e0e0e0; 
   }
   
   /* Подпись под аватаркой */
   .chat-page-story-item p {
     margin-top: 5px;
     font-size: 11px;
-    color: #ffffff; /* Цвет текста */
+    color: #ffffff;
     text-align: center;
     white-space: nowrap; /* Чтобы текст не переносился на другую строку */
     overflow: hidden;
     text-overflow: ellipsis; /* Сокращение текста с многоточием, если он слишком длинный */
+  }
+
+  .search-blocks{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 200px;
+    z-index: 2;
+  }
+
+  .students-search, .sb{
+    width: 170px;
+    height: 100px;
+    color: white;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #3a434f;
+    border-radius: 15px;
+    margin: 10px;
+  }
+
+  .sb p{
+    margin-top: 7px;
   }

@@ -7,7 +7,7 @@ import '../SearchPage.css';
 import basiclogo from "../basic-logo.png";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const SearchPage = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -231,93 +231,49 @@ const SearchPage = () => {
         </div>
       </header>
 
-      <div className="chat-page-header">
-        {/* <div className="chat-page-menu-icon" onClick={() => setShowMenu(!showMenu)}>
-          <FaEllipsisV />
-        </div> */}
+      <div className="search-main">
+      <div className="h2-icon-block">
+        <h2>Найдите то что искали!</h2>
 
-        {/* Секция для отображения историй */}
-        <div className="chat-page-stories-section">
-          <div className="chat-page-story-item">
-            <img
-              src="./default-image.png"
-              alt="Моя история"
-              className="chat-page-story-avatar"
-            />
-            <p>Моя история</p>
-          </div>
-        </div>
-
-        <div className="chat-page-search-icon" onClick={() => setShowSearch(!showSearch)}>
+        <div className="search-page-search-icon">
           <FaSearch />
         </div>
       </div>
 
-      {showSearch && (
-        <>
-          <div className="chat-page-search-bar">
-          <input
-            type="search"
-            value={searchQuery}
-            onChange={(e) => handleSearch(e.target.value)}
-            onFocus={() => setIsInputFocused(true)}
-            onBlur={() => setIsInputFocused(false)}
-            placeholder="Искать пользователей"
-          />
-            <FaTimes className="chat-page-close-search" onClick={() => setShowSearch(false)} />
-          </div>
-
-          {/* Если пользователь не вводит текст и не в фокусе - показываем историю */}
-          {searchHistory.length > 0 && !isInputFocused && searchQuery === "" && (
-            <div className="chat-page-search-history">
-              <div className="chat-page-history-header">
-                <h3 style={{color: "grey"}}>Недавнее</h3>
-                <span onClick={clearSearchHistory} className="chat-page-clear-history">
-                  Очистить все
-                </span>
-              </div>
-              {searchHistory.map((user) => (
-                <div
-                  key={user.uid}
-                  className="chat-page-chat-item"
-                >
-                  <div style={{display: "flex", alignItems: "center"}}>
-                  <img src={user.avatarUrl || "./default-image.png"} alt={user.username} className="chat-page-avatarka" />
-                  <div 
-                    className="chat-page-chat-info"
-                    onClick={() => goToProfileFromHistory(user.uid)}
-                  >
-                    <h3 style={{color: "white"}}>{user.username}</h3>
-                    <p>{user.aboutMe || "Информация не указана"}</p>
-                  </div>
-                  </div>
-                  <div style={{marginLeft: "15px"}}>
-                  <FaTimes className="chat-page-remove-from-history" onClick={() => removeFromHistory(user.uid)} />
-                    </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </>
-      )}
-
-      {showSearch && (
-        <div className="chat-page-chat-list">
-          {searchResults.length > 0 ? (
-            searchResults.map((user) => (
-              <div key={user.uid} className="chat-page-chat-item" onClick={() => goToProfile(user.uid)}>
-                <img src={user.avatarUrl || "./default-image.png"} alt={user.username} className="chat-page-avatarka" />
-                <div className="chat-page-chat-info">
-                  <h3 style={{color: "white"}}>{user.username}</h3>
-                  <p>{user.aboutMe || "Информация не указана"}</p>
-                </div>
-              </div>
-            ))
-          ) : (
-            searchQuery.trim() !== "" && <p style={{color: "whitesmoke"}}>Ничего не найдено</p>
-          )}
+      <section className="search-blocks">
+        <div className="search-block1" style={{width: "100%", display: "flex", justifyContent: "space-around"}}>
+       <Link to="/searchstudents"> 
+       <div className="students-search sb">
+         <FontAwesomeIcon icon={faUser} className="footer-icon" />
+          <p>Поиск студентов</p>
         </div>
-      )}
+        </Link>
+
+        <Link to="/teachers">
+        <div className="teachers-search sb">
+          <FontAwesomeIcon icon={faChalkboardTeacher} className="footer-icon" />
+          <p>Поиск Учителей</p>
+        </div>
+        </Link>
+        </div>
+
+        <div className="search-block2" style={{width: "100%", display: "flex", justifyContent: "space-around"}}>
+        <Link to="/library">
+        <div className="books-search sb">
+          <FontAwesomeIcon icon={faBook} className="footer-icon" />
+          <p>Поиск книг</p>
+        </div>
+        </Link>
+
+        <Link to="/schedule">
+        <div className="schedule-search sb">
+          <FontAwesomeIcon icon={faCalendarAlt} className="footer-icon" />
+          <p>Поиск Расписание</p>
+        </div>
+        </Link>
+        </div>
+      </section>
+      </div>
 
 
     <div className="footer-nav">
