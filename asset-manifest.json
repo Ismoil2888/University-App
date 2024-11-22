@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/University-App/static/css/main.727a871f.css",
-    "main.js": "/University-App/static/js/main.d20bf51b.js",
+    "main.js": "/University-App/static/js/main.dfb5b923.js",
     "static/js/453.5a5e4368.chunk.js": "/University-App/static/js/453.5a5e4368.chunk.js",
     "static/media/logo.png": "/University-App/static/media/logo.65ae779d7c770bc59f22.png",
     "static/media/basic-logo.png": "/University-App/static/media/basic-logo.b85a726a2b7cef73406c.png",
@@ -10,11 +10,11 @@
     "static/media/edit-icon.png": "/University-App/static/media/edit-icon.e492a56b8c19c7656365.png",
     "index.html": "/University-App/index.html",
     "main.727a871f.css.map": "/University-App/static/css/main.727a871f.css.map",
-    "main.d20bf51b.js.map": "/University-App/static/js/main.d20bf51b.js.map",
+    "main.dfb5b923.js.map": "/University-App/static/js/main.dfb5b923.js.map",
     "453.5a5e4368.chunk.js.map": "/University-App/static/js/453.5a5e4368.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.727a871f.css",
-    "static/js/main.d20bf51b.js"
+    "static/js/main.dfb5b923.js"
   ]
 }
