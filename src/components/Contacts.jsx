@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import basiclogo from "../basic-logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch, faUser } from "@fortawesome/free-solid-svg-icons";
-import FlowXOWidget from "./FlowXOWidget"; // Убедитесь, что путь к файлу корректный
+import ChatWidget from "./ChatWidget";
 
 const ContactsPage = () => {
 
@@ -149,7 +149,7 @@ const ContactsPage = () => {
           </div>
         </section>
 
-        <FlowXOWidget />
+        <ChatWidget />
 
         {/* Map Section */}
         <section className="cont-map-section">
