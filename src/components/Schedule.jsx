@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaUser } from "react-icons/fa"; // Импорт иконки крестика
+import { FaUser } from "react-icons/fa";
 import "../App.css";
 import "../schedule.css";
 import basiclogo from "../basic-logo.png";

@@ -91,24 +91,39 @@ const Library = ({ userId }) => {
   }, [database, identificationStatus]);
 
   useEffect(() => {
-    const likesRef = dbRef(database, `likes`);
     const commentsRef = dbRef(database, `userComments/${userId}`);
-
-    onValue(likesRef, (snapshot) => {
-      setLikes(snapshot.val() || {});
-    });
-
-    // onValue(commentsRef, (snapshot) => {
-    //   setComments(snapshot.val() || {});
-    // });
-
+  
     onValue(commentsRef, (snapshot) => {
       const commentsData = snapshot.val();
-      setComments(commentsData || {});
+      if (commentsData) {
+        const enrichedComments = {};
+  
+        // Итерируем по комментариям, чтобы дополнить данными пользователя
+        Object.keys(commentsData).forEach((bookId) => {
+          enrichedComments[bookId] = {};
+  
+          Object.keys(commentsData[bookId]).forEach((commentId) => {
+            const comment = commentsData[bookId][commentId];
+            const userRef = dbRef(database, `users/${comment.userId}`);
+  
+            // Получаем данные пользователя
+            onValue(userRef, (userSnapshot) => {
+              const userData = userSnapshot.val();
+              enrichedComments[bookId][commentId] = {
+                ...comment,
+                avatarUrl: userData?.avatarUrl || "./default-avatar.png",
+                username: userData?.username || "Anonymous",
+              };
+              setComments({ ...enrichedComments }); // Обновляем состояние
+            });
+          });
+        });
+      } else {
+        setComments({});
+      }
     });
-    
-
   }, [database, userId]);
+  
 
 
   // Ключ для хранения данных в localStorage
@@ -398,15 +413,24 @@ const Library = ({ userId }) => {
     <div className="modal-content-comment">
       <h3>Оставьте комментарий для {selectedBook.title}</h3>
       <div className="comment-section">
-        {comments[selectedBook.id] &&
-          Object.values(comments[selectedBook.id]).map((comment, index) => (
-            <div key={index} className="comment">
-              <p className="comment-text">{comment.text}</p>
-              <span className="comment-timestamp">
-                {new Date(comment.timestamp).toLocaleString()}
-              </span>
-            </div>
-          ))}
+      {comments[selectedBook.id] &&
+  Object.values(comments[selectedBook.id]).map((comment, index) => (
+    <div key={index} className="comment">
+      <div className="comment-header">
+        <img
+          src={comment.avatarUrl}
+          alt={`${comment.username}'s avatar`}
+          className="comment-avatar"
+        />
+        <span className="comment-username">{comment.username}</span>
+      </div>
+      <p className="comment-text">{comment.text}</p>
+      <span className="comment-timestamp">
+        {new Date(comment.timestamp).toLocaleString()}
+      </span>
+    </div>
+  ))}
+
       </div>
       <textarea
         rows="4"

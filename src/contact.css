@@ -117,6 +117,8 @@ textarea {
 }
 
 .cont-header {
+    display: flex;
+    align-items: center;
     background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
     padding: 20px 0;
     text-align: center;
