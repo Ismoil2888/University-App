@@ -24,6 +24,7 @@ import SearchPage  from './components/SearchPage';
 import UserProfile from './components/UserProfile';
 import MyProfile from './components/MyProfile';
 import SearchStudents from './components/SearchStudents';
+import PostForm from "./components/PostForm";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -61,6 +62,7 @@ function App() {
       <Route path="/profile/:userId" element={<UserProfile />} />      
       <Route path="/about" element={<PrivateRoute> <About /> </PrivateRoute>} />
       <Route path="/home" element={<PrivateRoute>  <HomePage /> </PrivateRoute>} />
+      <Route path="/post" element={<PrivateRoute>  <PostForm /> </PrivateRoute>} />
       <Route path="/schedule" element={<PrivateRoute> <Schedule /> </PrivateRoute>} />
       <Route path="/teachers" element={<PrivateRoute> <Teachers /> </PrivateRoute>} />
       <Route path="/library" element={<PrivateRoute> <Library /> </PrivateRoute>} />

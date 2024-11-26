@@ -225,10 +225,10 @@ const ContactsPage = () => {
           </section>
 
                   {/* Map Section */}
-        <section className="map-section">
+        <section className="cont-map-section">
           <div className="container">
             <h2>Найдите нас</h2>
-            <div className="map-container">
+            <div className="cont-map-container">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1111.964702339398!2d68.75871108036485!3d38.57296072697182!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38b5d1df27fb072b%3A0x4ee7aef3c6a5ff2a!2sFakul&#39;tet%20Informatsionno%20Kommunikatsionnykh%20Tekhnologiy%20Ttu%20Im%20Akademika%20M.%20S.%20Osimi!5e1!3m2!1snl!2s!4v1732189674782!5m2!1snl!2s"
                 width="600"

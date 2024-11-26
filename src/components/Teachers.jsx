@@ -4,7 +4,8 @@ import { getDatabase, ref as dbRef, onValue, push, update, remove } from "fireba
 import { auth } from "../firebase";
 import "../App.css";
 import "../teachers.css";
-import defaultTeacherImg from "../teacher.png"; 
+import logoTip from "../basic-logo.png"; 
+import defaultTeacherImg from "../teacher.png";
 import { FaCommentDots } from "react-icons/fa";
 import basiclogo from "../basic-logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -255,9 +256,9 @@ const goToProfile = (userId) => {
 
       <section className="tch-hero">
         <div className="faculty-image">
-          <img style={{ height: "175px" }} width="255px" src={defaultTeacherImg} alt="Фото преподавателей" />
+          <img style={{ height: "240px", marginTop: "58px" }} width="255px" src={logoTip} alt="Фото преподавателей" />
         </div>
-        <h1>Преподаватели факультета информационной безопасности</h1>
+        <h1>Преподавательский Состав</h1>
       </section>
 
       <section className="teachers-section">
