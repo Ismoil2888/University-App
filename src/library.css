@@ -480,6 +480,43 @@ nav ul li a {
   drop-shadow(0 0 10px #fff);
 }
 
+.comment-actions-menu {
+  position: relative;
+}
+
+.action-menu-toggle {
+  background: none;
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.action-menu {
+  position: absolute;
+  top: 20px;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+
+.action-menu button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.action-menu button:hover {
+  background: #f0f0f0;
+}
+
+
 @keyframes anim{
   0%, 10%, 100%{
       width: 0;

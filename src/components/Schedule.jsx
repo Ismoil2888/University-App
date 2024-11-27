@@ -7,6 +7,7 @@ import basiclogo from "../basic-logo.png";
 import { useState, useEffect } from 'react';
 import { auth } from "../firebase";
 import { getDatabase, ref as dbRef, onValue } from "firebase/database";
+import { FaPlusCircle } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
 
@@ -170,15 +171,12 @@ const Schedule = () => {
       </footer>
 
       <div className="footer-nav">
-        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" /></Link>
+        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" style={{color: "red"}} /></Link>
         <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
+        <Link to="/post"><FaPlusCircle className="footer-icon" /></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>
         <Link to="/myprofile">
-          <img 
-            src={userAvatarUrl} 
-            alt="User Avatar" 
-            className="footer-avatar" 
-          />
+          <img src={userAvatarUrl} alt="User Avatar" className="footer-avatar" />
         </Link>
       </div>
     </div>

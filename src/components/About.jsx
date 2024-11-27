@@ -10,6 +10,7 @@ import { getDatabase, ref as dbRef, onValue, set, push, update } from "firebase/
 import facultyLogo from "../logo.png";
 import teacherImage from "../teacher.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FaPlusCircle } from "react-icons/fa";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const About = () => {
@@ -137,15 +138,12 @@ const About = () => {
       </footer>
 
       <div className="footer-nav">
-        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" /></Link>
-        <Link to="/about"><FontAwesomeIcon icon={faSearch} className="footer-icon" style={{color: "red"}} /></Link>
+        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" style={{color: "red"}} /></Link>
+        <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
+        <Link to="/post"><FaPlusCircle className="footer-icon" /></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>
         <Link to="/myprofile">
-          <img 
-            src={userAvatarUrl} 
-            alt="User Avatar" 
-            className="footer-avatar"
-          />
+          <img src={userAvatarUrl} alt="User Avatar" className="footer-avatar" />
         </Link>
       </div>
     </div>

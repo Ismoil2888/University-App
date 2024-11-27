@@ -10,7 +10,7 @@
 }
 
 .tch-hero h1 {
-    font-size: 2.5em; /* Размер шрифта заголовка */
+    font-size: 2em; /* Размер шрифта заголовка */
     margin: 0; /* Убираем отступы */
     position: absolute; /* Позиционирование заголовка */
     bottom: 100px; /* Отступ от низа */
@@ -20,8 +20,9 @@
     color: #ffffff; /* Цвет текста */
     background: #0000009e;
     border-radius: 25px;
-    width: 470px;
-    height: 135px;
+    width: 355px;
+    height: 125px;
+    padding-top: 20px;
 }
 .teachers-section {
     background-color: #0d0d0d;
@@ -219,10 +220,10 @@
 .close-modal {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 2rem;
   color: #666;
   cursor: pointer;
-  margin-left: 250px;
+  margin-left: 190px;
 }
 
 .close-modal:hover {
@@ -232,7 +233,7 @@
 /* Список комментариев */
 .comments-list {
   flex-grow: 1;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
   overflow-y: auto;
 }
 

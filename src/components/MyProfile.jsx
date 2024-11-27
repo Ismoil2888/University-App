@@ -8,6 +8,7 @@ import { FcAbout } from "react-icons/fc";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { RiSettingsLine } from "react-icons/ri";
+import { FaPlusCircle } from "react-icons/fa";
 import "../MyProfile.css";
 import "../App.css";
 
@@ -302,23 +303,14 @@ const MyProfile = () => {
           </div>
 
           <div className="footer-nav">
-            <Link to="/home">
-              <FontAwesomeIcon icon={faHome} className="footer-icon" />
-            </Link>
-            <Link to="/searchpage">
-              <FontAwesomeIcon icon={faSearch} className="footer-icon" />
-            </Link>
-            <Link to="/library">
-              <FontAwesomeIcon icon={faBook} className="footer-icon" />
-            </Link>
-            <Link to="/myprofile">
-              <img
-                src={userAvatarUrl}
-                alt="User Avatar"
-                className="footer-avatar"
-              />
-            </Link>
-          </div>
+        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" style={{color: "red"}} /></Link>
+        <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
+        <Link to="/post"><FaPlusCircle className="footer-icon" /></Link>
+        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>
+        <Link to="/myprofile">
+          <img src={userAvatarUrl} alt="User Avatar" className="footer-avatar" />
+        </Link>
+      </div>
         </div>
       ) : (
         <h2 className="signed-out-h2" data-text="T I K">
