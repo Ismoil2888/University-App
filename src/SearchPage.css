@@ -160,9 +160,8 @@
 
   .chat-page-search-history {
     margin-bottom: 20px;
-    overflow-y: scroll;
-    /* max-width: 100; */
-    max-height: 10000px;
+    max-height: 80%;
+    overflow-y: auto;
     animation: fadeIn 0.6s ease-out;
   }
   

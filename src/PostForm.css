@@ -133,6 +133,7 @@
   
   .post-username {
     font-weight: bold;
+    color: white;
   }
   
   .post-media {
@@ -152,6 +153,7 @@
   .post-icon {
     font-size: 24px;
     cursor: pointer;
+    color: white;
   }
   
   .post-likes {
@@ -167,7 +169,8 @@
   .post-date {
     color: gray;
     font-size: 12px;
-    margin: 10px;
+    margin-left: 10px;
+    margin-top: 5px;
   }
 
   .post-auth-three-dot{

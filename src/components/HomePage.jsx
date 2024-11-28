@@ -238,6 +238,8 @@ const HomePage = () => {
                 )}
               </p>
 
+              <p style={{color: "grey",    marginLeft: "10px", marginTop: "5px" }}>Посмотреть все комментарии (0)</p>
+
               {/* Дата публикации */}
               <p className="post-date">{new Date(post.createdAt).toLocaleString()}</p>
             </div>
