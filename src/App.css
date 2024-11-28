@@ -59,13 +59,13 @@ header nav ul li a:hover {
 }
 
 .home-container{
-  background: #0d1117;
+  /* background: #0d1117; */
+  background: #071019;
   color: #c9d1d9; /* Светлый текст */
 }
 
 /* Герой секция */
 .home-hero {
-  /* background: url('cyber_banner.jpg') no-repeat center center/cover; */
   height: 400px;
   text-align: center;
   display: flex;

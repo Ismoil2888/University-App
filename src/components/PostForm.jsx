@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getDatabase, ref as dbRef, onValue, push, set } from "firebase/database";
 import defaultAvatar from "../default-image.png";
+import defaultImage from "../Ttulogo.jpg";
 import { FaLock, FaPhone, FaUserEdit, FaChevronLeft, FaEllipsisV } from "react-icons/fa";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FaPlusCircle } from "react-icons/fa";
+import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const PostForm = () => {
   const [userDetails, setUserDetails] = useState({ username: "", avatarUrl: defaultAvatar });
@@ -12,6 +16,8 @@ const PostForm = () => {
   const [description, setDescription] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [userAvatarUrl, setUserAvatarUrl] = useState(null);
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -40,28 +46,31 @@ const PostForm = () => {
       alert("Пожалуйста, добавьте описание или медиафайл!");
       return;
     }
-
+  
     setIsUploading(true);
-
+  
     const db = getDatabase();
     const storage = getStorage();
     const currentUser = auth.currentUser;
-
+  
     if (!currentUser) {
       alert("Вы должны войти в систему, чтобы публиковать посты!");
       setIsUploading(false);
       return;
     }
-
+  
     const postsRef = dbRef(db, "posts");
     let mediaUrl = null;
-
+  
     if (media) {
       const mediaRef = storageRef(storage, `posts/${media.name}-${Date.now()}`);
       await uploadBytes(mediaRef, media);
       mediaUrl = await getDownloadURL(mediaRef);
+    } else {
+      // Установка изображения по умолчанию
+      mediaUrl = defaultImage;
     }
-
+  
     const postData = {
       description,
       mediaUrl,
@@ -70,22 +79,100 @@ const PostForm = () => {
       userAvatar: userDetails.avatarUrl,
       userId: currentUser.uid,
     };
-
+  
     const newPostRef = push(postsRef);
     await set(newPostRef, postData);
-
+  
     setIsUploading(false);
     setMedia(null);
     setDescription("");
     navigate("/home");
+  };  
+
+  const toggleMenuu = () => {
+    if (isMenuOpen) {
+      setTimeout(() => {
+        setIsMenuOpen(false);
+      }, 0); // Задержка для плавного исчезновения
+    } else {
+      setIsMenuOpen(true);
+    }
   };
 
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (user) {
+      // Fetch user avatar
+      const db = getDatabase();
+      const userRef = dbRef(db, `users/${user.uid}`);
+      onValue(userRef, (snapshot) => {
+        const userData = snapshot.val();
+        if (userData && userData.avatarUrl) {
+          setUserAvatarUrl(userData.avatarUrl);
+        } else {
+          setUserAvatarUrl("./default-image.png"); // Default image
+        }
+      });
+    }
+  }, []);
+
   return (
-    <div>
-        <FaChevronLeft style={{position: "absolute", left: "0", top: "0", color: "black", fontSize: "25px"}} onClick={() => navigate(-1)} />
+    <div className="post-container">
+<header>
+        <nav>
+          <ul>
+            <li><Link to="/home">Главная</Link></li>
+            <li><Link to="/about">О факультете</Link></li>
+            <li><Link to="/teachers">Преподаватели</Link></li>
+            <li><Link to="/schedule">Расписание</Link></li>
+            <li><Link to="/library">Библиотека</Link></li>
+            <li><Link to="/contacts">Контакты</Link></li>
+          </ul>
+          <ul style={{color: "#58a6ff", fontSize: "25px"}}>Главная</ul>
+          <ul>
+            <li>
+              <Link to="/myprofile">
+              {/* <FaUser className="user-icon"></FaUser> */}
+              </Link>
+            </li>
+          </ul>
+        </nav>
+
+        <div className="header-nav-2">
+
+        <FaChevronLeft style={{ marginLeft: "10px", color: "white", fontSize: "25px"}} onClick={() => navigate(-1)} />
+
+        <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Главная</ul>
+
+        <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenuu}>          
+          <span className="bm-span"></span>
+          <span className="bm-span"></span>
+          <span className="bm-span"></span>
+        </div>
+
+        <div className={`burger-menu ${isMenuOpen ? 'open' : ''}`}>         
+        <ul>
+           <li><Link to="/home"><FontAwesomeIcon icon={faHome} style={{color: "red"}} /> Главная</Link></li>
+           <li><Link to="/about"><FontAwesomeIcon icon={faInfoCircle} /> О факультете</Link></li>
+           <li><Link to="/teachers"><FontAwesomeIcon icon={faChalkboardTeacher} /> Преподаватели</Link></li>
+           <li><Link to="/schedule"><FontAwesomeIcon icon={faCalendarAlt} /> Расписание</Link></li>
+           <li><Link to="/library"><FontAwesomeIcon icon={faBook} /> Библиотека</Link></li>
+           <li><Link to="/contacts"><FontAwesomeIcon icon={faPhone} /> Контакты</Link></li>
+           <li><Link to="/authdetails"><FontAwesomeIcon icon={faUserCog} /> Настройки Профиля</Link></li>
+        </ul>
+        </div>
+
+        </div>
+      </header>
+
+      <div className="postform-header">
+      <div>
+        <FaChevronLeft style={{position: "absolute", left: "0", top: "0", color: "white", fontSize: "25px"}} onClick={() => navigate(-1)} />
+      </div>
       <div style={{marginTop: "70px"}} className="post-author">
-      <img src={userDetails.avatarUrl} alt="User Avatar" style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "50%"  }} />
-      <span style={{color: "black", fontWeight: "bolder"}}>{userDetails.username}</span>
+      <img src={userDetails.avatarUrl} alt="User Avatar" style={{ width: "45px", height: "45px", objectFit: "cover", borderRadius: "50%"  }} />
+      <span style={{color: "#e4dcdc", fontWeight: "bolder", marginLeft: "10px"}}>{userDetails.username}</span>
+      </div>
       </div>
       <div className="post-form-container">
         <form onSubmit={handlePostSubmit} className="post-form">
@@ -108,6 +195,20 @@ const PostForm = () => {
             {isUploading ? "Публикация..." : "Опубликовать"}
           </button>
         </form>
+      </div>
+
+      <footer className="footer-desktop">
+        <p>&copy; 2024 Факультет Кибербезопасности. Все права защищены.</p>
+      </footer>
+
+      <div className="footer-nav">
+        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" /></Link>
+        <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
+        <Link to="/post"><FaPlusCircle className="footer-icon" style={{color: "red"}} /></Link>
+        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>
+        <Link to="/myprofile">
+          <img src={userAvatarUrl} alt="User Avatar" className="footer-avatar" />
+        </Link>
       </div>
     </div>
   );
