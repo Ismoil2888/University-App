@@ -13,21 +13,22 @@ import { FaPlusCircle, FaHeart, FaRegHeart, FaRegComment, FaBookmark, FaRegBookm
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const HomePage = () => {
-  const [notification, setNotification] = useState(""); // For notifications
-  const [notificationType, setNotificationType] = useState(""); // For notification type
+  const [notification, setNotification] = useState("");
+  const [notificationType, setNotificationType] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [userAvatarUrl, setUserAvatarUrl] = useState(null);
   const [posts, setPosts] = useState([]);
-  const [menuPostId, setMenuPostId] = useState(null); // To track the post that the menu is opened for
+  const [menuPostId, setMenuPostId] = useState(null);
   const [expandedPosts, setExpandedPosts] = useState({}); // Для отслеживания состояния каждого поста
   const [commentModal, setCommentModal] = useState({ isOpen: false, postId: null });
 const [comments, setComments] = useState([]);
 const [newComment, setNewComment] = useState("");
 const [editingCommentId, setEditingCommentId] = useState(null);
 const [actionMenuId, setActionMenuId] = useState(null);
-const actionMenuRef = useRef(null); // Реф для отслеживания кликов за пределами
+const actionMenuRef = useRef(null);
 const menuRef = useRef(null);
 const [userDetails, setUserDetails] = useState({ username: "", avatarUrl: "" });
+const userId = auth.currentUser?.uid; // Текущий пользователь
 
 
     const [isMenuOpenn, setIsMenuOpenn] = useState(false);
@@ -206,6 +207,48 @@ const [userDetails, setUserDetails] = useState({ username: "", avatarUrl: "" });
     });
   };  
 
+    // Обработчик нажатия на лайк
+    const handleLikeToggle = (postId) => {
+      if (!userId) return; // Убедитесь, что пользователь авторизован
+    
+      const db = getDatabase();
+      const postLikesRef = dbRef(db, `posts/${postId}/likes`);
+    
+      // Проверяем, лайкнул ли пользователь пост
+      const post = posts.find((post) => post.id === postId);
+      const isLiked = post.likes && post.likes[userId];
+    
+      if (isLiked) {
+        // Если пользователь уже лайкнул, удаляем лайк из Firebase
+        update(postLikesRef, { [userId]: null })
+          .then(() => {
+            // Обновляем локальное состояние
+            setPosts((prevPosts) =>
+              prevPosts.map((post) =>
+                post.id === postId
+                  ? { ...post, likes: { ...post.likes, [userId]: undefined } }
+                  : post
+              )
+            );
+          })
+          .catch((error) => console.error("Ошибка при снятии лайка: ", error));
+      } else {
+        // Если пользователь не лайкнул, добавляем лайк в Firebase
+        update(postLikesRef, { [userId]: true })
+          .then(() => {
+            // Обновляем локальное состояние
+            setPosts((prevPosts) =>
+              prevPosts.map((post) =>
+                post.id === postId
+                  ? { ...post, likes: { ...post.likes, [userId]: true } }
+                  : post
+              )
+            );
+          })
+          .catch((error) => console.error("Ошибка при добавлении лайка: ", error));
+      }
+    };    
+
   const toggleActionMenu = (commentId) => {
     setActionMenuId((prev) => (prev === commentId ? null : commentId));
   };
@@ -300,7 +343,10 @@ const [userDetails, setUserDetails] = useState({ username: "", avatarUrl: "" });
         <section id="posts">
           {posts
            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Сортируем по дате создания
-           .map((post) => (
+           .map((post) => {
+            const likesCount = post.likes ? Object.keys(post.likes).length : 0;
+            const isLiked = post.likes && post.likes[userId];
+            return(
             <div key={post.id} className="post-card">
               {/* Заголовок: Аватар и имя пользователя */}
               <div className="post-header">
@@ -340,7 +386,18 @@ const [userDetails, setUserDetails] = useState({ username: "", avatarUrl: "" });
 
                            {/* Actions: Like, Comment, Save */}
               <div className="post-actions">
-                <FaRegHeart className="post-icon" />
+              {isLiked ? (
+                      <FaHeart
+                        className="post-icon liked"
+                        onClick={() => handleLikeToggle(post.id)}
+                        style={{ color: "red" }}
+                      />
+                    ) : (
+                      <FaRegHeart
+                        className="post-icon"
+                        onClick={() => handleLikeToggle(post.id)}
+                      />
+                    )}
                 <FaRegComment 
                   className="post-icon" 
                   onClick={() => openCommentModal(post.id)} 
@@ -349,7 +406,7 @@ const [userDetails, setUserDetails] = useState({ username: "", avatarUrl: "" });
               </div>
 
               {/* Likes Count */}
-              <p className="post-likes">Нравится: {post.likes || 0}</p>
+              <p className="post-likes">Нравится: {likesCount}</p>
 
 
               {/* Описание с разворачиванием/сворачиванием текста */}
@@ -395,8 +452,8 @@ const [userDetails, setUserDetails] = useState({ username: "", avatarUrl: "" });
       </div>
       <div className="comments-list">
         {comments 
-        .slice() // Создаёт копию массива, чтобы не мутировать оригинал
-        .reverse() // Изменяет порядок на обратный
+        .slice()
+        .reverse()
         .map((comment) => (
           <div className="comment" key={comment.id}>
             <img src={comment.avatarUrl || defaultAvatar} alt={comment.username} className="comment-avatar" onClick={() => goToProfile(comment.userId)}/>
@@ -435,11 +492,11 @@ const [userDetails, setUserDetails] = useState({ username: "", avatarUrl: "" });
   </div>
 )}
 
-
               {/* Дата публикации */}
               <p className="post-date">{new Date(post.createdAt).toLocaleString()}</p>
             </div>
-          ))}
+            );
+})}
         </section>
       </main>
 

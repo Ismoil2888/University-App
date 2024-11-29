@@ -446,7 +446,10 @@ const Library = ({ userId }) => {
               </button>
             </div>
             <div className="comments-list">
-              {comments.map((comment) => (
+              {comments
+              .slice() // Создаёт копию массива, чтобы не мутировать оригинал
+              .reverse() // Изменяет порядок на обратный
+              .map((comment) => (
                 <div className="comment" key={comment.id}>
                   <img
                     src={comment.avatarUrl || defaultAvatar}
