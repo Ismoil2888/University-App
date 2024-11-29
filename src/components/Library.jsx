@@ -7,6 +7,7 @@ import bookIcon from '../book-icon.png';
 import "../App.css";
 import "../library.css";
 import basiclogo from "../basic-logo.png";
+import { GoKebabHorizontal } from "react-icons/go";
 import { FaPlusCircle } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -34,6 +35,9 @@ const Library = ({ userId }) => {
   const navigate = useNavigate();
   const [identificationStatus, setIdentificationStatus] = useState(null);
 
+  const goToProfile = (userId) => {
+    navigate(`/profile/${userId}`);
+  };
 
   // Загрузка пользовательских данных и статуса идентификации
   useEffect(() => {
@@ -243,6 +247,7 @@ const Library = ({ userId }) => {
         avatarUrl: isAnonymous ? anonymAvatar : userDetails.avatarUrl,
         username: isAnonymous ? "Анонимно" : userDetails.username,
         userId: isAnonymous ? null : auth.currentUser?.uid,
+        anonymousOwnerId: isAnonymous ? auth.currentUser?.uid : null, // Сохраняем ID для анонимного комментария
         comment: newComment,
         timestamp: new Date().toLocaleString(),
       });
@@ -267,18 +272,21 @@ const Library = ({ userId }) => {
   };
 
   useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (actionMenuRef.current && !actionMenuRef.current.contains(event.target)) {
-        setActionMenuId(null); // Закрываем меню только если клик не по нему
+    const handleClickOutside = (event) => {
+      const isInsideMenu = actionMenuRef.current && actionMenuRef.current.contains(event.target);
+      const isActionButton = event.target.closest(".action-menu button");
+      
+      // Закрываем меню только если клик произошел за пределами actionMenu и не на кнопках
+      if (!isInsideMenu && !isActionButton) {
+        setActionMenuId(null);
       }
     };
   
-    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
-
+  }, []);  
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
@@ -443,36 +451,31 @@ const Library = ({ userId }) => {
                   <img
                     src={comment.avatarUrl || defaultAvatar}
                     alt={comment.username}
+                    onClick={() => goToProfile(comment.userId)} // Переход по клику на аватар
                     className="comment-avatar"
                   />
                   <div className="comment-content">
-                    <p className="comment-username">{comment.username}</p>
+                    <p className="comment-username" onClick={() => goToProfile(comment.userId)}>{comment.username}</p>
                     <p className="comment-text">{comment.comment}</p>
                     <span className="comment-timestamp">{comment.timestamp}</span>
                   </div>
-                  {(comment.userId === auth.currentUser?.uid) && (
-  <div className="comment-actions-menu" ref={actionMenuRef}>
-    <button 
-      className="action-menu-toggle" 
-      onClick={(e) => {
-        e.stopPropagation(); // Предотвращаем всплытие события
-        toggleActionMenu(comment.id);
-      }}
-    >
-      &#x22EE; {/* Троеточие */}
-    </button>
-    {actionMenuId === comment.id && (
-      <div className="action-menu">
-        <button onClick={() => handleEditComment(comment.id, comment.comment)}>
-          Изменить
-        </button>
-        <button onClick={() => handleDeleteComment(comment.id)}>
-          Удалить
-        </button>
-      </div>
-    )}
-  </div>
-)}
+                  <div ref={actionMenuRef} className="menu-icon-container">
+  {(comment.userId === auth.currentUser?.uid || comment.anonymousOwnerId === auth.currentUser?.uid) && (
+    <>
+      <GoKebabHorizontal
+        style={{fontSize: "20px", color: "grey"}}
+        onClick={() => toggleActionMenu(comment.id)}
+        className="action-icon"
+      />
+      {actionMenuId === comment.id && (
+        <div className={`action-menu show`}>
+          <button onClick={() => handleEditComment(comment.id, comment.comment)}>Изменить</button>
+          <button onClick={() => handleDeleteComment(comment.id)}>Удалить</button>
+        </div>
+      )}
+    </>
+  )}
+</div>
                 </div>
               ))}
             </div>
