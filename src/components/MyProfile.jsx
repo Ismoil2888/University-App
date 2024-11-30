@@ -185,7 +185,7 @@ const MyProfile = () => {
 <div className="header-nav-2">
 
        <Link to="/authdetails">
-        <RiSettingsLine style={{color: "green", fontSize: "25px", marginLeft: "15px"}} />
+        <RiSettingsLine style={{color: "white", fontSize: "25px", marginLeft: "15px"}} />
        </Link>
 
         <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Профиль</ul>
@@ -303,7 +303,7 @@ const MyProfile = () => {
           </div>
 
           <div className="footer-nav">
-        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" style={{color: "red"}} /></Link>
+        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" style={{}} /></Link>
         <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
         <Link to="/post"><FaPlusCircle className="footer-icon" /></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>

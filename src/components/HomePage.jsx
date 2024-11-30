@@ -214,40 +214,80 @@ const userId = auth.currentUser?.uid; // Текущий пользователь
       const db = getDatabase();
       const postLikesRef = dbRef(db, `posts/${postId}/likes`);
     
-      // Проверяем, лайкнул ли пользователь пост
-      const post = posts.find((post) => post.id === postId);
-      const isLiked = post.likes && post.likes[userId];
+      setPosts((prevPosts) =>
+        prevPosts.map((post) => {
+          if (post.id === postId) {
+            const isLiked = post.likes && post.likes[userId];
+            const updatedLikes = { ...post.likes };
     
+            if (isLiked) {
+              delete updatedLikes[userId]; // Удаляем лайк локально
+            } else {
+              updatedLikes[userId] = true; // Добавляем лайк локально
+            }
+    
+            return {
+              ...post,
+              likes: updatedLikes,
+            };
+          }
+          return post;
+        })
+      );
+    
+      // Обновляем данные в Firebase
+      const isLiked = posts.find((post) => post.id === postId)?.likes?.[userId];
       if (isLiked) {
-        // Если пользователь уже лайкнул, удаляем лайк из Firebase
-        update(postLikesRef, { [userId]: null })
-          .then(() => {
-            // Обновляем локальное состояние
-            setPosts((prevPosts) =>
-              prevPosts.map((post) =>
-                post.id === postId
-                  ? { ...post, likes: { ...post.likes, [userId]: undefined } }
-                  : post
-              )
-            );
-          })
-          .catch((error) => console.error("Ошибка при снятии лайка: ", error));
+        update(postLikesRef, { [userId]: null }).catch((error) =>
+          console.error("Ошибка при снятии лайка: ", error)
+        );
       } else {
-        // Если пользователь не лайкнул, добавляем лайк в Firebase
-        update(postLikesRef, { [userId]: true })
-          .then(() => {
-            // Обновляем локальное состояние
-            setPosts((prevPosts) =>
-              prevPosts.map((post) =>
-                post.id === postId
-                  ? { ...post, likes: { ...post.likes, [userId]: true } }
-                  : post
-              )
-            );
-          })
-          .catch((error) => console.error("Ошибка при добавлении лайка: ", error));
+        update(postLikesRef, { [userId]: true }).catch((error) =>
+          console.error("Ошибка при добавлении лайка: ", error)
+        );
       }
-    };    
+    };
+    
+    // const handleLikeToggle = (postId) => {
+    //   if (!userId) return; // Убедитесь, что пользователь авторизован
+    
+    //   const db = getDatabase();
+    //   const postLikesRef = dbRef(db, `posts/${postId}/likes`);
+    
+    //   // Проверяем, лайкнул ли пользователь пост
+    //   const post = posts.find((post) => post.id === postId);
+    //   const isLiked = post.likes && post.likes[userId];
+    
+    //   if (isLiked) {
+    //     // Если пользователь уже лайкнул, удаляем лайк из Firebase
+    //     update(postLikesRef, { [userId]: null })
+    //       .then(() => {
+    //         // Обновляем локальное состояние
+    //         setPosts((prevPosts) =>
+    //           prevPosts.map((post) =>
+    //             post.id === postId
+    //               ? { ...post, likes: { ...post.likes, [userId]: undefined } }
+    //               : post
+    //           )
+    //         );
+    //       })
+    //       .catch((error) => console.error("Ошибка при снятии лайка: ", error));
+    //   } else {
+    //     // Если пользователь не лайкнул, добавляем лайк в Firebase
+    //     update(postLikesRef, { [userId]: true })
+    //       .then(() => {
+    //         // Обновляем локальное состояние
+    //         setPosts((prevPosts) =>
+    //           prevPosts.map((post) =>
+    //             post.id === postId
+    //               ? { ...post, likes: { ...post.likes, [userId]: true } }
+    //               : post
+    //           )
+    //         );
+    //       })
+    //       .catch((error) => console.error("Ошибка при добавлении лайка: ", error));
+    //   }
+    // };    
 
   const toggleActionMenu = (commentId) => {
     setActionMenuId((prev) => (prev === commentId ? null : commentId));
@@ -505,7 +545,7 @@ const userId = auth.currentUser?.uid; // Текущий пользователь
       </footer>
 
       <div className="footer-nav">
-        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" style={{color: "red"}} /></Link>
+        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon active-icon" style={{ }} /></Link>
         <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
         <Link to="/post"><FaPlusCircle className="footer-icon" /></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>

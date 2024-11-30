@@ -204,7 +204,7 @@ const PostForm = () => {
       <div className="footer-nav">
         <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" /></Link>
         <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
-        <Link to="/post"><FaPlusCircle className="footer-icon" style={{color: "red"}} /></Link>
+        <Link to="/post"><FaPlusCircle className="footer-icon  active-icon" style={{}} /></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>
         <Link to="/myprofile">
           <img src={userAvatarUrl} alt="User Avatar" className="footer-avatar" />

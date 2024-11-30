@@ -298,7 +298,8 @@ import logoTip from "../basic-logo.png";
 import defaultTeacherImg from "../teacher.png";
 import { FaCommentDots } from "react-icons/fa";
 import basiclogo from "../basic-logo.png";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaPlusCircle, FaUserSecret } from "react-icons/fa";
+import { BsSendFill } from "react-icons/bs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { GoKebabHorizontal } from "react-icons/go";
@@ -626,6 +627,7 @@ const goToProfile = (userId) => {
   {(comment.userId === auth.currentUser?.uid || comment.anonymousOwnerId === auth.currentUser?.uid) && (
     <>
       <GoKebabHorizontal
+        style={{fontSize: "20px", color: "grey"}}
         onClick={() => toggleActionMenu(comment.id)}
         className="action-icon"
       />
@@ -649,11 +651,13 @@ const goToProfile = (userId) => {
     value={newComment} 
     onChange={(e) => setNewComment(e.target.value)} 
   />
-  <button onClick={() => handleCommentSubmit(false)}>
+  <button onClick={() => handleCommentSubmit(false)} style={{display: "flex", alignContent: "center", justifyContent: "center"}}>
     {editingCommentId ? "Изменить" : "Отправить"}
+    <BsSendFill style={{marginLeft: "10px", fontSize: "22px"}} />
   </button>
-  <button onClick={() => handleCommentSubmit(true)}>
+  <button onClick={() => handleCommentSubmit(true)} style={{display: "flex", alignContent: "center", justifyContent: "center"}}>
     {editingCommentId ? "Изменить анонимно" : "Отправить анонимно"}
+    <FaUserSecret style={{marginLeft: "5px", fontSize: "25px", color: ""}} />
   </button>
 </div>
     </div>
@@ -667,7 +671,7 @@ const goToProfile = (userId) => {
 
       <div className="footer-nav">
         <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" /></Link>
-        <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" style={{color: "red"}} /></Link>
+        <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon active-icon" style={{}} /></Link>
         <Link to="/post"><FaPlusCircle className="footer-icon" /></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>
         <Link to="/myprofile">
