@@ -7,6 +7,7 @@ import SignIn from './components/SignIn';
 import AuthDetails from './components/AuthDetails';
 import HomePage from "./components/HomePage";
 import Library from "./components/Library";
+import LibraryPage from './components/LibraryPage';
 import Schedule from "./components/Schedule";
 import Teachers from "./components/Teachers";
 import Contacts from "./components/Contacts";
@@ -25,6 +26,7 @@ import UserProfile from './components/UserProfile';
 import MyProfile from './components/MyProfile';
 import SearchStudents from './components/SearchStudents';
 import PostForm from "./components/PostForm";
+import NotificationsPage from "./components/NotificationsPage";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -62,10 +64,12 @@ function App() {
       <Route path="/profile/:userId" element={<UserProfile />} />      
       <Route path="/about" element={<PrivateRoute> <About /> </PrivateRoute>} />
       <Route path="/home" element={<PrivateRoute>  <HomePage /> </PrivateRoute>} />
+      <Route path="/notifications" element={<NotificationsPage />} />
       <Route path="/post" element={<PrivateRoute>  <PostForm /> </PrivateRoute>} />
       <Route path="/schedule" element={<PrivateRoute> <Schedule /> </PrivateRoute>} />
       <Route path="/teachers" element={<PrivateRoute> <Teachers /> </PrivateRoute>} />
       <Route path="/library" element={<PrivateRoute> <Library /> </PrivateRoute>} />
+      <Route path="/libraryp" element={<PrivateRoute> <LibraryPage /> </PrivateRoute>} />
       <Route path="/contacts" element={<PrivateRoute> <Contacts /> </PrivateRoute>} />
       <Route path="/searchpage" element={<PrivateRoute> <SearchPage /> </PrivateRoute>} />
       <Route path="/searchstudents" element={<PrivateRoute> <SearchStudents /> </PrivateRoute>} />

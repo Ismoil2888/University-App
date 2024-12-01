@@ -6,6 +6,7 @@ import { getDatabase, ref as dbRef, onValue, push, set } from "firebase/database
 import defaultAvatar from "../default-image.png";
 import defaultImage from "../Ttulogo.jpg";
 import { FaLock, FaPhone, FaUserEdit, FaChevronLeft, FaEllipsisV } from "react-icons/fa";
+import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaPlusCircle } from "react-icons/fa";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -116,6 +117,24 @@ const PostForm = () => {
     }
   }, []);
 
+  const headerVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 1, type: 'spring', stiffness: 50 } 
+    },
+  };
+
+  const navbarVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, type: 'spring', stiffness: 50 },
+    },
+  };
+
   return (
     <div className="post-container">
 <header>
@@ -142,7 +161,7 @@ const PostForm = () => {
 
         <FaChevronLeft style={{ marginLeft: "10px", color: "white", fontSize: "25px"}} onClick={() => navigate(-1)} />
 
-        <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Главная</ul>
+        <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Публикация</ul>
 
         <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenuu}>          
           <span className="bm-span"></span>
@@ -202,6 +221,12 @@ const PostForm = () => {
       </footer>
 
       <div className="footer-nav">
+      <motion.nav 
+        variants={navbarVariants} 
+        initial="hidden" 
+        animate="visible" 
+        className="footer-nav"
+      >
         <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" /></Link>
         <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
         <Link to="/post"><FaPlusCircle className="footer-icon  active-icon" style={{}} /></Link>
@@ -209,6 +234,7 @@ const PostForm = () => {
         <Link to="/myprofile">
           <img src={userAvatarUrl} alt="User Avatar" className="footer-avatar" />
         </Link>
+        </motion.nav>
       </div>
     </div>
   );

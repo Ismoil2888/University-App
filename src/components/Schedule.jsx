@@ -7,6 +7,7 @@ import basiclogo from "../basic-logo.png";
 import { useState, useEffect } from 'react';
 import { auth } from "../firebase";
 import { getDatabase, ref as dbRef, onValue } from "firebase/database";
+import { motion } from 'framer-motion';
 import { FaPlusCircle } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -71,6 +72,15 @@ const Schedule = () => {
       } else {
         setIsMenuOpen(true);
       }
+    };
+
+    const navbarVariants = {
+      hidden: { opacity: 0, y: -20 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.8, type: 'spring', stiffness: 50 },
+      },
     };
 
     const handleContextMenu = (event) => {
@@ -171,6 +181,12 @@ const Schedule = () => {
       </footer>
 
       <div className="footer-nav">
+      <motion.nav 
+        variants={navbarVariants} 
+        initial="hidden" 
+        animate="visible" 
+        className="footer-nav"
+      >
         <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" /></Link>
         <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon active-icon" style={{}} /></Link>
         <Link to="/post"><FaPlusCircle className="footer-icon" /></Link>
@@ -178,6 +194,7 @@ const Schedule = () => {
         <Link to="/myprofile">
           <img src={userAvatarUrl} alt="User Avatar" className="footer-avatar" />
         </Link>
+        </motion.nav> 
       </div>
     </div>
   );

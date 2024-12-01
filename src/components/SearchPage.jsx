@@ -6,6 +6,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import '../SearchPage.css';
 import basiclogo from "../basic-logo.png";
 import { Link } from "react-router-dom";
+import { motion } from 'framer-motion';
 import { FaPlusCircle } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch, faUser } from "@fortawesome/free-solid-svg-icons";
@@ -183,6 +184,24 @@ const SearchPage = () => {
     event.preventDefault();
   }
 
+  const headerVariants = {
+    hidden: { opacity: 0, y: -50 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 1, type: 'spring', stiffness: 50 } 
+    },
+  };
+
+  const navbarVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, type: 'spring', stiffness: 50 },
+    },
+  };
+
   return (
     <div className="chat-page" onContextMenu={handleContextMenu}>
             <header>
@@ -276,8 +295,14 @@ const SearchPage = () => {
       </section>
       </div>
 
-
+    
       <div className="footer-nav">
+      <motion.nav 
+        variants={navbarVariants} 
+        initial="hidden" 
+        animate="visible" 
+        className="footer-nav"
+      >
         <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" /></Link>
         <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon active-icon" style={{}} /></Link>
         <Link to="/post"><FaPlusCircle className="footer-icon" /></Link>
@@ -285,6 +310,7 @@ const SearchPage = () => {
         <Link to="/myprofile">
           <img src={userAvatarUrl} alt="User Avatar" className="footer-avatar" />
         </Link>
+        </motion.nav>
       </div>
     </div>
   );

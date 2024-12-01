@@ -299,6 +299,7 @@ import defaultTeacherImg from "../teacher.png";
 import { FaCommentDots } from "react-icons/fa";
 import basiclogo from "../basic-logo.png";
 import { FaPlusCircle, FaUserSecret } from "react-icons/fa";
+import { motion } from 'framer-motion';
 import { BsSendFill } from "react-icons/bs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -493,6 +494,24 @@ const goToProfile = (userId) => {
       }
     };
 
+    const headerVariants = {
+      hidden: { opacity: 0, y: 50 },
+      visible: { 
+        opacity: 1, 
+        y: 0, 
+        transition: { duration: 1, type: 'spring', stiffness: 50 } 
+      },
+    };
+  
+    const navbarVariants = {
+      hidden: { opacity: 0, y: 50 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.8, type: 'spring', stiffness: 50 },
+      },
+    };
+
     const handleContextMenu = (event) => {
       event.preventDefault();
     }
@@ -670,6 +689,12 @@ const goToProfile = (userId) => {
       </footer>
 
       <div className="footer-nav">
+      <motion.nav 
+        variants={navbarVariants} 
+        initial="hidden" 
+        animate="visible" 
+        className="footer-nav"
+      >
         <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" /></Link>
         <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon active-icon" style={{}} /></Link>
         <Link to="/post"><FaPlusCircle className="footer-icon" /></Link>
@@ -677,6 +702,7 @@ const goToProfile = (userId) => {
         <Link to="/myprofile">
           <img src={userAvatarUrl} alt="User Avatar" className="footer-avatar" />
         </Link>
+        </motion.nav>
       </div>
     </div>
   );

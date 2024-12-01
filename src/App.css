@@ -1558,6 +1558,83 @@ color: transparent;
   background-color: #ff1a1a;
 }
 
+.like-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.like-modal {
+  background: #ffffff;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.like-modal-header {
+  padding: 16px;
+  background: #58a6ff;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.close-like-modal {
+  background: none;
+  border: none;
+  font-size: 25px;
+  color: white;
+  cursor: pointer;
+}
+
+.like-modal-body {
+  padding: 16px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.like-user {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.like-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.like-username {
+  font-size: 16px;
+  color: #333;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @keyframes pulse {
   0%, 100% { transform: scale(1); box-shadow: 0 0 8px rgba(74, 246, 38, 0.8), 0 0 15px rgba(74, 246, 38, 0.5); }
   50% { transform: scale(1.5); box-shadow: 0 0 12px rgba(74, 246, 38, 0.8), 0 0 25px rgba(74, 246, 38, 0.7); }

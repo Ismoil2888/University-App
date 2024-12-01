@@ -228,7 +228,7 @@
 }
 
 .close-modal:hover {
-  color: #000;
+  color: #ffffff;
 }
 
 /* Список комментариев */
@@ -236,6 +236,15 @@
   flex-grow: 1;
   /* margin-bottom: 15px; */
   overflow-y: auto;
+}
+
+.comments-list:empty::before {
+  content: "Комментариев пока нет";
+  display: block;
+  color: gray;
+  font-style: italic;
+  text-align: center;
+  margin: 10px 0;
 }
 
 .comment {
