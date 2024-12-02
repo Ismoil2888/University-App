@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { getDatabase, ref as dbRef, onValue, get, push, set, update, remove } from "firebase/database";
 import { auth, database } from "../firebase";
 import defaultAvatar from "../default-image.png";
@@ -30,8 +30,16 @@ const HomePage = () => {
   const menuRef = useRef(null);
   const [userDetails, setUserDetails] = useState({ username: "", avatarUrl: "" });
   const userId = auth.currentUser?.uid; // Текущий пользователь
-
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [showCount, setShowCount] = useState(true); // Управляет видимостью счетчика  
   const navigate = useNavigate();
+const location = useLocation();
+
+useEffect(() => {
+  if (location.pathname === "/notifications") {
+    clearNotifications(); // Сбрасываем уведомления при переходе
+  }
+}, [location]);
 
   const goToProfile = (userId) => {
     navigate(`/profile/${userId}`);
@@ -291,6 +299,33 @@ const HomePage = () => {
     }
   };
 
+  useEffect(() => {
+    const db = getDatabase();
+    const user = auth.currentUser;
+  
+    if (user) {
+      const notificationsRef = dbRef(db, `notifications/${user.uid}`);
+  
+      onValue(notificationsRef, (snapshot) => {
+        const notifications = snapshot.val();
+        if (notifications) {
+          const notificationKeys = Object.keys(notifications);
+          setUnreadCount(notificationKeys.length);
+  
+          // Если уведомления появились, снова показываем счетчик
+          setShowCount(true);
+        } else {
+          setUnreadCount(0);
+          setShowCount(false);
+        }
+      });
+    }
+  }, []);  
+
+  const clearNotifications = () => {
+    setShowCount(false); // Скрыть счетчик
+  };  
+
   const toggleActionMenu = (commentId) => {
     setActionMenuId((prev) => (prev === commentId ? null : commentId));
   };
@@ -325,15 +360,6 @@ const HomePage = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  const headerVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 1, type: 'spring', stiffness: 50 } 
-    },
-  };
 
   const navbarVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -423,8 +449,32 @@ const HomePage = () => {
           <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Главная</ul>
 
           <Link to="/notifications">
-            <FontAwesomeIcon icon={faBell} className="footer-icon" />
-          </Link>
+  <div style={{ position: "relative" }}>
+    <FontAwesomeIcon icon={faBell} className="footer-icon" />
+    {showCount && unreadCount > 0 && (
+      <span
+        style={{
+          position: "absolute",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "8px",
+          height: "10px",
+          top: "8px",
+          right: "-10px",
+          background: "red",
+          color: "white",
+          borderRadius: "50%",
+          padding: "4px 6px",
+          fontSize: "12px",
+          fontWeight: "bold",
+        }}
+      >
+        {unreadCount}
+      </span>
+    )}
+  </div>
+</Link>
 
           <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenuu}>          
             <span className="bm-span"></span>
