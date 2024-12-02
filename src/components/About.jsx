@@ -7,7 +7,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "../App.css";
-import "../about.css";
+import "../aboute.css";
 import basiclogo from "../basic-logo.png";
 import teacherImage from "../teacher.png";
 import ttustudents from "../ttustudents.jpg";
