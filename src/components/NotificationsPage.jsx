@@ -1,12 +1,11 @@
-// NotificationsPage.jsx
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getDatabase, ref as dbRef, onValue, remove } from "firebase/database";
+import { getDatabase, ref as dbRef, onValue, remove, update } from "firebase/database";
 import { auth } from "../firebase";
 import defaultAvatar from "../default-image.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaArrowLeft } from "react-icons/fa";
-import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch, faBell } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog } from "@fortawesome/free-solid-svg-icons";
 import "../NotificationsPage.css";
 
 const NotificationsPage = () => {
@@ -14,12 +13,18 @@ const NotificationsPage = () => {
   const currentUserId = auth.currentUser?.uid;
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const userId = auth.currentUser?.uid; // Текущий пользователь
+
+  const goToProfile = (userId) => {
+    navigate(`/profile/${userId}`);
+  };
 
   const toggleMenuu = () => {
     if (isMenuOpen) {
       setTimeout(() => {
         setIsMenuOpen(false);
-      }, 0); // Задержка для плавного исчезновения
+      }, 0);
     } else {
       setIsMenuOpen(true);
     }
@@ -50,6 +55,34 @@ const NotificationsPage = () => {
 
     return () => unsubscribe(); // Убираем слушатель при размонтировании компонента
   }, [currentUserId]);
+
+  useEffect(() => {
+    if (!currentUserId) return;
+  
+    const db = getDatabase();
+    const notificationsRef = dbRef(db, `notifications/${currentUserId}`);
+  
+    onValue(notificationsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const updatedNotifications = {};
+        for (const key in data) {
+          updatedNotifications[key] = {
+            ...data[key],
+            isRead: true,
+          };
+        }
+  
+        // Обновляем уведомления в базе данных
+        update(notificationsRef, updatedNotifications).catch((error) => {
+          console.error("Ошибка при обновлении статуса уведомлений:", error);
+        });
+      }
+    });
+  
+    // Сбрасываем локальный счетчик непрочитанных уведомлений
+    setUnreadCount(0);
+  }, [currentUserId]);  
 
   const handleDeleteNotification = (notificationId) => {
     if (!currentUserId || !notificationId) return;
@@ -124,17 +157,18 @@ const NotificationsPage = () => {
                 src={notification.avatarUrl || defaultAvatar}
                 alt="Sender Avatar"
                 className="notification-avatar"
+                onClick={() => goToProfile(notification.userId)}
               />
               <div className="notification-info">
                 <p className="notification-text">
                   {notification.type === 'comment' ? (
                     <>
-                      Пользователь <strong>{notification.username}</strong> написал под
+                      Пользователь <strong onClick={() => goToProfile(notification.userId)}>{notification.username}</strong> написал под
                       вашим постом комментарий: "{notification.comment}"
                     </>
                   ) : notification.type === 'like' ? (
                     <>
-                      Пользователю <strong>{notification.username}</strong> понравилась ваша публикация
+                      Пользователю <strong onClick={() => goToProfile(notification.userId)}>{notification.username}</strong> понравилась ваша публикация
                     </>
                   ) : null}
                 </p>
