@@ -1035,7 +1035,7 @@ const HomePage = () => {
                 <span className="post-username">{post.userName}</span>{" "}
                 {post.description.length > MAX_TEXT_LENGTH && !expandedPosts[post.id] ? (
                   <>
-                    {post.description.slice(0, MAX_TEXT_LENGTH)}...
+                    {post.description.slice(0, MAX_TEXT_LENGTH)} ...
                     <span
                       className="toggle-text"
                       onClick={() => toggleTextExpansion(post.id)}

@@ -4,10 +4,8 @@ import { getDatabase, ref as databaseRef, onValue, query, orderByChild, startAt,
 import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import '../SearchPage.css';
-import basiclogo from "../basic-logo.png";
 import { Link } from "react-router-dom";
-import { FaPlusCircle } from "react-icons/fa";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaPlusCircle, FaArrowLeft } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
 
@@ -185,7 +183,7 @@ const SearchStudents = () => {
   }
 
   return (
-    <div className="chat-page" onContextMenu={handleContextMenu}>
+    <div className="search-page" onContextMenu={handleContextMenu}>
             <header>
             <nav>
           <ul>
@@ -235,31 +233,28 @@ const SearchStudents = () => {
         </div>
       </header>
 
-      <div className="chat-page-header">
-        {/* <div className="chat-page-menu-icon" onClick={() => setShowMenu(!showMenu)}>
-          <FaEllipsisV />
-        </div> */}
+      <div className="search-page-header">
 
         {/* Секция для отображения историй */}
-        <div className="chat-page-stories-section">
-          <div className="chat-page-story-item">
+        <div className="search-page-stories-section">
+          <div className="search-page-story-item">
             <img
               src="./default-image.png"
               alt="Моя история"
-              className="chat-page-story-avatar"
+              className="search-page-story-avatar"
             />
             <p>Моя история</p>
           </div>
         </div>
 
-        <div className="chat-page-search-icon" onClick={() => setShowSearch(!showSearch)}>
+        <div className="search-page-search-icon" onClick={() => setShowSearch(!showSearch)}>
           <FaSearch />
         </div>
       </div>
 
       {showSearch && (
         <>
-          <div className="chat-page-search-bar">
+          <div className="search-page-search-bar">
           <input
             type="search"
             value={searchQuery}
@@ -268,27 +263,28 @@ const SearchStudents = () => {
             onBlur={() => setIsInputFocused(false)}
             placeholder="Искать пользователей"
           />
-            <FaTimes className="chat-page-close-search" onClick={() => setShowSearch(false)} />
+            <FaTimes className="search-page-close-search" onClick={() => setShowSearch(false)} />
           </div>
 
           {/* Если пользователь не вводит текст и не в фокусе - показываем историю */}
           {searchHistory.length > 0 && !isInputFocused && searchQuery === "" && (
-            <div className="chat-page-search-history">
-              <div className="chat-page-history-header">
+            <div className="search-page-search-history">
+              <div className="search-page-history-header">
                 <h3 style={{color: "grey"}}>Недавнее</h3>
-                <span onClick={clearSearchHistory} className="chat-page-clear-history">
+                <span onClick={clearSearchHistory} className="search-page-clear-history">
                   Очистить все
                 </span>
               </div>
               {searchHistory.map((user) => (
+                  <div className="search-history-list">
                 <div
                   key={user.uid}
-                  className="chat-page-chat-item"
+                  className="search-page-search-item"
                 >
                   <div style={{display: "flex", alignItems: "center"}}>
-                  <img src={user.avatarUrl || "./default-image.png"} alt={user.username} className="chat-page-avatarka" />
+                  <img src={user.avatarUrl || "./default-image.png"} alt={user.username} className="search-page-avatarka" />
                   <div 
-                    className="chat-page-chat-info"
+                    className="search-page-search-info"
                     onClick={() => goToProfileFromHistory(user.uid)}
                   >
                     <h3 style={{color: "white"}}>{user.username}</h3>
@@ -296,22 +292,23 @@ const SearchStudents = () => {
                   </div>
                   </div>
                   <div style={{marginLeft: "15px"}}>
-                  <FaTimes className="chat-page-remove-from-history" onClick={() => removeFromHistory(user.uid)} />
+                  <FaTimes className="search-page-remove-from-history" onClick={() => removeFromHistory(user.uid)} />
                     </div>
                 </div>
+                </div>
               ))}
-            </div>
+              </div>
           )}
         </>
       )}
 
       {showSearch && (
-        <div className="chat-page-chat-list">
+        <div className="search-page-search-list">
           {searchResults.length > 0 ? (
             searchResults.map((user) => (
-              <div key={user.uid} className="chat-page-chat-item" onClick={() => goToProfile(user.uid)}>
-                <img src={user.avatarUrl || "./default-image.png"} alt={user.username} className="chat-page-avatarka" />
-                <div className="chat-page-chat-info">
+              <div key={user.uid} className="search-page-search-item" onClick={() => goToProfile(user.uid)}>
+                <img src={user.avatarUrl || "./default-image.png"} alt={user.username} className="search-page-avatarka" />
+                <div className="search-page-search-info">
                   <h3 style={{color: "white"}}>{user.username}</h3>
                   <p>{user.aboutMe || "Информация не указана"}</p>
                 </div>
