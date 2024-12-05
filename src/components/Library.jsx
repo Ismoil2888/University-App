@@ -338,6 +338,25 @@ const Library = ({ userId }) => {
   return (
     <div className="library-body" onContextMenu={handleContextMenu}>
       <header className="library-head">
+      <nav>
+          <ul>
+            <li><Link to="/home">Главная</Link></li>
+            <li><Link to="/about">О факультете</Link></li>
+            <li><Link to="/teachers">Преподаватели</Link></li>
+            <li><Link to="/schedule">Расписание</Link></li>
+            <li><Link to="/library">Библиотека</Link></li>
+            <li><Link to="/contacts">Контакты</Link></li>
+          </ul>
+          <ul style={{color: "#58a6ff", fontSize: "25px"}}>Главная</ul>
+          <ul>
+            <li>
+              <Link to="/myprofile">
+              {/* <FaUser className="user-icon"></FaUser> */}
+              </Link>
+            </li>
+          </ul>
+        </nav>
+
         <div className="header-nav-2">
 
         <img src={basiclogo} width="50px" alt="logo" style={{marginLeft: "10px"}} />
@@ -364,6 +383,8 @@ const Library = ({ userId }) => {
 
         </div>
       </header>
+
+      
 
 <div className="library-main">
       <section className="library-header">

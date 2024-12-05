@@ -160,7 +160,6 @@ footer {
 
   .footer-icon {
     font-size: 24px;
-    /* color: #42ccdb; */
     color: #ffffff;
     transition: color 0.3s;
   }
@@ -1597,7 +1596,6 @@ color: transparent;
   border: none;
   font-size: 25px;
   color: white;
-  cursor: pointer;
 }
 
 .like-modal-body {
@@ -1662,6 +1660,10 @@ color: transparent;
 
   .logo-app{
     display: none;
+  }
+
+  .close-like-modal {
+    cursor: pointer;
   }
 }
 

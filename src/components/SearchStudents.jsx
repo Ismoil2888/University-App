@@ -7,6 +7,7 @@ import '../SearchPage.css';
 import basiclogo from "../basic-logo.png";
 import { Link } from "react-router-dom";
 import { FaPlusCircle } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
 
@@ -207,7 +208,9 @@ const SearchStudents = () => {
 
         <div className="header-nav-2">
 
-        <img src={basiclogo} width="50px" alt="logo" style={{marginLeft: "10px"}} />
+        <Link className="back-button" style={{marginLeft: "15px"}} onClick={() => navigate(-1)}>
+              <FaArrowLeft />
+          </Link>
 
         <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Поиск студентов</ul>
 

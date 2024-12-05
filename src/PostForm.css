@@ -153,7 +153,6 @@
   
   .post-icon {
     font-size: 24px;
-    cursor: pointer;
     color: white;
   }
   
@@ -268,4 +267,30 @@
     padding: 4px 6px;
     font-size: 12px;
     font-weight: bold;
+  }
+
+  @media (width > 984px) {
+
+  .post-card {
+    border-radius: 8px;
+    margin-bottom: 20px;
+    width: 25%;
+  }
+
+  .post-icon {
+    cursor: pointer;
+  }
+
+  .menu-options {
+    right: 500px;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    color: #007bff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 15px;
+    position: absolute;
+    animation: slideIn 0.2s ease;
+}
+
   }

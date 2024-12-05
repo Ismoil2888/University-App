@@ -98,8 +98,12 @@ const NotificationsPage = () => {
       });
   };
 
+  const handleContextMenu = (event) => {
+    event.preventDefault();
+  }
+
   return (
-    <div className="notifications-page">
+    <div className="notifications-page" onContextMenu={handleContextMenu}>
       <header>
         <nav>
           <ul>
@@ -193,81 +197,3 @@ const NotificationsPage = () => {
 };
 
 export default NotificationsPage;
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useEffect, useState } from "react";
-// import { getDatabase, ref as dbRef, onValue } from "firebase/database";
-// import { auth } from "../firebase";
-// import defaultAvatar from "../default-image.png";
-// import "../NotificationsPage.css";
-
-// const NotificationsPage = () => {
-//   const [notifications, setNotifications] = useState([]);
-//   const currentUserId = auth.currentUser?.uid;
-
-//   useEffect(() => {
-//     if (!currentUserId) return;
-
-//     const db = getDatabase();
-//     const notificationsRef = dbRef(db, `notifications/${currentUserId}`);
-//     onValue(notificationsRef, (snapshot) => {
-//       const data = snapshot.val();
-//       if (data) {
-//         const notificationsArray = Object.keys(data).map((key) => ({
-//           id: key,
-//           ...data[key],
-//         }));
-//         setNotifications(
-//           notificationsArray.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-//         );
-//       } else {
-//         setNotifications([]);
-//       }
-//     });
-//   }, [currentUserId]);
-
-//   return (
-//     <div className="notifications-page">
-//       <header className="notifications-header">
-//         <h1>Уведомления</h1>
-//       </header>
-//       <main className="notifications-content">
-//         {notifications.length > 0 ? (
-//           notifications.map((notification) => (
-//             <div key={notification.id} className="notification-card">
-//               <img
-//                 src={notification.avatarUrl || defaultAvatar}
-//                 alt="Sender Avatar"
-//                 className="notification-avatar"
-//               />
-//               <div className="notification-info">
-//               <p className="notification-text">
-//               Пользователь <strong>{notification.username}</strong> написал под
-//               вашим постом комментарий: "{notification.comment}"
-//             </p>
-//                 <p className="notification-time">
-//                   {new Date(notification.timestamp).toLocaleString()}
-//                 </p>
-//               </div>
-//             </div>
-//           ))
-//         ) : (
-//           <p className="no-notifications">У вас пока нет уведомлений.</p>
-//         )}
-//       </main>
-//     </div>
-//   );
-// };
-
-// export default NotificationsPage;

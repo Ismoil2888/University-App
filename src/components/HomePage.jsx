@@ -885,8 +885,12 @@ const HomePage = () => {
     setLikesModal({ isOpen: false, users: [] });
   };
 
+  const handleContextMenu = (event) => {
+    event.preventDefault();
+  }
+
   return (
-    <div className="home-container">
+    <div className="home-container" onContextMenu={handleContextMenu}>
       {notification && (
         <div className={`notification ${notificationType}`}>
           {notification}
@@ -915,13 +919,11 @@ const HomePage = () => {
 
         <div className="header-nav-2">
 
-          <img src={basiclogo} width="50px" alt="logo" style={{marginLeft: "10px"}} />
-
-          <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Главная</ul>
+          {/* <img src={basiclogo} width="50px" alt="logo" style={{marginLeft: "10px"}} /> */}
 
           <Link to="/notifications">
             <div style={{ position: "relative" }}>
-              <FontAwesomeIcon icon={faBell} className="footer-icon" />
+              <FontAwesomeIcon icon={faBell} style={{marginLeft: "15px"}} className="footer-icon" />
               {unreadCount > 0 && (
                 <span className="notification-count">
               {unreadCount}
@@ -929,6 +931,8 @@ const HomePage = () => {
               )}
             </div>
           </Link>
+
+          <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Главная</ul>
 
           <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenuu}>          
             <span className="bm-span"></span>

@@ -135,8 +135,12 @@ const PostForm = () => {
     },
   };
 
+  const handleContextMenu = (event) => {
+    event.preventDefault();
+  }
+
   return (
-    <div className="post-container">
+    <div className="post-container" onContextMenu={handleContextMenu}>
 <header>
         <nav>
           <ul>
