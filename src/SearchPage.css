@@ -1,4 +1,4 @@
-.search-page {
+.chat-page {
     /* background-color: #e3e1e1; */
     background: #222932;
     height: 100vh;
@@ -10,7 +10,7 @@
     overflow-x: hidden;
   }
 
-  .search-page-header{
+  .chat-page-header{
     background-color: #191c20;
   }
 
@@ -39,7 +39,7 @@
     font-size: 27px;
   }
   
-  .search-page-header {
+  .chat-page-header {
     width: 95%;
     display: flex;
     justify-content: space-around;
@@ -49,15 +49,25 @@
     margin-top: 60px;
   }
 
-  .search-page-header h1{
+  .chat-page-header h1{
     color: #ffffff;
     font-size: 20px;
   }
   
-  .search-page-search-icon {
+  .chat-page-menu-icon, .chat-page-search-icon {
     font-size: 24px;
     cursor: pointer;
     color: rgb(99, 122, 253);
+  }
+  
+  .chat-page-menu-dropdown {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.3s ease-out;
   }
 
   @keyframes fadeIn {
@@ -70,16 +80,35 @@
     to { opacity: 0; }
   }
   
-  .search-page-search-bar {
+  .chat-page-menu-dropdown ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .chat-page-menu-dropdown li {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .chat-page-search-bar {
     display: flex;
     width: 100%;
     padding: 10px;
     align-items: center;
     justify-content: space-around;
     animation: fadeIn 0.6s ease-out;
+    /* background-color: #fff; */
+  }
+
+  .search-page-search-icon{
+    color: #64696e;
+    font-size: 180px;
+    z-index: -1;
+    margin-top: 220px;
   }
   
-  .search-page-search-bar input {
+  .chat-page-search-bar input {
     width: 80%;
     /* flex: 1; */
     padding: 5px;
@@ -87,21 +116,21 @@
     border-radius: 10px;
   }
   
-  .search-page-close-search {
+  .chat-page-close-search {
     font-size: 25px;
     cursor: pointer;
     margin-left: 10px;
     color: #999;
   }
 
-  .search-page-search-list{
-    max-height: 1000px;
+  .chat-page-chat-list{
+    max-height: 100%;
     overflow-y: scroll;
     margin-bottom: 65px;
   }
 
   
-  .search-page-search-item {
+  .chat-page-chat-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -109,7 +138,7 @@
     border-bottom: 1px solid #ddd;
   }
   
-  .search-page-avatarka {
+  .chat-page-avatarka {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -117,11 +146,11 @@
     object-fit: cover;
   }
   
-  .search-page-search-info h3 {
+  .chat-page-chat-info h3 {
     margin: 0;
   }
   
-  .search-page-search-info p {
+  .chat-page-chat-info p {
     color: #999;
   }
 
@@ -129,35 +158,32 @@
     flex-grow: 1;
   }
 
-  .search-page-search-history {
+  .chat-page-search-history {
+    margin-bottom: 20px;
+    max-height: 100%;
+    overflow-y: auto;
     animation: fadeIn 0.6s ease-out;
   }
-
-  .search-history-list{
-    overflow-y: scroll;
-    margin-bottom: 20px;
-    max-height: 1000px;
-  }
   
-  .search-page-history-header {
+  .chat-page-history-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px;
   }
   
-  .search-page-clear-history {
+  .chat-page-clear-history {
     color: rgb(107, 107, 197);
     cursor: pointer;
   }
 
-  .search-page-remove-from-history {
+  .chat-page-remove-from-history {
     color: red;
     cursor: pointer;
   }
 
   /* Общие стили для секции историй */
-.search-page-stories-section {
+.chat-page-stories-section {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -167,7 +193,7 @@
   }
   
   /* Стиль для отдельной истории */
-  .search-page-story-item {
+  .chat-page-story-item {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -176,7 +202,7 @@
   }
   
   /* Стили для аватарки истории */
-  .search-page-story-avatar {
+  .chat-page-story-avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -186,7 +212,7 @@
   }
   
   /* Подпись под аватаркой */
-  .search-page-story-item p {
+  .chat-page-story-item p {
     margin-top: 5px;
     font-size: 11px;
     color: #ffffff;
@@ -224,35 +250,3 @@
   .sb p{
     margin-top: 7px;
   }
-
-  .search-page-search-list {
-    max-height: calc(100vh - 150px); /* Ограничиваем высоту с учетом верхнего и нижнего отступов */
-    overflow-y: auto; /* Активируем вертикальную прокрутку */
-    -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
-    /* scrollbar-width: thin; Узкий скроллбар (для Firefox) */
-    margin-bottom: 70px; /* Отступ снизу для корректного отображения */
-    padding-bottom: 20px; /* Предотвращает "залипание" */
-}
-
-.search-history-list{
-  overflow-y: auto; /* Активируем вертикальную прокрутку */
-}
-
-.search-page-search-item,
-.search-history-list > div {
-    padding: 10px; /* Отступы внутри элементов списка */
-    border-bottom: 1px solid #ddd; /* Разделители между элементами */
-}
-
-/* Убираем нежелательные перекрытия или невидимые границы */
-.search-page {
-    /* overflow: hidden; Убираем горизонтальный скролл */
-    position: relative;
-}
-
-.search-main {
-    height: 100%;
-    overflow: hidden; /* Предотвращаем наложение прокрутки родителя */
-    display: flex;
-    flex-direction: column;
-}
