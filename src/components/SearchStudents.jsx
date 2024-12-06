@@ -22,77 +22,6 @@ const SearchStudents = () => {
   const [userUid, setUserUid] = useState(null);
   const [messages, setMessages] = useState([]);
   const [userAvatarUrl, setUserAvatarUrl] = useState(null);
-  const searchHistoryRef = useRef(null);
-  const chatListRef = useRef(null);
-
-  // Обработчик скролла
-  const handleTouchStart = (e, element) => {
-    element.scrollStart = element.scrollTop; // Запоминаем начальное положение скролла
-  };
-
-  const handleTouchMove = (e, element) => {
-    const isAtTop =
-      element.scrollTop === 0 && e.touches[0].clientY > element.scrollStart;
-    const isAtBottom =
-      element.scrollTop + element.offsetHeight >= element.scrollHeight &&
-      e.touches[0].clientY < element.scrollStart;
-
-    if (isAtTop || isAtBottom) {
-      e.preventDefault(); // Блокируем скролл родительского элемента
-    }
-  };
-
-  // Добавление и удаление событий
-  useEffect(() => {
-    const searchHistoryEl = searchHistoryRef.current;
-    const chatListEl = chatListRef.current;
-
-    if (searchHistoryEl) {
-      searchHistoryEl.addEventListener("touchstart", (e) =>
-        handleTouchStart(e, searchHistoryEl),
-        { passive: false }
-      );
-      searchHistoryEl.addEventListener("touchmove", (e) =>
-        handleTouchMove(e, searchHistoryEl),
-        { passive: false }
-      );
-    }
-
-    if (chatListEl) {
-      chatListEl.addEventListener("touchstart", (e) =>
-        handleTouchStart(e, chatListEl),
-        { passive: false }
-      );
-      chatListEl.addEventListener("touchmove", (e) =>
-        handleTouchMove(e, chatListEl),
-        { passive: false }
-      );
-    }
-
-    // Убираем обработчики при размонтировании
-    return () => {
-      if (searchHistoryEl) {
-        searchHistoryEl.removeEventListener("touchstart", (e) =>
-          handleTouchStart(e, searchHistoryEl)
-        );
-        searchHistoryEl.removeEventListener("touchmove", (e) =>
-          handleTouchMove(e, searchHistoryEl)
-        );
-      }
-
-      if (chatListEl) {
-        chatListEl.removeEventListener("touchstart", (e) =>
-          handleTouchStart(e, chatListEl)
-        );
-        chatListEl.removeEventListener("touchmove", (e) =>
-          handleTouchMove(e, chatListEl)
-        );
-      }
-    };
-  }, []);
-
-
-
 
   useEffect(() => {
     const db = getDatabase();
@@ -318,7 +247,7 @@ const SearchStudents = () => {
               alt="Моя история"
               className="chat-page-story-avatar"
             />
-            <p>Моя история</p>
+            <p>Моя история 3</p>
           </div>
         </div>
 
@@ -343,7 +272,7 @@ const SearchStudents = () => {
 
           {/* Если пользователь не вводит текст и не в фокусе - показываем историю */}
           {searchHistory.length > 0 && !isInputFocused && searchQuery === "" && (
-            <div className="chat-page-search-history" ref={searchHistoryRef} style={{ overflowY: "auto", maxHeight: "1000px" }}>
+            <div className="chat-page-search-history">
               <div className="chat-page-history-header">
                 <h3 style={{color: "grey"}}>Недавнее</h3>
                 <span onClick={clearSearchHistory} className="chat-page-clear-history">
@@ -376,7 +305,7 @@ const SearchStudents = () => {
       )}
 
       {showSearch && (
-        <div className="chat-page-chat-list" ref={chatListRef} style={{ overflowY: "auto", maxHeight: "1000px" }}>
+        <div className="chat-page-chat-list">
           {searchResults.length > 0 ? (
             searchResults.map((user) => (
               <div key={user.uid} className="chat-page-chat-item" onClick={() => goToProfile(user.uid)}>
