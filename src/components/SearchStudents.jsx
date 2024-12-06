@@ -6,7 +6,6 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import '../SearchPage.css';
 import basiclogo from "../basic-logo.png";
 import { Link } from "react-router-dom";
-import { useSpring, animated } from "@react-spring/web";
 import { FaPlusCircle, FaArrowLeft } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -23,31 +22,6 @@ const SearchStudents = () => {
   const [userUid, setUserUid] = useState(null);
   const [messages, setMessages] = useState([]);
   const [userAvatarUrl, setUserAvatarUrl] = useState(null);
-  const [isBouncing, setIsBouncing] = useState(false);
-  const [yOffset, setYOffset] = useState(0);
-  const bounceProps = useSpring({
-    transform: `translateY(${yOffset}px)`,
-    config: { tension: 200, friction: 10 },
-    onRest: () => setIsBouncing(false),
-  });
-
-  const handleScroll = (event, type) => {
-    const target = event.target;
-    if (!isBouncing) {
-      if (type === "history") {
-        if (target.scrollTop === 0 && event.deltaY < 0) {
-          setIsBouncing(true);
-          setYOffset(-20); // Эффект отскока вверх
-        } else if (
-          target.scrollTop + target.offsetHeight >= target.scrollHeight &&
-          event.deltaY > 0
-        ) {
-          setIsBouncing(true);
-          setYOffset(20); // Эффект отскока вниз
-        }
-      }
-    }
-  };
 
   useEffect(() => {
     const db = getDatabase();
@@ -298,11 +272,6 @@ const SearchStudents = () => {
 
           {/* Если пользователь не вводит текст и не в фокусе - показываем историю */}
           {searchHistory.length > 0 && !isInputFocused && searchQuery === "" && (
-                 <animated.div
-                 style={bounceProps}
-                 className="chat-page-search-history"
-                 onWheel={(event) => handleScroll(event, "history")}
-               >
             <div className="chat-page-search-history">
               <div className="chat-page-history-header">
                 <h3 style={{color: "grey"}}>Недавнее</h3>
@@ -331,18 +300,12 @@ const SearchStudents = () => {
                 </div>
               ))}
             </div>
-            </animated.div>
           )}
         </>
       )}
 
       {showSearch && (
         <div className="chat-page-chat-list">
-                <animated.div
-        style={bounceProps}
-        className="chat-page-chat-list"
-        onWheel={(event) => handleScroll(event, "list")}
-      >
           {searchResults.length > 0 ? (
             searchResults.map((user) => (
               <div key={user.uid} className="chat-page-chat-item" onClick={() => goToProfile(user.uid)}>
@@ -356,7 +319,6 @@ const SearchStudents = () => {
           ) : (
             searchQuery.trim() !== "" && <p style={{color: "whitesmoke"}}>Ничего не найдено</p>
           )}
-          </animated.div>
         </div>
       )}
 

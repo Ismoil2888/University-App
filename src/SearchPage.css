@@ -250,7 +250,5 @@
   }
 
   .chat-page-search-history, .chat-page-chat-list {
-    overflow-y: scroll;
-    overscroll-behavior: contain; /* Предотвращает прокрутку родителя */
-    scroll-snap-type: y mandatory; /* Указывает обязательное закрепление */
+    -webkit-overflow-scrolling: touch;
   }  
