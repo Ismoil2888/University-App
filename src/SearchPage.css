@@ -6,7 +6,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* scrollbar-width: none; */
     overflow-x: hidden;
   }
 
@@ -128,7 +127,6 @@
     overflow-y: scroll;
     padding-bottom: 65px;
   }
-
   
   .chat-page-chat-item {
     display: flex;
@@ -250,3 +248,9 @@
   .sb p{
     margin-top: 7px;
   }
+
+  .chat-page-search-history, .chat-page-chat-list {
+    overflow-y: scroll;
+    overscroll-behavior: contain; /* Предотвращает прокрутку родителя */
+    scroll-snap-type: y mandatory; /* Указывает обязательное закрепление */
+  }  
