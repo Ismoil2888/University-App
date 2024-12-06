@@ -279,7 +279,6 @@ const SearchStudents = () => {
                   Очистить все
                 </span>
               </div>
-              <div className="search-history-list">
               {searchHistory.map((user) => (
                 <div
                   key={user.uid}
@@ -300,7 +299,6 @@ const SearchStudents = () => {
                     </div>
                 </div>
               ))}
-              </div>
             </div>
           )}
         </>
