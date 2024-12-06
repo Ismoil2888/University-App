@@ -247,7 +247,7 @@ const SearchStudents = () => {
               alt="Моя история"
               className="chat-page-story-avatar"
             />
-            <p>Моя история 1</p>
+            <p>Моя история 2</p>
           </div>
         </div>
 
@@ -279,6 +279,7 @@ const SearchStudents = () => {
                   Очистить все
                 </span>
               </div>
+              <div className="search-history-list">
               {searchHistory.map((user) => (
                 <div
                   key={user.uid}
@@ -299,6 +300,7 @@ const SearchStudents = () => {
                     </div>
                 </div>
               ))}
+              </div>
             </div>
           )}
         </>
