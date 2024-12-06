@@ -247,7 +247,7 @@ const SearchStudents = () => {
               alt="Моя история"
               className="chat-page-story-avatar"
             />
-            <p>Моя история</p>
+            <p>Моя история 1</p>
           </div>
         </div>
 
