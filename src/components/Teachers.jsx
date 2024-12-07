@@ -4,9 +4,10 @@
 // import { auth } from "../firebase";
 // import "../App.css";
 // import "../teachers.css";
-// import logoTip from "../basic-logo.png"; 
 // import defaultTeacherImg from "../teacher.png";
 // import { FaCommentDots } from "react-icons/fa";
+// import { FaUserSecret } from "react-icons/fa";
+// import { BsSendFill } from "react-icons/bs";
 // import { GoKebabHorizontal } from "react-icons/go";
 // import anonymAvatar from '../anonym2.jpg';
 
@@ -23,6 +24,7 @@
 //   const [actionMenuId, setActionMenuId] = useState(null);
 //   const actionMenuRef = useRef(null);
 
+
 // const navigate = useNavigate();
 
 // const goToProfile = (userId) => {
@@ -33,10 +35,12 @@
 //     const database = getDatabase();
 //     const teachersRef = dbRef(database, "teachers");
 
+//     // Загрузка преподавателей
 //     onValue(teachersRef, (snapshot) => {
 //       const data = snapshot.val();
 //       if (data) {
 //         const loadedTeachers = Object.keys(data).map((id) => ({ id, ...data[id] }));
+//       // Для каждого преподавателя загружаем количество комментариев
 //       loadedTeachers.forEach((teacher) => {
 //         const commentsRef = dbRef(database, `comments/${teacher.id}`);
 //         onValue(commentsRef, (commentSnapshot) => {
@@ -52,6 +56,7 @@
 //       }
 //     });
 
+//     // Загрузка данных текущего пользователя
 //     const user = auth.currentUser;
 //     if (user) {
 //       const userRef = dbRef(database, `users/${user.uid}`);
@@ -78,6 +83,7 @@
 //   const openCommentModal = (teacherId) => {
 //     setCommentModal({ isOpen: true, teacherId });
 
+//     // Загрузка комментариев для преподавателя
 //     const database = getDatabase();
 //     const commentsRef = dbRef(database, `comments/${teacherId}`);
 //     onValue(commentsRef, (snapshot) => {
@@ -106,24 +112,27 @@
 //     const commentRef = dbRef(database, `comments/${commentModal.teacherId}`);
   
 //     if (editingCommentId) {
+//       // Изменение комментария
 //       update(dbRef(database, `comments/${commentModal.teacherId}/${editingCommentId}`), {
 //         comment: newComment,
 //         timestamp: new Date().toLocaleString(),
 //       });
 //       setEditingCommentId(null);
 //     } else {
+//       // Добавление нового комментария
 //       const newCommentRef = push(commentRef);
 //       update(newCommentRef, {
 //         avatarUrl: isAnonymous ? anonymAvatar : userDetails.avatarUrl,
 //         username: isAnonymous ? "Анонимно" : userDetails.username,
 //         userId: isAnonymous ? null : auth.currentUser?.uid,
-//         anonymousOwnerId: isAnonymous ? auth.currentUser?.uid : null, // Сохраняем ID для анонимного комментария
+//         anonymousOwnerId: isAnonymous ? auth.currentUser?.uid : null,
 //         comment: newComment,
 //         timestamp: new Date().toLocaleString(),
 //       });
 //     }
 //     setNewComment("");
-//   };
+//   };  
+  
 
 //   const handleEditComment = (commentId, commentText) => {
 //     setEditingCommentId(commentId);
@@ -139,34 +148,49 @@
 
 //   useEffect(() => {
 //     const handleClickOutside = (event) => {
-//       if (actionMenuRef.current && !actionMenuRef.current.contains(event.target)) {
+//       const isInsideMenu = actionMenuRef.current && actionMenuRef.current.contains(event.target);
+//       const isActionButton = event.target.closest(".action-menu button");
+      
+//       // Закрываем меню только если клик произошел за пределами actionMenu и не на кнопках
+//       if (!isInsideMenu && !isActionButton) {
 //         setActionMenuId(null);
 //       }
 //     };
-
+  
 //     document.addEventListener("mousedown", handleClickOutside);
 //     return () => {
 //       document.removeEventListener("mousedown", handleClickOutside);
 //     };
-//   }, []);
+//   }, []);  
 
 //   const toggleActionMenu = (commentId) => {
 //     setActionMenuId((prev) => (prev === commentId ? null : commentId));
 //   };
 
-//     const handleContextMenu = (event) => {
-//       event.preventDefault();
+//   const [isMenuOpen, setIsMenuOpen] = useState(false);
+//   const [userAvatarUrl, setUserAvatarUrl] = useState(null);
+
+//   useEffect(() => {
+//     const user = auth.currentUser;
+//     if (user) {
+
+//       // Получаем URL аватарки пользователя
+//       const db = getDatabase();
+//       const userRef = dbRef(db, `users/${user.uid}`);
+//       onValue(userRef, (snapshot) => {
+//         const userData = snapshot.val();
+//         if (userData && userData.avatarUrl) {
+//           setUserAvatarUrl(userData.avatarUrl);
+//         } else {
+//           setUserAvatarUrl("./default-image.png");
+//         }
+//       });
+
 //     }
+//   }, []);
 
 //   return (
-//     <div className="glav-cotainer" onContextMenu={handleContextMenu}>
-//       <section className="tch-hero">
-//         <div className="faculty-image">
-//           <img style={{ height: "240px", marginTop: "58px" }} width="255px" src={logoTip} alt="Фото преподавателей" />
-//         </div>
-//         <h1>Преподавательский Состав</h1>
-//       </section>
-
+//     <div className="glav-cotainer">
 //       <section className="teachers-section">
 //         <div className="search-bar">
 //           <input 
@@ -212,7 +236,10 @@
 //         </button>
 //       </div>
 //       <div className="comments-list">
-//         {comments.map((comment) => (
+//         {comments
+//         .slice()
+//         .reverse()
+//         .map((comment) => (
 //           <div className="comment" key={comment.id}>
 //             <img
 //               src={comment.avatarUrl || "./default-avatar.png"}
@@ -234,6 +261,7 @@
 //   {(comment.userId === auth.currentUser?.uid || comment.anonymousOwnerId === auth.currentUser?.uid) && (
 //     <>
 //       <GoKebabHorizontal
+//         style={{fontSize: "20px", color: "grey"}}
 //         onClick={() => toggleActionMenu(comment.id)}
 //         className="action-icon"
 //       />
@@ -257,11 +285,13 @@
 //     value={newComment} 
 //     onChange={(e) => setNewComment(e.target.value)} 
 //   />
-//   <button onClick={() => handleCommentSubmit(false)}>
+//   <button onClick={() => handleCommentSubmit(false)} style={{display: "flex", alignContent: "center", justifyContent: "center"}}>
 //     {editingCommentId ? "Изменить" : "Отправить"}
+//     <BsSendFill style={{marginLeft: "10px", fontSize: "22px"}} />
 //   </button>
-//   <button onClick={() => handleCommentSubmit(true)}>
+//   <button onClick={() => handleCommentSubmit(true)} style={{display: "flex", alignContent: "center", justifyContent: "center"}}>
 //     {editingCommentId ? "Изменить анонимно" : "Отправить анонимно"}
+//     <FaUserSecret style={{marginLeft: "5px", fontSize: "25px", color: ""}} />
 //   </button>
 // </div>
 //     </div>
@@ -273,6 +303,10 @@
 // };
 
 // export default Teachers;
+
+
+
+
 
 
 

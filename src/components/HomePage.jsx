@@ -18,8 +18,6 @@
 //   const [comments, setComments] = useState([]);
 //   const [newComment, setNewComment] = useState("");
 //   const [editingCommentId, setEditingCommentId] = useState(null);
-//   const [actionMenuId, setActionMenuId] = useState(null);
-//   const actionMenuRef = useRef(null);
 //   const [userDetails, setUserDetails] = useState({ username: "", avatarUrl: "" });
 //   const userId = auth.currentUser?.uid;
 //   const [unreadCount, setUnreadCount] = useState(0);
@@ -154,12 +152,6 @@
 //     setNewComment("");
 //   };
 
-//   const handleEditComment = (commentId, commentText) => {
-//     setEditingCommentId(commentId);
-//     setNewComment(commentText);
-//     setActionMenuId(null);
-//   };
-
 //   const handleDeleteComment = (commentId) => {
 //     const database = getDatabase();
 //     const commentRef = dbRef(database, `postComments/${commentModal.postId}/${commentId}`);
@@ -231,6 +223,29 @@
 //     }
 //   };
 
+//      const handleDeletePost = (postId) => {
+//      const db = getDatabase();
+//      const postRef = dbRef(db, `posts/${postId}`);
+//      remove(postRef)
+//        .then(() => {
+//          alert("success");
+//          alert("Пост удален!");
+//          setTimeout(() => {
+//            alert("");
+//            alert("");
+//          }, 3000);
+//        })
+//        .catch((error) => {
+//          console.error("Ошибка удаления поста: ", error);
+//          alert("error");
+//          alert("Ошибка удаления поста.");
+//          setTimeout(() => {
+//           alert("");
+//           alert("");
+//          }, 3000);
+//        });
+//    };
+
 //   useEffect(() => {
 //     const db = getDatabase();
 //     const user = auth.currentUser;
@@ -297,8 +312,6 @@
 //     <div className="home-container">
 //       <header>
 //         <div className="header-nav-2">
-//           <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Главная</ul>
-
 //           <Link to="/notifications">
 //   <div style={{ position: "relative" }}>
 //     <FontAwesomeIcon icon={faBell} className="footer-icon" />
@@ -349,6 +362,7 @@
 //                   <img src={post.mediaUrl} alt="Post Media" className="post-media" />
 //                 )
 //               )}
+//               <span onClick={() => handleDeletePost(post.id)}>Удалить</span>
 
 //               <div className="post-actions">
 //                 {isLiked ? (
@@ -382,7 +396,7 @@
 //                 <span className="post-username">{post.userName}</span>{" "}
 //               </p>
 
-//               <p style={{color: "grey", marginLeft: "10px", marginTop: "5px"}} onClick={() => openCommentModal(post.id)}>
+//               <p onClick={() => openCommentModal(post.id)}>
 //                 Посмотреть все комментарии ({post.commentCount || 0})
 //               </p>
 
@@ -451,7 +465,7 @@
 //              </div>
 //            ))
 //          ) : (
-//            <p style={{color: "grey"}}>Нет лайков для этого поста.</p>
+//            <p>Нет лайков для этого поста.</p>
 //          )}
 //        </div>
 //      </div>
@@ -588,25 +602,23 @@ const HomePage = () => {
   const handleDeletePost = (postId) => {
     const db = getDatabase();
     const postRef = dbRef(db, `posts/${postId}`);
-    remove(postRef)
+    const commentsRef = dbRef(db, `postComments/${postId}`);
+    const likesRef = dbRef(db, `posts/${postId}/likes`);
+  
+    // Удаляем пост, лайки и комментарии
+    Promise.all([
+      remove(postRef),
+      remove(commentsRef),
+      remove(likesRef),
+    ])
       .then(() => {
-        setNotificationType("success");
-        setNotification("Пост удален!");
-        setTimeout(() => {
-          setNotification("");
-          setNotificationType("");
-        }, 3000);
+        setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+        console.log("Пост и связанные данные успешно удалены.");
       })
       .catch((error) => {
-        console.error("Ошибка удаления поста: ", error);
-        setNotificationType("error");
-        setNotification("Ошибка удаления поста.");
-        setTimeout(() => {
-          setNotification("");
-          setNotificationType("");
-        }, 3000);
+        console.error("Ошибка удаления поста:", error);
       });
-  };
+  }; 
 
   const toggleTextExpansion = (postId) => {
     setExpandedPosts((prev) => ({
