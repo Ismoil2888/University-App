@@ -1,30 +1,38 @@
+//новый упрощенный
 // import React, { useState, useEffect, useRef } from "react";
-// import { Link, useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 // import { getDatabase, ref as dbRef, onValue, get, push, set, update, remove } from "firebase/database";
 // import { auth, database } from "../firebase";
 // import defaultAvatar from "../default-image.png";
 // import "../PostForm.css";
 // import anonymAvatar from '../anonym2.jpg';
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { GoKebabHorizontal } from "react-icons/go";
 // import { FaHeart, FaRegHeart, FaRegComment, FaRegBookmark } from "react-icons/fa";
-// import { faBell } from "@fortawesome/free-solid-svg-icons";
 
 // const HomePage = () => {
-//   const [isMenuOpen, setIsMenuOpen] = useState(false);
 //   const [userAvatarUrl, setUserAvatarUrl] = useState(null);
 //   const [posts, setPosts] = useState([]);
+//   const [menuPostId, setMenuPostId] = useState(null);
 //   const [expandedPosts, setExpandedPosts] = useState({});
 //   const [commentModal, setCommentModal] = useState({ isOpen: false, postId: null });
 //   const [comments, setComments] = useState([]);
 //   const [newComment, setNewComment] = useState("");
 //   const [editingCommentId, setEditingCommentId] = useState(null);
+//   const [actionMenuId, setActionMenuId] = useState(null);
+//   const actionMenuRef = useRef(null);
+//   const menuRef = useRef(null);
 //   const [userDetails, setUserDetails] = useState({ username: "", avatarUrl: "" });
-//   const userId = auth.currentUser?.uid;
+//   const userId = auth.currentUser?.uid; 
 //   const [unreadCount, setUnreadCount] = useState(0);
 //   const navigate = useNavigate();
 
 //   const goToProfile = (userId) => {
 //     navigate(`/profile/${userId}`);
+//   };
+//   const MAX_TEXT_LENGTH = 100; 
+
+//   const toggleMenu = (postId) => {
+//     setMenuPostId(postId === menuPostId ? null : postId);
 //   };
 
 //   useEffect(() => {
@@ -46,20 +54,23 @@
 //   useEffect(() => {
 //     const db = getDatabase();
 //     const postsRef = dbRef(db, "posts");
+  
 //     const unsubscribe = onValue(postsRef, (snapshot) => {
 //       const postsData = snapshot.val();
 //       if (postsData) {
-//         const postsArray = Object.keys(postsData).map((key) => ({
-//           id: key,
-//           ...postsData[key],
-//         }));
-//         setPosts(postsArray);
+//         const approvedPosts = Object.keys(postsData)
+//           .map((key) => ({
+//             id: key,
+//             ...postsData[key],
+//           }))
+//           .filter((post) => post.status === "approved");
+//         setPosts(approvedPosts);
 //       }
 //     });
-
+  
 //     const user = auth.currentUser;
 //     if (user) {
-//       const userRef = dbRef(database, `users/${user.uid}`);
+//       const userRef = dbRef(db, `users/${user.uid}`);
 //       onValue(userRef, (snapshot) => {
 //         const data = snapshot.val();
 //         if (data) {
@@ -70,9 +81,29 @@
 //         }
 //       });
 //     }
-
+  
 //     return () => unsubscribe();
 //   }, []);
+
+//   const handleDeletePost = (postId) => {
+//     const db = getDatabase();
+//     const postRef = dbRef(db, `posts/${postId}`);
+//     const commentsRef = dbRef(db, `postComments/${postId}`);
+//     const likesRef = dbRef(db, `posts/${postId}/likes`);
+  
+//     Promise.all([
+//       remove(postRef),
+//       remove(commentsRef),
+//       remove(likesRef),
+//     ])
+//       .then(() => {
+//         setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+//         console.log("Пост и связанные данные успешно удалены.");
+//       })
+//       .catch((error) => {
+//         console.error("Ошибка удаления поста:", error);
+//       });
+//   }; 
 
 //   const toggleTextExpansion = (postId) => {
 //     setExpandedPosts((prev) => ({
@@ -110,7 +141,8 @@
 //     const database = getDatabase();
 //     const commentRef = dbRef(database, `postComments/${commentModal.postId}`);
 //     const postRef = dbRef(database, `posts/${commentModal.postId}`);
-//     const formattedTimestamp = new Date().toLocaleString("ru-RU");
+
+//     const formattedTimestamp = new Date().toLocaleString("ru-RU"); 
 
 //     if (editingCommentId) {
 //       update(dbRef(database, `postComments/${commentModal.postId}/${editingCommentId}`), {
@@ -126,7 +158,7 @@
 //         userId: isAnonymous ? null : auth.currentUser?.uid,
 //         anonymousOwnerId: isAnonymous ? auth.currentUser?.uid : null,
 //         comment: newComment,
-//         timestamp: formattedTimestamp,
+//         timestamp: formattedTimestamp, 
 //       });
 
 //       get(postRef).then((snapshot) => {
@@ -139,6 +171,7 @@
 //             username: isAnonymous ? "Анонимно" : userDetails.username,
 //             comment: newComment,
 //             timestamp: formattedTimestamp,
+//             userId: isAnonymous ? null : auth.currentUser?.uid,
 //             type: 'comment',
 //           }).catch((error) => console.error("Ошибка при добавлении уведомления: ", error));
 //         }
@@ -150,6 +183,12 @@
 //       });
 //     }
 //     setNewComment("");
+//   };
+
+//   const handleEditComment = (commentId, commentText) => {
+//     setEditingCommentId(commentId);
+//     setNewComment(commentText);
+//     setActionMenuId(null);
 //   };
 
 //   const handleDeleteComment = (commentId) => {
@@ -170,6 +209,7 @@
 
 //     const db = getDatabase();
 //     const postLikesRef = dbRef(db, `posts/${postId}/likes`);
+
 //     const post = posts.find((p) => p.id === postId);
 //     const isLiked = post?.likes && post.likes[userId];
 //     const updatedLikes = { ...post.likes };
@@ -216,35 +256,13 @@
 //             username: userDetails.username || "Пользователь",
 //             message: `Пользователю "${userDetails.username}" понравилась ваша публикация`,
 //             timestamp: new Date().toLocaleString("ru-RU"),
+//             userId: auth.currentUser?.uid,
 //             type: 'like',
 //           }).catch((error) => console.error("Ошибка при добавлении уведомления: ", error));
 //         }
 //       });
 //     }
 //   };
-
-//      const handleDeletePost = (postId) => {
-//      const db = getDatabase();
-//      const postRef = dbRef(db, `posts/${postId}`);
-//      remove(postRef)
-//        .then(() => {
-//          alert("success");
-//          alert("Пост удален!");
-//          setTimeout(() => {
-//            alert("");
-//            alert("");
-//          }, 3000);
-//        })
-//        .catch((error) => {
-//          console.error("Ошибка удаления поста: ", error);
-//          alert("error");
-//          alert("Ошибка удаления поста.");
-//          setTimeout(() => {
-//           alert("");
-//           alert("");
-//          }, 3000);
-//        });
-//    };
 
 //   useEffect(() => {
 //     const db = getDatabase();
@@ -265,9 +283,43 @@
 //         }
 //       });
 //     }
-//   }, []);  
+//   }, []);
+
+//   const toggleActionMenu = (commentId) => {
+//     setActionMenuId((prev) => (prev === commentId ? null : commentId));
+//   };
+
+//   useEffect(() => {
+//     const handleClickOutside = (event) => {
+//       const isInsideMenu = actionMenuRef.current && actionMenuRef.current.contains(event.target);
+//       const isActionButton = event.target.closest(".action-menu button");
+      
+//       if (!isInsideMenu && !isActionButton) {
+//         setActionMenuId(null);
+//       }
+//     };
+
+//     document.addEventListener("mousedown", handleClickOutside);
+//     return () => {
+//       document.removeEventListener("mousedown", handleClickOutside);
+//     };
+//   }, []);
+
+//   useEffect(() => {
+//     const handleClickOutside = (event) => {
+//       if (menuRef.current && !menuRef.current.contains(event.target)) {
+//         setMenuPostId(null);
+//       }
+//     };
+
+//     document.addEventListener("mousedown", handleClickOutside);
+//     return () => {
+//       document.removeEventListener("mousedown", handleClickOutside);
+//     };
+//   }, []);
   
 //   const [likesModal, setLikesModal] = useState({ isOpen: false, users: [] });
+
 //   const openLikesModal = (postId) => {
 //     const db = getDatabase();
 //     const likesRef = dbRef(db, `posts/${postId}/likes`);
@@ -310,36 +362,21 @@
 
 //   return (
 //     <div className="home-container">
-//       <header>
-//         <div className="header-nav-2">
-//           <Link to="/notifications">
-//   <div style={{ position: "relative" }}>
-//     <FontAwesomeIcon icon={faBell} className="footer-icon" />
-//     {unreadCount > 0 && (
-//       <span className="notification-count">
-//         {unreadCount}
-//       </span>
-//     )}
-//   </div>
-// </Link>
-
-//           <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`}>          
-//             <span className="bm-span"></span>
-//             <span className="bm-span"></span>
-//             <span className="bm-span"></span>
-//           </div>
-//         </div>
-//       </header>
-
 //       <main style={{ paddingTop: "70px", paddingBottom: "100px" }}>
-//         <section id="posts">
-//           {posts
-//            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-//            .map((post) => {
-//             const likesCount = post.likes ? Object.keys(post.likes).length : 0;
-//             const isLiked = post.likes && post.likes[userId];
-//             return(
+//   <section id="posts">
+//     {posts.length === 0 ? (
+//       <div className="no-posts-message">
+//         <h2>Платформа для студентов факультета ТИК Таджикского Технического Университета</h2>
+//       </div>
+//     ) : (
+//       posts
+//         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+//         .map((post) => {
+//           const likesCount = post.likes ? Object.keys(post.likes).length : 0;
+//           const isLiked = post.likes && post.likes[userId];
+//           return (
 //             <div key={post.id} className="post-card">
+//                       <div key={post.id} className="post-card">
 //               <div className="post-header">
 //                 <div className="post-author">
 //                   <img
@@ -353,6 +390,17 @@
 //                   onClick={() => goToProfile(post.userId)}
 //                   >{post.userName}</span>
 //                 </div>
+//                 {post.userId === auth.currentUser?.uid && (
+//                   <div className="three-dot-menu">
+//                     <span onClick={() => toggleMenu(post.id)}>...</span>
+//                     {menuPostId === post.id && (
+//                       <div ref={menuRef} className="menu-options">
+//                         <span>Изменить</span>
+//                         <span onClick={() => handleDeletePost(post.id)}>Удалить</span>
+//                       </div>
+//                     )}
+//                   </div>
+//                 )}
 //               </div>
 
 //               {post.mediaUrl && (
@@ -362,7 +410,6 @@
 //                   <img src={post.mediaUrl} alt="Post Media" className="post-media" />
 //                 )
 //               )}
-//               <span onClick={() => handleDeletePost(post.id)}>Удалить</span>
 
 //               <div className="post-actions">
 //                 {isLiked ? (
@@ -394,9 +441,36 @@
 
 //               <p className="post-content">
 //                 <span className="post-username">{post.userName}</span>{" "}
+//                 {post.description.length > MAX_TEXT_LENGTH && !expandedPosts[post.id] ? (
+//                   <>
+//                     {post.description.slice(0, MAX_TEXT_LENGTH)} ...
+//                     <span
+//                       className="toggle-text"
+//                       onClick={() => toggleTextExpansion(post.id)}
+//                     >
+//                       ещё
+//                     </span>
+//                   </>
+//                 ) : (
+//                   <>
+//                     {post.description}
+//                     {post.description.length > MAX_TEXT_LENGTH && (
+//                       <span
+//                         className="toggle-text"
+//                         onClick={() => toggleTextExpansion(post.id)}
+//                         style={{ marginLeft: "5px"}}
+//                       >
+//                         свернуть
+//                       </span>
+//                     )}
+//                   </>
+//                 )}
 //               </p>
 
-//               <p onClick={() => openCommentModal(post.id)}>
+//               <p 
+//                 style={{color: "grey", marginLeft: "10px", marginTop: "5px"}} 
+//                 onClick={() => openCommentModal(post.id)} 
+//               >
 //                 Посмотреть все комментарии ({post.commentCount || 0})
 //               </p>
 
@@ -424,11 +498,29 @@
 //                           <div className="comment-content">
 //                             <p 
 //                               className="comment-username"  
+//                               onClick={() => goToProfile(comment.userId)}
 //                             >
 //                               {comment.username}
 //                             </p>
 //                             <p className="comment-text">{comment.comment}</p>
 //                             <span className="comment-timestamp">{comment.timestamp}</span>
+//                           </div>
+//                           <div ref={actionMenuRef} className="menu-icon-container">
+//                             {(comment.userId === auth.currentUser?.uid || comment.anonymousOwnerId === auth.currentUser?.uid) && (
+//                               <>
+//                                 <GoKebabHorizontal 
+//                                   style={{fontSize: "20px", color: "grey"}} 
+//                                   onClick={() => toggleActionMenu(comment.id)} 
+//                                   className="action-icon"
+//                                 />
+//                                 {actionMenuId === comment.id && (
+//                                   <div className={`action-menu show`}>
+//                                     <button onClick={() => handleEditComment(comment.id, comment.comment)}>Изменить</button>
+//                                     <button onClick={() => handleDeleteComment(comment.id)}>Удалить</button>
+//                                   </div>
+//                                 )}
+//                               </>
+//                             )}
 //                           </div>
 //                         </div>
 //                       ))}
@@ -447,36 +539,38 @@
 //                 </div>
 //               )}
 
-//  {likesModal.isOpen && (
-//    <div className="like-modal-overlay">
-//      <div className="like-modal">
-//        <div className="like-modal-header">
-//          <h3>Лайкнувшие пользователи</h3>
-//          <button className="close-like-modal" onClick={closeLikesModal}>
-//            &times;
-//          </button>
-//        </div>
-//        <div className="like-modal-body">
-//          {likesModal.users.length > 0 ? (
-//            likesModal.users.map((user) => (
-//              <div key={user.userId} className="like-user">
-//                <img src={user.avatarUrl} alt={user.username} className="like-avatar" onClick={() => goToProfile(post.userId)} />
-//                <span className="like-username" onClick={() => goToProfile(post.userId)}>{user.username}</span>
-//              </div>
-//            ))
-//          ) : (
-//            <p>Нет лайков для этого поста.</p>
-//          )}
-//        </div>
-//      </div>
-//    </div>
-//  )}
+//               {likesModal.isOpen && (
+//                 <div className="like-modal-overlay">
+//                   <div className="like-modal">
+//                     <div className="like-modal-header">
+//                       <h3>Лайкнувшие пользователи</h3>
+//                       <button className="close-like-modal" onClick={closeLikesModal}>
+//                         &times;
+//                       </button>
+//                     </div>
+//                     <div className="like-modal-body">
+//                       {likesModal.users.length > 0 ? (
+//                         likesModal.users.map((user) => (
+//                           <div key={user.userId} className="like-user">
+//                             <img src={user.avatarUrl} alt={user.username} className="like-avatar" onClick={() => goToProfile(post.userId)} />
+//                             <span className="like-username" onClick={() => goToProfile(user.userId)}>{user.username}</span>
+//                           </div>
+//                         ))
+//                       ) : (
+//                         <p style={{color: "grey"}}>Нет лайков для этого поста.</p>
+//                       )}
+//                     </div>
+//                   </div>
+//                 </div>
+//               )}
 //               <p className="post-date">{new Date(post.createdAt).toLocaleString("ru-RU")}</p>
 //             </div>
-//             );
-//           })}
-//         </section>
-//       </main>
+//             </div>
+//           );
+//         })
+//     )}
+//   </section>
+// </main>
 //     </div>
 //   );
 // };
@@ -495,6 +589,8 @@
 
 
 
+
+//оригинал
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getDatabase, ref as dbRef, onValue, get, push, set, update, remove } from "firebase/database";
@@ -569,22 +665,24 @@ const HomePage = () => {
   useEffect(() => {
     const db = getDatabase();
     const postsRef = dbRef(db, "posts");
-
+  
     const unsubscribe = onValue(postsRef, (snapshot) => {
       const postsData = snapshot.val();
       if (postsData) {
-        const postsArray = Object.keys(postsData).map((key) => ({
-          id: key,
-          ...postsData[key],
-        }));
-        setPosts(postsArray);
+        const approvedPosts = Object.keys(postsData)
+          .map((key) => ({
+            id: key,
+            ...postsData[key],
+          }))
+          .filter((post) => post.status === "approved"); // Фильтруем только одобренные посты
+        setPosts(approvedPosts);
       }
     });
-
+  
     // Загрузка данных текущего пользователя
     const user = auth.currentUser;
     if (user) {
-      const userRef = dbRef(database, `users/${user.uid}`);
+      const userRef = dbRef(db, `users/${user.uid}`);
       onValue(userRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
@@ -595,7 +693,7 @@ const HomePage = () => {
         }
       });
     }
-
+  
     return () => unsubscribe(); // Отписываемся от слушателя при размонтировании компонента
   }, []);
 
@@ -968,15 +1066,20 @@ const HomePage = () => {
       </header>
 
       <main style={{ paddingTop: "70px", paddingBottom: "100px" }}>
-        <section id="posts">
-          {posts
-           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Сортируем по дате создания
-           .map((post) => {
-            const likesCount = post.likes ? Object.keys(post.likes).length : 0;
-            const isLiked = post.likes && post.likes[userId];
-            return(
+  <section id="posts">
+    {posts.length === 0 ? (
+      <div className="no-posts-message">
+        <h2>Платформа для студентов факультета ТИК Таджикского Технического Университета</h2>
+      </div>
+    ) : (
+      posts
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .map((post) => {
+          const likesCount = post.likes ? Object.keys(post.likes).length : 0;
+          const isLiked = post.likes && post.likes[userId];
+          return (
             <div key={post.id} className="post-card">
-              {/* Заголовок: Аватар и имя пользователя */}
+                      <div key={post.id} className="post-card">
               <div className="post-header">
                 <div className="post-author">
                   <img
@@ -1003,7 +1106,6 @@ const HomePage = () => {
                 )}
               </div>
 
-              {/* Медиа (изображение или видео) */}
               {post.mediaUrl && (
                 post.mediaUrl.endsWith(".mp4") ? (
                   <video controls src={post.mediaUrl} className="post-media" />
@@ -1012,7 +1114,6 @@ const HomePage = () => {
                 )
               )}
 
-                           {/* Actions: Like, Comment, Save */}
               <div className="post-actions">
                 {isLiked ? (
                   <FaHeart
@@ -1033,7 +1134,6 @@ const HomePage = () => {
                 <FaRegBookmark className="post-icon" />
               </div>
 
-              {/* Likes Count */}
               <p 
                 className="post-likes" 
                 onClick={() => openLikesModal(post.id)}
@@ -1042,7 +1142,6 @@ const HomePage = () => {
                 Нравится: {likesCount}
               </p>
 
-              {/* Описание с разворачиванием/сворачиванием текста */}
               <p className="post-content">
                 <span className="post-username">{post.userName}</span>{" "}
                 {post.description.length > MAX_TEXT_LENGTH && !expandedPosts[post.id] ? (
@@ -1167,14 +1266,14 @@ const HomePage = () => {
                   </div>
                 </div>
               )}
-
-              {/* Дата публикации */}
               <p className="post-date">{new Date(post.createdAt).toLocaleString("ru-RU")}</p>
             </div>
-            );
-          })}
-        </section>
-      </main>
+            </div>
+          );
+        })
+    )}
+  </section>
+</main>
 
       <footer className="footer-desktop">
         <p>&copy; 2024 Факультет Кибербезопасности. Все права защищены.</p>

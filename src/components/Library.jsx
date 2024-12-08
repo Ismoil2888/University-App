@@ -562,15 +562,3 @@ const Library = ({ userId }) => {
 };
 
 export default Library;
-
-
-
-
-              {/* {(comment.userId === auth.currentUser?.uid) && (
-                    <div ref={actionMenuRef}>
-                      <button onClick={() => handleEditComment(comment.id, comment.comment)}>
-                        Изменить
-                      </button>
-                      <button onClick={() => handleDeleteComment(comment.id)}>Удалить</button>
-                    </div>
-                  )} */}

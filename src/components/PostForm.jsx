@@ -43,6 +43,7 @@ const PostForm = () => {
 
   const handlePostSubmit = async (e) => {
     e.preventDefault();
+  
     if (!description && !media) {
       alert("Пожалуйста, добавьте описание или медиафайл!");
       return;
@@ -68,10 +69,10 @@ const PostForm = () => {
       await uploadBytes(mediaRef, media);
       mediaUrl = await getDownloadURL(mediaRef);
     } else {
-      // Установка изображения по умолчанию
-      mediaUrl = defaultImage;
+      mediaUrl = defaultImage; // Изображение по умолчанию
     }
   
+    // Данные поста с полем `status`
     const postData = {
       description,
       mediaUrl,
@@ -79,6 +80,7 @@ const PostForm = () => {
       userName: userDetails.username,
       userAvatar: userDetails.avatarUrl,
       userId: currentUser.uid,
+      status: "pending", // Статус по умолчанию: "pending"
     };
   
     const newPostRef = push(postsRef);
@@ -87,8 +89,9 @@ const PostForm = () => {
     setIsUploading(false);
     setMedia(null);
     setDescription("");
+    alert("Ваш пост отправлен на модерацию.");
     navigate("/home");
-  };  
+  };
 
   const toggleMenuu = () => {
     if (isMenuOpen) {
@@ -245,295 +248,3 @@ const PostForm = () => {
 };
 
 export default PostForm;
-
-
-
-
-
-
-
-
-// import React, { useState } from "react";
-// import { getDatabase, ref, push, set } from "firebase/database";
-// import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
-// import { getAuth } from "firebase/auth"; // Импорт Firebase Auth
-// import { useNavigate } from "react-router-dom";
-// import "../PostForm.css";
-
-// const PostForm = () => {
-//   const [media, setMedia] = useState(null);
-//   const [description, setDescription] = useState("");
-//   const [isUploading, setIsUploading] = useState(false);
-//   const navigate = useNavigate();
-
-//   const handleMediaChange = (e) => {
-//     setMedia(e.target.files[0]);
-//   };
-
-//   const handlePostSubmit = async (e) => {
-//     e.preventDefault();
-//     if (!description && !media) {
-//       alert("Пожалуйста, добавьте описание или медиафайл!");
-//       return;
-//     }
-
-//     setIsUploading(true);
-
-//     const db = getDatabase();
-//     const storage = getStorage();
-//     const auth = getAuth(); // Инициализация Firebase Auth
-//     const currentUser = auth.currentUser; // Получение текущего пользователя
-
-//     if (!currentUser) {
-//       alert("Вы должны войти в систему, чтобы публиковать посты!");
-//       setIsUploading(false);
-//       return;
-//     }
-
-//     const postsRef = ref(db, "posts");
-
-//     let mediaUrl = null;
-
-//     if (media) {
-//       const mediaRef = storageRef(storage, `posts/${media.name}-${Date.now()}`);
-//       await uploadBytes(mediaRef, media);
-//       mediaUrl = await getDownloadURL(mediaRef);
-//     }
-
-//     const postData = {
-//       description,
-//       mediaUrl,
-//       createdAt: new Date().toISOString(),
-//       userName: currentUser.displayName || "Аноним", // Имя пользователя
-//       userAvatar: currentUser.photoURL || null, // URL аватара пользователя
-//       userId: currentUser.uid, // ID пользователя
-//     };
-
-//     const newPostRef = push(postsRef);
-//     await set(newPostRef, postData);
-
-//     setIsUploading(false);
-//     setMedia(null);
-//     setDescription("");
-//     // navigate("/home");
-//   };
-
-//   return (
-//     <div className="post-form-container">
-//       <form onSubmit={handlePostSubmit} className="post-form">
-//         <h2>Создать пост</h2>
-//         <div className="form-group">
-//           <label htmlFor="media">
-//             Медиа (изображение или видео):
-//           </label>
-//           <input type="file" id="media" accept="image/*,video/*" onChange={handleMediaChange} />
-//         </div>
-//         <div className="form-group">
-//           <label htmlFor="description">Описание:</label>
-//           <textarea
-//             id="description"
-//             value={description}
-//             onChange={(e) => setDescription(e.target.value)}
-//             placeholder="Введите описание поста"
-//             rows="4"
-//           />
-//         </div>
-//         <button type="submit" disabled={isUploading} className="submit-btn">
-//           {isUploading ? "Публикация..." : "Опубликовать"}
-//         </button>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default PostForm;
-
-
-
-
-
-
-
-
-
-
-// import React, { useState } from "react";
-// import { getDatabase, ref, push, set } from "firebase/database";
-// import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
-// import { useNavigate } from "react-router-dom";
-// import "../PostForm.css"; // Новый CSS файл для стилей
-
-// const PostForm = () => {
-//   const [media, setMedia] = useState(null);
-//   const [description, setDescription] = useState("");
-//   const [isUploading, setIsUploading] = useState(false);
-//   const navigate = useNavigate();
-
-//   const handleMediaChange = (e) => {
-//     setMedia(e.target.files[0]);
-//   };
-
-//   const handlePostSubmit = async (e) => {
-//     e.preventDefault();
-//     if (!description && !media) {
-//       alert("Пожалуйста, добавьте описание или медиафайл!");
-//       return;
-//     }
-
-//     setIsUploading(true);
-
-//     const db = getDatabase();
-//     const storage = getStorage();
-//     const postsRef = ref(db, "posts");
-
-//     let mediaUrl = null;
-
-//     if (media) {
-//       const mediaRef = storageRef(storage, `posts/${media.name}-${Date.now()}`);
-//       await uploadBytes(mediaRef, media);
-//       mediaUrl = await getDownloadURL(mediaRef);
-//     }
-
-//     const postData = {
-//       description,
-//       mediaUrl,
-//       createdAt: new Date().toISOString(),
-//     };
-
-//     const newPostRef = push(postsRef);
-//     await set(newPostRef, postData);
-
-//     setIsUploading(false);
-//     setMedia(null);
-//     setDescription("");
-//     // navigate("/home");
-//   };
-
-//   return (
-//     <div className="post-form-container">
-//       <form onSubmit={handlePostSubmit} className="post-form">
-//         <h2>Создать пост</h2>
-//         <div className="form-group">
-//           <label htmlFor="media">
-//             Медиа (изображение или видео):
-//           </label>
-//           <input type="file" id="media" accept="image/*,video/*" onChange={handleMediaChange} />
-//         </div>
-//         <div className="form-group">
-//           <label htmlFor="description">Описание:</label>
-//           <textarea
-//             id="description"
-//             value={description}
-//             onChange={(e) => setDescription(e.target.value)}
-//             placeholder="Введите описание поста"
-//             rows="4"
-//           />
-//         </div>
-//         <button type="submit" disabled={isUploading} className="submit-btn">
-//           {isUploading ? "Публикация..." : "Опубликовать"}
-//         </button>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default PostForm;
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useState } from "react";
-// import { getDatabase, ref, push, set } from "firebase/database";
-// import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
-// import { useNavigate } from "react-router-dom";
-
-// const PostForm = () => {
-//   const [media, setMedia] = useState(null);
-//   const [description, setDescription] = useState("");
-//   const [isUploading, setIsUploading] = useState(false);
-//   const navigate = useNavigate();
-
-//   const handleMediaChange = (e) => {
-//     setMedia(e.target.files[0]);
-//   };
-
-//   const handlePostSubmit = async (e) => {
-//     e.preventDefault();
-//     if (!description && !media) {
-//       alert("Пожалуйста, добавьте описание или медиафайл!");
-//       return;
-//     }
-
-//     setIsUploading(true);
-
-//     const db = getDatabase();
-//     const storage = getStorage();
-//     const postsRef = ref(db, "posts");
-
-//     let mediaUrl = null;
-
-//     // Загрузка файла в Firebase Storage, если он есть
-//     if (media) {
-//       const mediaRef = storageRef(storage, `posts/${media.name}-${Date.now()}`);
-//       await uploadBytes(mediaRef, media);
-//       mediaUrl = await getDownloadURL(mediaRef);
-//     }
-
-//     // Сохранение поста в Firebase Realtime Database
-//     const postData = {
-//       description,
-//       mediaUrl,
-//       createdAt: new Date().toISOString(),
-//     };
-
-//     const newPostRef = push(postsRef);
-//     await set(newPostRef, postData);
-
-//     setIsUploading(false);
-
-//     // Очистить форму
-//     setMedia(null);
-//     setDescription("");
-
-//     // Перейти на главную страницу
-//     navigate("/home");
-//   };
-
-//   return (
-//     <div className="create-post-container">
-//       <form onSubmit={handlePostSubmit} className="create-post-form">
-//         <h2>Создать пост</h2>
-//         <div>
-//           <label>
-//             Добавить изображение или видео:
-//             <input type="file" accept="image/*,video/*" onChange={handleMediaChange} />
-//           </label>
-//         </div>
-//         <div>
-//           <label>
-//             Описание:
-//             <textarea
-//               value={description}
-//               onChange={(e) => setDescription(e.target.value)}
-//               placeholder="Введите описание поста"
-//               rows="4"
-//             />
-//           </label>
-//         </div>
-//         <button type="submit" disabled={isUploading}>
-//           {isUploading ? "Публикация..." : "Опубликовать"}
-//         </button>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default PostForm;

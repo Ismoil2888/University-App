@@ -167,6 +167,11 @@
     padding: 10px;
   }
 
+  .search-scroll{
+    overflow-y: auto;
+    max-height: 600px;
+  }
+
   .search-history-list{
     padding-bottom: 20px;
     max-height: 500px;
