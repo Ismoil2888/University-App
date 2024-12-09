@@ -1079,7 +1079,6 @@ const HomePage = () => {
           const isLiked = post.likes && post.likes[userId];
           return (
             <div key={post.id} className="post-card">
-                      <div key={post.id} className="post-card">
               <div className="post-header">
                 <div className="post-author">
                   <img
@@ -1267,7 +1266,6 @@ const HomePage = () => {
                 </div>
               )}
               <p className="post-date">{new Date(post.createdAt).toLocaleString("ru-RU")}</p>
-            </div>
             </div>
           );
         })
