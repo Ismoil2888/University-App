@@ -643,6 +643,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Link, useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import { getStorage, ref as storageReference, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getDatabase, ref as dbRef, onValue, set, get, push, update, remove } from "firebase/database";
@@ -685,6 +686,7 @@ const AdminPanel = () => {
   const [showPosts, setShowPosts] = useState(false);
   const [posts, setPosts] = useState([]);
   const [pendingPostsCount, setPendingPostsCount] = useState(0); // Количество ожидающих постов  
+  const navigate = useNavigate();
 
   useEffect(() => {
     const db = getDatabase();
@@ -710,12 +712,14 @@ const AdminPanel = () => {
     const db = getDatabase();
     const postRef = dbRef(db, `posts/${postId}`);
     update(postRef, { status: "approved" }); // Меняем статус на "approved"
+    toast.success('Публикация успешно одобрена!');
   };
   
   const handleReject = (postId) => {
     const db = getDatabase();
     const postRef = dbRef(db, `posts/${postId}`);
     remove(postRef); // Удаляем пост
+    toast.success('Публикация успешно отклонена!');
   };
   
   useEffect(() => {
@@ -1085,6 +1089,10 @@ const AdminPanel = () => {
   const handleSelectTeacher = (teacher) => {
     setFilteredTeachers([teacher]);
   };
+
+  const goToProfile = (userId) => {
+    navigate(`/profile/${userId}`);
+  };
   
   return (
     <div className="admin-panel">
@@ -1127,7 +1135,8 @@ const AdminPanel = () => {
           className="adm-comment-avatar"
         />
         <div className="adm-comment-details">
-          <p className="adm-comment-username">
+          <p className="adm-comment-username" onClick={() => goToProfile(comment.userId)}
+          >
           {comment.username}
               {comment.username === "Анонимно" && comment.anonymousOwnerId && (
                 <span> (Автор: {userMap[comment.anonymousOwnerId] || "Загрузка..."})</span>
@@ -1170,9 +1179,10 @@ const AdminPanel = () => {
           src={comment.avatarUrl || defaultAvatar}
           alt={comment.username}
           className="adm-comment-avatar"
+          onClick={() => goToProfile(comment.userId)}
         />
         <div className="adm-comment-details">
-          <p className="adm-comment-username">
+          <p className="adm-comment-username" onClick={() => goToProfile(comment.userId)}>
           {comment.username}
               {comment.username === "Анонимно" && comment.anonymousOwnerId && (
                 <span>(Автор: {userMap[comment.anonymousOwnerId] || "Загрузка..."})</span>
@@ -1194,7 +1204,7 @@ const AdminPanel = () => {
 )}
 
 
-<h2>Заявки Публикаций</h2>
+<h2 style={{marginTop: "35px"}}>Заявки Публикаций</h2>
 <button className="ap-buttons-add-edit" onClick={() => setShowPosts(!showPosts)}>
   {showPosts ? 'Скрыть посты' : 'Показать посты'}
   {pendingPostsCount > 0 && <span className="comments-count"> {pendingPostsCount}</span>}

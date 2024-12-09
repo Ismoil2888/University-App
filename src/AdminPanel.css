@@ -7,6 +7,8 @@
   .admin-panel h1{
     text-align: center;
     color: white;
+    background: #a4a4a438;
+    border-radius: 15px;
   }
   
   .admin-buttons {
@@ -311,6 +313,7 @@
   height: 50px;
   border-radius: 50%;
   margin-right: 15px;
+  object-fit: cover;
 }
 
 .adm-comment-details {

@@ -9,8 +9,12 @@
 }
 
 .slider-section {
-  margin: 50px auto;
-  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto;
+  max-width: 2000px;
 }
 
 .slider-section img {

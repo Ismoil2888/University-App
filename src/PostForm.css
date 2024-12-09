@@ -243,6 +243,12 @@
     font-weight: bold;
   }
 
+  @media (width < 770px) {
+    .app{
+      display: none;
+    }
+  }
+
   @media (width > 770px) {
 
   .post-card {
@@ -267,4 +273,155 @@
     animation: slideIn 0.2s ease;
 }
 
+.home-container{
+  display: none;
+}
+
+}
+
+.swiper{
+  height: 580px;
+  width: 90%;
+  border-radius: 25px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  .hp-header {
+    width: 100%;
+    background-color: #293889;
+    color: white;
+    text-align: center;
+    /* padding: 20px 10px; */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+.hp-header-title{
+  text-align: center;
+}
+  
+  .hp-header-logo img,
+  .hp-header-icon img {
+    width: 150px;
+    /* position: absolute; */
+  }
+  
+  .hp-header-logo {
+    top: 10px;
+    left: 20px;
+  }
+  
+  .hp-header-icon {
+    top: 10px;
+    right: 20px;
+  }
+  
+  .hp-navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #0070c9;
+    color: white;
+    height: 60px;
+    font-size: 20px;
+  }
+  
+  .hp-navbar ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    margin: 0;
+    padding: 10px 0;
+  }
+  
+  .hp-navbar li {
+    cursor: pointer;
+  }
+  
+  .hp-slider {
+    display: flex;
+    /* align-items: center; */
+    background-color: #f9f9f9;
+  }
+
+  .hp-slider img{
+    width: 100%;
+    height: 550px;
+  }
+  
+  .hp-slider-image img {
+    width: 750px;
+    height: 500px;
+    border-radius: 5px;
+  }
+  
+  .hp-slider-caption {
+    text-align: center;
+  }
+  
+  .hp-news-section {
+    background-color: #f3ffdb;
+    padding: 20px;
+  }
+  
+  .hp-news-section h2 {
+    text-align: center;
+    color: #0070c9;
+  }
+  
+  .hp-news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  .hp-news-item {
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .hp-news-date {
+    background-color: #0070c9;
+    color: white;
+    padding: 5px;
+    font-weight: bold;
+  }
+  
+  .hp-news-image {
+    width: 50%;
+    border-radius: 5px;
+  }
+  
+  .hp-footer {
+    background-color: #293889;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    height: 100px;
   }

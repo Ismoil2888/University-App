@@ -1168,16 +1168,16 @@ input[type="file"] {
         }
       
         .notification {
-          position: fixed;
-          top: 20px;
-          right: 20px;
+          position: absolute;
+          margin-top: 20%;
+          margin-right: 20%;
           color: white;
           padding: 10px 20px;
           border-radius: 5px;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
           font-size: 14px;
           animation: fadeInOut 3s ease-in-out;
-          z-index: 1000;
+          z-index: 9999;
         }
       
         @keyframes fadeInOut {
@@ -1205,6 +1205,10 @@ input[type="file"] {
         
         .notification.error {
           background-color: #f44336; /* Красный цвет для ошибок */
+        }
+
+        .notification.neutral {
+          background-color: #a9a8a8; /* Красный цвет для ошибок */
         }
       
         .ci-txt{

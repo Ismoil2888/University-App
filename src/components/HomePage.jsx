@@ -597,9 +597,23 @@ import { getDatabase, ref as dbRef, onValue, get, push, set, update, remove } fr
 import { auth, database } from "../firebase";
 import defaultAvatar from "../default-image.png";
 import basiclogo from "../basic-logo.png";
+import ttulogo from "../Ttulogo.jpg";
+import glkorpusosimi from "../glkorpusosimi.jpg";
+import osimi from "../osimi.png";
+import photo from "../Каримзода.jpg";
 import "../App.css";
 import "../PostForm.css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import anonymAvatar from '../anonym2.jpg';
+import teacherImage from "../teacher.png";
+import ttustudents from "../ttustudents.jpg";
+import ttustudents1 from "../ttustudents1.jpg";
+import ttustudents2 from "../ttustudents2.jpg";
+import ttustudents3 from "../ttustudents3.jpg";
 import { GoKebabHorizontal } from "react-icons/go";
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -625,6 +639,36 @@ const HomePage = () => {
   const userId = auth.currentUser?.uid; // Текущий пользователь
   const [unreadCount, setUnreadCount] = useState(0);
   const navigate = useNavigate();
+
+     // Функция для успешных уведомлений
+     const showNotification = (message) => {
+      setNotificationType("success");
+      setNotification(message);
+      setTimeout(() => {
+        setNotification("");
+        setNotificationType("");
+      }, 3000);
+    };
+    
+    // Функция для нейтральных уведомлений
+    const showNotificationNeutral = (message) => {
+      setNotificationType("neutral");
+      setNotification(message);
+      setTimeout(() => {
+        setNotification("");
+        setNotificationType("");
+      }, 3000);
+    };
+
+// Функция для ошибочных уведомлений
+const showNotificationError = (message) => {
+  setNotificationType("error");
+  setNotification(message);
+  setTimeout(() => {
+    setNotification("");
+    setNotificationType("");
+  }, 3000);
+};
 
   const goToProfile = (userId) => {
     navigate(`/profile/${userId}`);
@@ -712,6 +756,7 @@ const HomePage = () => {
       .then(() => {
         setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
         console.log("Пост и связанные данные успешно удалены.");
+        showNotificationNeutral("Вы удалили свою публикацию.");
       })
       .catch((error) => {
         console.error("Ошибка удаления поста:", error);
@@ -1000,6 +1045,110 @@ const HomePage = () => {
   }
 
   return (
+    <div className="glava">
+<div className="app">
+      {/* Header */}
+      <div className="hp-header">
+        <div className="hp-header-logo">
+          <img src={basiclogo} alt="Логотип" />
+        </div>
+        <div className="hp-header-title">
+        <h1>
+          ФАКУЛТЕТИ ТЕХНОЛОГИЯҲОИ РАҚАМӢ,
+        </h1>
+        <h1>СИСТЕМАҲО ВА ҲИФЗИ ИТТИЛООТ</h1>
+        </div>
+        <div className="hp-header-icon">
+          <img src={ttulogo} alt="Логотип 2" />
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <nav className="hp-navbar">
+        <ul>
+          <li><Link to="/home">Асосӣ</Link></li>
+            <li><Link to="/about">Факултет</Link></li>
+            <li>Кафедраҳо</li>
+            <li><Link to="/teachers">Омӯзгорон</Link></li>
+            <li><Link to="/schedule">Ҷадвали дарсҳо</Link></li>
+            <li><Link to="/library">Китобхонаи электронӣ</Link></li>
+            <li><Link to="/contacts">Тамос</Link></li>
+        </ul>
+      </nav>
+
+      {/* Main Content */}
+      <main className="hp-main-content">
+        {/* Slider */}
+        <section className="slider-section">
+        <h2 className="section-title" style={{color: "black"}}>Галерея</h2>
+        <Swiper className="swiper"
+          modules={[Navigation, Pagination, Autoplay]}
+          navigation
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 3000 }}
+          spaceBetween={30}
+          slidesPerView={1}
+          loop
+        >
+          <SwiperSlide><img style={{width: "100%"}} src={glkorpusosimi} alt="Фото 1" /></SwiperSlide>
+          <SwiperSlide><img style={{width: "100%"}} src={ttustudents} alt="Фото 1" /></SwiperSlide>
+          <SwiperSlide><img style={{width: "100%"}} src={ttustudents1} alt="Фото 2" /></SwiperSlide>
+          <SwiperSlide><img style={{width: "100%"}} src={ttustudents2} alt="Фото 3" /></SwiperSlide>
+          <SwiperSlide><img style={{width: "100%"}} src={ttustudents3} alt="Фото 4" /></SwiperSlide>
+          <SwiperSlide><img style={{width: "100%"}} src={ttustudents} alt="Фото 1" /></SwiperSlide>
+          <SwiperSlide><img style={{width: "100%"}} src={ttustudents1} alt="Фото 2" /></SwiperSlide>
+          <SwiperSlide><img style={{width: "100%"}} src={ttustudents2} alt="Фото 3" /></SwiperSlide>
+          <SwiperSlide><img style={{width: "100%"}} src={ttustudents3} alt="Фото 4" /></SwiperSlide>
+        </Swiper>
+      </section>
+        {/* <section className="hp-slider">
+          <div className="hp-slider-image">
+            <img src={ttuglavkorpus} alt="University" />
+          </div>
+          <div className="hp-slider-image">
+            <img src={osimi} alt="University" />
+          </div>
+          <img src={glkorpusosimi} alt="" />
+          <div className="hp-slider-caption">
+            <h2>Connecting Hearts, Connecting Generations</h2>
+            <p>— Muhammad Osimi</p>
+          </div>
+        </section> */}
+
+        {/* News Section */}
+        <section className="hp-news-section">
+          <h2>Хабарҳои охирин</h2>
+          <div className="hp-news-grid">
+            {Array(6)
+              .fill(0)
+              .map((_, index) => (
+                <div key={index} className="hp-news-item">
+                  <div className="hp-news-date">02/12/2024</div>
+                  <img
+                    src={photo}
+                    alt="News"
+                    className="hp-news-image"
+                  />
+                  <p>Масъалаҳои муосири саноати мошинсозӣ дар</p>
+                </div>
+              ))}
+          </div>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <footer className="hp-footer">
+        <p>
+          Донишгоҳи техникии Тоҷикистон ба номи академик М.С. Осимӣ
+          <br />
+          Чумҳурии Тоҷикистон, 734042, ш. Душанбе, хиёбони академик Раҳимҷонов
+          10
+        </p>
+        <p>Email: info@ttu.tj, ttu@ttu.tj</p>
+        <p>+992 (372) 21-35-11 | +992 (372) 23-02-46</p>
+      </footer>
+    </div>
+
     <div className="home-container" onContextMenu={handleContextMenu}>
       {notification && (
         <div className={`notification ${notificationType}`}>
@@ -1198,8 +1347,8 @@ const HomePage = () => {
                             onClick={() => goToProfile(comment.userId)}
                           />
                           <div className="comment-content">
-                            <p 
-                              className="comment-username"  
+                            <p
+                              className="comment-username"
                               onClick={() => goToProfile(comment.userId)}
                             >
                               {comment.username}
@@ -1293,6 +1442,7 @@ const HomePage = () => {
           </Link>
         </motion.nav> 
       </div>
+    </div>
     </div>
   );
 };

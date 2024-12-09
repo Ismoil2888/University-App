@@ -5,6 +5,8 @@ import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "fire
 import { getDatabase, ref as dbRef, onValue, push, set } from "firebase/database";
 import defaultAvatar from "../default-image.png";
 import defaultImage from "../Ttulogo.jpg";
+import "../App.css";
+import "../PostForm.css";
 import { FaLock, FaPhone, FaUserEdit, FaChevronLeft, FaEllipsisV } from "react-icons/fa";
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,6 +21,28 @@ const PostForm = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [userAvatarUrl, setUserAvatarUrl] = useState(null);
+  const [notification, setNotification] = useState(""); // Для уведомления
+  const [notificationType, setNotificationType] = useState(""); // Для типа уведомления
+
+   // Функция для успешных уведомлений
+ const showNotification = (message) => {
+  setNotificationType("success");
+  setNotification(message);
+  setTimeout(() => {
+    setNotification("");
+    setNotificationType("");
+  }, 3000);
+};
+
+// Функция для ошибочных уведомлений
+const showNotificationError = (message) => {
+  setNotificationType("error");
+  setNotification(message);
+  setTimeout(() => {
+    setNotification("");
+    setNotificationType("");
+  }, 3000);
+};
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -45,7 +69,7 @@ const PostForm = () => {
     e.preventDefault();
   
     if (!description && !media) {
-      alert("Пожалуйста, добавьте описание или медиафайл!");
+      showNotificationError("Пожалуйста, добавьте описание или медиафайл!");
       return;
     }
   
@@ -56,7 +80,7 @@ const PostForm = () => {
     const currentUser = auth.currentUser;
   
     if (!currentUser) {
-      alert("Вы должны войти в систему, чтобы публиковать посты!");
+      showNotificationError("Вы должны войти в систему, чтобы публиковать посты!");
       setIsUploading(false);
       return;
     }
@@ -89,8 +113,8 @@ const PostForm = () => {
     setIsUploading(false);
     setMedia(null);
     setDescription("");
-    alert("Ваш пост отправлен на модерацию.");
-    navigate("/home");
+    showNotification("Ваш пост отправлен на модерацию.");
+    // navigate("/home");
   };
 
   const toggleMenuu = () => {
@@ -144,6 +168,11 @@ const PostForm = () => {
 
   return (
     <div className="post-container" onContextMenu={handleContextMenu}>
+       {notification && (
+            <div className={`notification ${notificationType}`}>
+        {notification}
+            </div>
+          )} {/* Уведомление */}
 <header>
         <nav>
           <ul>
