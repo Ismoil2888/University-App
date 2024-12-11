@@ -56,7 +56,7 @@ header nav ul li a {
 }
 
 header nav ul li a:hover {
-  color: #1f71eb; /* Цвет при наведении */
+  color: #1f71eb; 
 }
 
 .home-container{
@@ -206,9 +206,11 @@ a {
   transition: color 0.3s, text-shadow 0.3s; /* Плавный переход цвета и тени */
 }
 
-a:hover {
-  color: #1f6feb;
-  text-shadow: 0 0 5px #58a6ff; /* Тень при наведении */
+ .hp-navbar a:hover {
+  color: #fbff00;
+  text-shadow: 0 0 5px #58a6ff; 
+  border-bottom: 2px solid #99ed13;
+  border-top: 2px solid #99ed13;
 }
 
 /* Анимация для заголовков */
@@ -1273,19 +1275,6 @@ input[type="file"] {
           justify-content: space-between;
         }      
 
-
-      /* Плавный переход для ссылок */
-a {
-  color: #58a6ff;
-  text-decoration: none;
-  transition: color 0.3s, text-shadow 0.3s; /* Плавный переход цвета и тени */
-}
-
-a:hover {
-  color: #1f6feb;
-  text-shadow: 0 0 5px #58a6ff; /* Тень при наведении */
-}
-
 /* Анимация для заголовков */
 /* .glav-container h1, h2, h3 {
     position: relative;
@@ -1327,49 +1316,6 @@ a:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Тень для выделения */
 }
 
-/* Плавный переход для геро-секции */
-.hero {
-  /* background: url('cyber_banner.jpg') no-repeat center center/cover; */
-  height: 400px;
-  color: #ffffff;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  animation: fadeIn 1s ease-in-out; /* Плавное появление геро-секции */
-}
-
-@keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-/* Анимация кнопок навигации */
-header nav ul li a {
-  position: relative;
-  display: inline-block;
-  padding: 5px 0;
-  transition: all 0.3s;
-}
-
-header nav ul li a::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  background-color: #58a6ff;
-  visibility: hidden;
-  transform: scaleX(0);
-  transition: all 0.3s ease-in-out;
-}
-
-header nav ul li a:hover::before {
-  visibility: visible;
-  transform: scaleX(1);
-}
 /* Стили для фото факультета */
 .faculty-image {
   text-align: center;

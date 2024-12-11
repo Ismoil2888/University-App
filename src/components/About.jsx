@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { FaUser } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -9,7 +8,6 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "../App.css";
 import "../aboute.css";
 import basiclogo from "../basic-logo.png";
-import teacherImage from "../teacher.png";
 import ttustudents from "../ttustudents.jpg";
 import ttustudents1 from "../ttustudents1.jpg";
 import ttustudents2 from "../ttustudents2.jpg";
@@ -17,7 +15,6 @@ import ttustudents3 from "../ttustudents3.jpg";
 import { auth } from "../firebase";
 import { getDatabase, ref as dbRef, onValue } from "firebase/database";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FaPlusCircle, FaHeart, FaRegHeart, FaRegComment, FaBookmark, FaRegBookmark } from "react-icons/fa";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch, faBell } from "@fortawesome/free-solid-svg-icons";
 
 const About = () => {
