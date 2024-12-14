@@ -1,13 +1,18 @@
+//упрощенка
 // import React, { useState, useEffect, useRef } from "react";
 // import { Link, useNavigate } from "react-router-dom";
 // import { getDatabase, ref as dbRef, onValue, push, update, remove } from "firebase/database";
 // import { auth } from "../firebase";
 // import "../App.css";
 // import "../teachers.css";
+// import logoTip from "../basic-logo.png"; 
 // import defaultTeacherImg from "../teacher.png";
 // import { FaCommentDots } from "react-icons/fa";
-// import { FaUserSecret } from "react-icons/fa";
+// import basiclogo from "../basic-logo.png";
+// import { FaPlusCircle, FaUserSecret } from "react-icons/fa";
+// import { motion } from 'framer-motion';
 // import { BsSendFill } from "react-icons/bs";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { GoKebabHorizontal } from "react-icons/go";
 // import anonymAvatar from '../anonym2.jpg';
 
@@ -22,11 +27,8 @@
 //   const [comments, setComments] = useState([]);
 //   const [editingCommentId, setEditingCommentId] = useState(null);
 //   const [actionMenuId, setActionMenuId] = useState(null);
-//   const actionMenuRef = useRef(null);
-
-
+//   const actionMenuRef = useRef(null); 
 // const navigate = useNavigate();
-
 // const goToProfile = (userId) => {
 //   navigate(`/profile/${userId}`);
 // };
@@ -35,12 +37,10 @@
 //     const database = getDatabase();
 //     const teachersRef = dbRef(database, "teachers");
 
-//     // Загрузка преподавателей
 //     onValue(teachersRef, (snapshot) => {
 //       const data = snapshot.val();
 //       if (data) {
 //         const loadedTeachers = Object.keys(data).map((id) => ({ id, ...data[id] }));
-//       // Для каждого преподавателя загружаем количество комментариев
 //       loadedTeachers.forEach((teacher) => {
 //         const commentsRef = dbRef(database, `comments/${teacher.id}`);
 //         onValue(commentsRef, (commentSnapshot) => {
@@ -56,7 +56,6 @@
 //       }
 //     });
 
-//     // Загрузка данных текущего пользователя
 //     const user = auth.currentUser;
 //     if (user) {
 //       const userRef = dbRef(database, `users/${user.uid}`);
@@ -83,7 +82,6 @@
 //   const openCommentModal = (teacherId) => {
 //     setCommentModal({ isOpen: true, teacherId });
 
-//     // Загрузка комментариев для преподавателя
 //     const database = getDatabase();
 //     const commentsRef = dbRef(database, `comments/${teacherId}`);
 //     onValue(commentsRef, (snapshot) => {
@@ -112,20 +110,18 @@
 //     const commentRef = dbRef(database, `comments/${commentModal.teacherId}`);
   
 //     if (editingCommentId) {
-//       // Изменение комментария
 //       update(dbRef(database, `comments/${commentModal.teacherId}/${editingCommentId}`), {
 //         comment: newComment,
 //         timestamp: new Date().toLocaleString(),
 //       });
 //       setEditingCommentId(null);
 //     } else {
-//       // Добавление нового комментария
 //       const newCommentRef = push(commentRef);
 //       update(newCommentRef, {
 //         avatarUrl: isAnonymous ? anonymAvatar : userDetails.avatarUrl,
 //         username: isAnonymous ? "Анонимно" : userDetails.username,
 //         userId: isAnonymous ? null : auth.currentUser?.uid,
-//         anonymousOwnerId: isAnonymous ? auth.currentUser?.uid : null,
+//         anonymousOwnerId: isAnonymous ? auth.currentUser?.uid : null, // Сохраняем ID для анонимного комментария
 //         comment: newComment,
 //         timestamp: new Date().toLocaleString(),
 //       });
@@ -137,7 +133,7 @@
 //   const handleEditComment = (commentId, commentText) => {
 //     setEditingCommentId(commentId);
 //     setNewComment(commentText);
-//     setActionMenuId(null);
+//     setActionMenuId(null); 
 //   };
 
 //   const handleDeleteComment = (commentId) => {
@@ -151,7 +147,6 @@
 //       const isInsideMenu = actionMenuRef.current && actionMenuRef.current.contains(event.target);
 //       const isActionButton = event.target.closest(".action-menu button");
       
-//       // Закрываем меню только если клик произошел за пределами actionMenu и не на кнопках
 //       if (!isInsideMenu && !isActionButton) {
 //         setActionMenuId(null);
 //       }
@@ -167,14 +162,12 @@
 //     setActionMenuId((prev) => (prev === commentId ? null : commentId));
 //   };
 
-//   const [isMenuOpen, setIsMenuOpen] = useState(false);
 //   const [userAvatarUrl, setUserAvatarUrl] = useState(null);
 
 //   useEffect(() => {
 //     const user = auth.currentUser;
 //     if (user) {
 
-//       // Получаем URL аватарки пользователя
 //       const db = getDatabase();
 //       const userRef = dbRef(db, `users/${user.uid}`);
 //       onValue(userRef, (snapshot) => {
@@ -191,6 +184,13 @@
 
 //   return (
 //     <div className="glav-cotainer">
+//       <section className="tch-hero">
+//         <div className="faculty-image">
+//           <img style={{ height: "240px", marginTop: "58px" }} width="255px" src={logoTip} alt="Фото преподавателей" />
+//         </div>
+//         <h1>Преподавательский Состав</h1>
+//       </section>
+
 //       <section className="teachers-section">
 //         <div className="search-bar">
 //           <input 
@@ -225,7 +225,6 @@
 //         </div>
 //       </section>
 
-//       {/* Модальное окно комментариев */}
 // {commentModal.isOpen && (
 //   <div className="comment-modal-overlay">
 //     <div className="comment-modal">
@@ -245,7 +244,7 @@
 //               src={comment.avatarUrl || "./default-avatar.png"}
 //               alt={comment.username}
 //               className="comment-avatar"
-//               onClick={() => goToProfile(comment.userId)}
+//               onClick={() => goToProfile(comment.userId)} 
 //               style={{ cursor: "pointer" }}     
 //             />
 //             <div className="comment-content">
@@ -297,7 +296,6 @@
 //     </div>
 //   </div>
 // )}
-
 //     </div>
 //   );
 // };
@@ -315,13 +313,7 @@
 
 
 
-
-
-
-
-
-
-
+//original
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getDatabase, ref as dbRef, onValue, push, update, remove } from "firebase/database";

@@ -27,6 +27,8 @@ import MyProfile from './components/MyProfile';
 import SearchStudents from './components/SearchStudents';
 import PostForm from "./components/PostForm";
 import NotificationsPage from "./components/NotificationsPage";
+import Chat from "./components/Chat";
+import ChatList from "./components/ChatList";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -80,6 +82,8 @@ function App() {
       <Route path="/admin" element={<AdminPrivateRoute> <AdminPanel /> </AdminPrivateRoute>} />
       <Route path="/admin-login" element={<AdminLogin />} />
       <Route path="*" element={<NotfoundPage />} />
+      <Route path="/chat/:chatRoomId" element={<Chat />} />
+      <Route path="/chats" element={<ChatList />} />
     </Routes>
   );
 }

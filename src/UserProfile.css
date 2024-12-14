@@ -112,3 +112,8 @@
   .up-status-unverified {
     color: red;
   }  
+
+  .up-chat-button{
+    width: 300px;
+    margin-top: 15px;
+  }
