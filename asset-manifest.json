@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/University-App/static/css/main.0cda995d.css",
-    "main.js": "/University-App/static/js/main.6969ea08.js",
+    "main.css": "/University-App/static/css/main.6d7743de.css",
+    "main.js": "/University-App/static/js/main.6b29d7f3.js",
     "static/js/453.5a5e4368.chunk.js": "/University-App/static/js/453.5a5e4368.chunk.js",
     "static/media/osimi.png": "/University-App/static/media/osimi.4bdf6c1eea990bf8e297.png",
     "static/media/basic-logo.png": "/University-App/static/media/basic-logo.b85a726a2b7cef73406c.png",
@@ -17,12 +17,12 @@
     "static/media/book-icon.png": "/University-App/static/media/book-icon.0420ae430b803a32c888.png",
     "static/media/edit-icon.png": "/University-App/static/media/edit-icon.e492a56b8c19c7656365.png",
     "index.html": "/University-App/index.html",
-    "main.0cda995d.css.map": "/University-App/static/css/main.0cda995d.css.map",
-    "main.6969ea08.js.map": "/University-App/static/js/main.6969ea08.js.map",
+    "main.6d7743de.css.map": "/University-App/static/css/main.6d7743de.css.map",
+    "main.6b29d7f3.js.map": "/University-App/static/js/main.6b29d7f3.js.map",
     "453.5a5e4368.chunk.js.map": "/University-App/static/js/453.5a5e4368.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0cda995d.css",
-    "static/js/main.6969ea08.js"
+    "static/css/main.6d7743de.css",
+    "static/js/main.6b29d7f3.js"
   ]
 }
