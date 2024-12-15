@@ -1,3 +1,93 @@
+// import React from 'react';
+// import '../schedule.css';
+
+// const Schedule = () => {
+//   return (
+//     <div className="bodyd">
+//     <div className="containerd">
+//       {/* Верхняя панель */}
+//       <div className="headerd">
+//         <div className="cloud-icond">☁️</div>
+//         <div className="user-icond">👤</div>
+//         <div className="menu-icond">☰</div>
+//       </div>
+
+//       {/* Поле поиска */}
+//       <div className="search-bard">
+//         <input type="text" placeholder="Search.." />
+//       </div>
+
+//       {/* Панель MyDocs */}
+//       <div className="mydocs-paneld">
+//         <div className="mydocs-titled">
+//           <div className="icond">📁</div>
+//           <div>
+//             <h2>MyDocs</h2>
+//             <p>3248 files, 26 folders</p>
+//           </div>
+//         </div>
+//         <div className="storage-bard">
+//           <div className="used-spaced"></div>
+//         </div>
+//         <p className="storage-infod">60 GB free</p>
+//       </div>
+
+//       {/* Иконки файлов */}
+//       <div className="files-sectiond">
+//         <div className="file-cardd">
+//           <div className="file-icond">📂</div>
+//           <p>Assets</p>
+//           <span>.folder</span>
+//         </div>
+//         <div className="file-cardd">
+//           <div className="file-icond">📂</div>
+//           <p>Stuff</p>
+//           <span>.folder</span>
+//         </div>
+//         <div className="file-cardd">
+//           <div className="file-icond">🏔️</div>
+//           <p>Mountain</p>
+//           <span>.jpeg</span>
+//         </div>
+//         <div className="file-cardd">
+//           <div className="file-icond">🎙️</div>
+//           <p>Record</p>
+//           <span>.mp3</span>
+//         </div>
+//         <div className="file-cardd">
+//           <div className="file-icond">📊</div>
+//           <p>Results</p>
+//           <span>.xls</span>
+//         </div>
+//         <div className="file-cardd">
+//           <div className="file-icond">📝</div>
+//           <p>Project</p>
+//           <span>.docx</span>
+//         </div>
+//       </div>
+//     </div>
+//     </div>
+//   );
+// }
+
+// export default Schedule;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
