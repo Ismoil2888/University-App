@@ -225,12 +225,16 @@
     display: flex;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #706f6f;
     transition: background-color 0.3s;
   }
   
   .chat-list-item:hover {
     background-color: #f1f1f1;
+  }
+
+  .chat-list-avatar-info{
+    display: flex;
   }
   
   .chat-avatar {
@@ -243,10 +247,16 @@
   
   .chat-info {
     display: flex;
+    flex-direction: column;
+    /* gap: 8px; */
+    /* flex: 1; */
+  }
+
+  .chat-link{
+    width: 100%;
+    display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
-    /* flex: 1; */
   }
   
   .chat-name {

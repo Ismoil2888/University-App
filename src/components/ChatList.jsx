@@ -104,7 +104,8 @@ const ChatList = () => {
         {chatList.map((chat, index) => (
           <li key={index} className="chat-list-item">
             <Link to={`/chat/${chat.chatRoomId}`} className="chat-link">
-              <img
+            <div className="chat-list-avatar-info">
+            <img
                 src={chat.recipientAvatar || "./default-avatar.png"}
                 alt={chat.recipientName}
                 className="chat-avatar"
@@ -113,6 +114,7 @@ const ChatList = () => {
                 <h3 className="chat-name">{chat.recipientName}</h3>
                 <p className="chat-last-message">{chat.lastMessage || "Откройте чат"}</p>
               </div>
+            </div>
               <span className="chat-timestamp">
                 {new Date(chat.timestamp).toLocaleTimeString()}
               </span>
