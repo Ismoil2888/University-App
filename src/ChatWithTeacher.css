@@ -206,6 +206,7 @@
     background-color: #132f45;
     border-radius: 8px;
     border: 1px solid #ccc;
+    height: 100vh;
   }
 
   .chat-list-head{

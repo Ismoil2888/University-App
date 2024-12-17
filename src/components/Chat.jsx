@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { FaChevronLeft } from "react-icons/fa";
@@ -22,11 +22,13 @@ const Chat = () => {
   const navigate = useNavigate();
   const [recipientId, setRecipientId] = useState("");
 
+  const messagesEndRef = useRef(null); // Ссылка на последний элемент сообщений
+
   useEffect(() => {
     const db = getDatabase();
     const messagesRef = databaseRef(db, `chatRooms/${chatRoomId}/messages`);
     const chatRoomRef = databaseRef(db, `chatRooms/${chatRoomId}`);
-    
+
     // Получение данных текущего пользователя
     const currentUserRef = databaseRef(db, `users/${currentUserId}`);
     get(currentUserRef).then((snapshot) => {
@@ -61,25 +63,29 @@ const Chat = () => {
             const senderRef = databaseRef(db, `users/${message.senderId}`);
             const senderSnapshot = await get(senderRef);
             const senderData = senderSnapshot.val();
-        
+
             return {
               ...message,
               senderName: senderData?.username || "Неизвестный пользователь",
               senderAvatar: senderData?.avatarUrl || "./default-avatar.png",
             };
           })
-        );        
+        );
         setMessages(messagesArray);
+
+        // Прокручиваем вниз к последнему сообщению
+        setTimeout(() => {
+          messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        }, 100); // Небольшая задержка для корректной отрисовки сообщений
       }
     });
   }, [chatRoomId, currentUserId]);
 
+  const inputRef = useRef(null);
+
   const handleSendMessage = () => {
     if (newMessage.trim() === "") return;
-
-    const db = getDatabase();
-    const messagesRef = databaseRef(db, `chatRooms/${chatRoomId}/messages`);
-
+  
     const messageData = {
       senderId: currentUserId,
       senderName: currentUserData.username || "Вы",
@@ -87,24 +93,28 @@ const Chat = () => {
       text: newMessage,
       timestamp: new Date().toISOString(),
     };
-
-    // Обновляем последнее сообщение в списках чатов обоих пользователей
-    const updateChatList = () => {
-      const chatUpdates = {};
-      chatUpdates[`users/${currentUserId}/chats/${chatRoomId}/lastMessage`] = newMessage;
-      chatUpdates[`users/${currentUserId}/chats/${chatRoomId}/timestamp`] = messageData.timestamp;
-      chatUpdates[`users/${recipientId}/chats/${chatRoomId}/lastMessage`] = newMessage;
-      chatUpdates[`users/${recipientId}/chats/${chatRoomId}/timestamp`] = messageData.timestamp;
-
-      return set(databaseRef(db), chatUpdates);
-    };
-
-    // Отправляем сообщение и обновляем список чатов
-    push(messagesRef, messageData)
-      .then(() => updateChatList())
-      .then(() => setNewMessage(""))
-      .catch((error) => console.error("Ошибка при отправке сообщения:", error));
-  };
+  
+    // Оптимистичное добавление сообщения в локальный стейт
+    setMessages((prevMessages) => [...prevMessages, messageData]);
+    setNewMessage(""); // Сразу очищаем поле ввода
+  
+    // Асинхронно отправляем сообщение в Firebase
+    const db = getDatabase();
+    const messagesRef = databaseRef(db, `chatRooms/${chatRoomId}/messages`);
+  
+    push(messagesRef, messageData).catch((error) => {
+      console.error("Ошибка при отправке сообщения:", error);
+      // Обработка ошибок (например, удаление оптимистично добавленного сообщения)
+      setMessages((prevMessages) =>
+        prevMessages.filter((msg) => msg.timestamp !== messageData.timestamp)
+      );
+    });
+  
+    // Скролл к последнему сообщению
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 0);
+  };  
 
   return (
     <div className="chat-container">
@@ -117,41 +127,42 @@ const Chat = () => {
           src={recipientData.avatarUrl || "./default-avatar.png"}
           alt={recipientData.username || "Собеседник"}
           className="chat-header-avatar"
-          style={{width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover"}}
+          style={{ width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover" }}
         />
         <h2>{recipientData.username || "Чат"}</h2>
       </div>
 
       <div className="chat-messages">
         {messages.map((message, index) => (
-         <div
-         key={index}
-         className={`chat-message ${
-           message.senderId === currentUserId
-             ? "chat-message-sent"
-             : "chat-message-received"
-         }`}
-       >
-         <img
-           src={message.senderAvatar || "./default-avatar.png"}
-           alt={message.senderName}
-           className="chat-message-avatar"
-           style={{
-             width: "30px",
-             height: "30px",
-             borderRadius: "50%",
-             marginRight: "10px",
-           }}
-         />
-         <div>
-           <p className="chat-message-sender">{message.senderName}</p>
-           <p className="chat-message-text">{message.text}</p>
-           <span className="chat-message-timestamp">
-             {new Date(message.timestamp).toLocaleTimeString()}
-           </span>
-         </div>
-       </div>       
+          <div
+            key={index}
+            className={`chat-message ${
+              message.senderId === currentUserId
+                ? "chat-message-sent"
+                : "chat-message-received"
+            }`}
+          >
+            <img
+              src={message.senderAvatar || "./default-avatar.png"}
+              alt={message.senderName}
+              className="chat-message-avatar"
+              style={{
+                width: "30px",
+                height: "30px",
+                borderRadius: "50%",
+                marginRight: "10px",
+              }}
+            />
+            <div>
+              <p className="chat-message-sender">{message.senderName}</p>
+              <p className="chat-message-text">{message.text}</p>
+              <span className="chat-message-timestamp">
+                {new Date(message.timestamp).toLocaleTimeString()}
+              </span>
+            </div>
+          </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
 
       <div className="chat-input">
