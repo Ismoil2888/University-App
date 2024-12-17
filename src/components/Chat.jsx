@@ -125,7 +125,7 @@ const Chat = () => {
         />
         <img
           src={recipientData.avatarUrl || "./default-avatar.png"}
-          alt={recipientData.username || "Собеседник"}
+          alt={recipientData.username || "Профиль"}
           className="chat-header-avatar"
           style={{ width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover" }}
         />
