@@ -1,5 +1,5 @@
 {
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#161b22",
   "background_color": "#260C31",
@@ -7,17 +7,17 @@
   "name": "University",
   "icons": [
     {
-      "src": "logoapp.png",
+      "src": "/logoapp.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "logoapp.png",
+      "src": "/logoapp.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logoapp.png",
+      "src": "/logoapp.png",
       "type": "image/png",
       "sizes": "512x512"
     }

@@ -1149,6 +1149,7 @@ import { auth, database } from "../firebase";
 import defaultAvatar from "../default-image.png";
 import basiclogo from "../basic-logo.png";
 import ttulogo from "../Ttulogo.jpg";
+import defaultImage from "../Ttulogo.jpg";
 import glkorpusosimi from "../glkorpusosimi.jpg";
 import osimi from "../osimi.png";
 import photo from "../Каримзода.jpg";
