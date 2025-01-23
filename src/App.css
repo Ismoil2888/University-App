@@ -8,12 +8,39 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  scrollbar-width: none;
+  /* scrollbar-width: none; */
   scroll-behavior: smooth;
 }
 
-::-webkit-scrollbar{
+/* ::-webkit-scrollbar{
   display: none;
+} */
+
+/* *::-webkit-scrollbar-button {
+  display: none;
+}
+
+*::-webkit-scrollbar {
+  background-color: transparent;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: rgba(240, 240, 240, 0.3);
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 100, 100, 0.8);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(241, 241, 241, 0.149);
+  border-radius: 10px;
+} */
+
+*::-webkit-scrollbar {
+width: 0px;
+height: 0px;
 }
 
 /* Навигация */
@@ -23,9 +50,9 @@ header {
   background-color: #161b22;
   z-index: 1999;
   padding: 10px 0;
-  border-bottom-left-radius: 25px;
+  /* border-bottom-left-radius: 25px;
   border-bottom-right-radius: 25px;
-  box-shadow: 0 4px 2px -2px gray;
+  box-shadow: 0 4px 2px -2px gray; */
 }
 
 header nav{
@@ -874,7 +901,10 @@ header nav ul li a:hover::before {
         }
         
         .edit-username-section button {
-          padding: 8px 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          /* padding: 8px 12px; */
           background-color: #007bff;
           color: white;
           border: none;
@@ -1170,7 +1200,7 @@ input[type="file"] {
         }
       
         .notification {
-          position: absolute;
+          /* position: absolute;
           margin-top: 20%;
           margin-right: 20%;
           color: white;
@@ -1179,7 +1209,20 @@ input[type="file"] {
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
           font-size: 14px;
           animation: fadeInOut 3s ease-in-out;
+          z-index: 9999; */
+          position: absolute;
+          margin-top: 17%;
+          left: 40%;
+          color: rgb(110, 79, 79);
+          padding-left: 15px;
+          padding-top: 10px;
+          border-radius: 15px;
           z-index: 9999;
+          background-color: rgba(201, 199, 199, 0.3);
+          backdrop-filter: blur(10px);
+          width: 350px;
+          height: 60px;
+          animation: fadeInOut 3s ease-in-out;
         }
       
         @keyframes fadeInOut {
@@ -1202,15 +1245,20 @@ input[type="file"] {
         }
       
         .notification.success {
-          background-color: #4CAF50; /* Зеленый цвет для успеха */
+          background-color: rgba(0, 255, 17, 0.3); /* Зеленый цвет для успеха */
+          color: white;
+          font-weight: bold;
         }
         
         .notification.error {
-          background-color: #f44336; /* Красный цвет для ошибок */
+          background-color: rgba(242, 9, 9, 0.3); /* Красный цвет для ошибок */
+          color: #ffffff;
+          font-weight: bold;
+          padding-bottom: 20px;
         }
 
         .notification.neutral {
-          background-color: #a9a8a8; /* Красный цвет для ошибок */
+          background-color: rgba(201, 199, 199, 0.3); /* Красный цвет для ошибок */
         }
       
         .ci-txt{

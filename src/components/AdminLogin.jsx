@@ -10,7 +10,7 @@ const AdminLogin = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    if (password === 'admin') {
+    if (password === 'admin2025') {
       // Сохраняем флаг авторизации и время входа
       localStorage.setItem('isAdminAuthenticated', 'true');
       localStorage.setItem('adminLoginTime', Date.now()); // Сохраняем текущее время

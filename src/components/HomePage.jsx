@@ -1148,7 +1148,7 @@ import { getDatabase, ref as dbRef, onValue, get, push, set, update, remove } fr
 import { auth, database } from "../firebase";
 import defaultAvatar from "../default-image.png";
 import basiclogo from "../basic-logo.png";
-import ttulogo from "../Ttulogo.jpg";
+import ttulogo from "../Ttulogo.png";
 import defaultImage from "../Ttulogo.jpg";
 import glkorpusosimi from "../glkorpusosimi.jpg";
 import osimi from "../osimi.png";

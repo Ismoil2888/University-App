@@ -183,13 +183,24 @@
   margin-top: 50px;
 }
 
-.ident-requests-cards{
+.ident-requests-cards, .requests-list{
   display: flex;
   justify-content: start;
   align-items: center;
   flex-wrap: wrap;
   margin-top: 50px;
   gap: 20px;
+}
+
+.requests-list{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.teacher-requests{
+  margin-top: 50px;
 }
 
 .request-card p {

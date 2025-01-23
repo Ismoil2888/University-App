@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 import { getStorage } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
-import { getFunctions } from "firebase/functions"; // Новый импорт
+import { getFunctions } from "firebase/functions";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDW06pRWxVfbFwO4J9OYI9ANMPMbTf-mrM",
@@ -19,6 +19,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const database = getDatabase(app);
-export const storage = getStorage(app); // Экспорт Firebase Storage
+export const storage = getStorage(app);
 export const firestore = getFirestore(app);
-export const functions = getFunctions(app); // Новый экспорт для функций
+export const functions = getFunctions(app);

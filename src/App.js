@@ -14,6 +14,7 @@ import Contacts from "./components/Contacts";
 import WelcomePage from './components/WelcomePage';
 import TeachersPage from './components/TeachersPage';
 import AdminPanel from './components/AdminPanel';
+import BlankForm from "./components/BlankForm";
 import AdminLogin from './components/AdminLogin';
 import NotfoundPage from './components/NotfoundPage';
 import About from './components/About';
@@ -81,6 +82,7 @@ function App() {
       <Route path="/teacher-profile/:id" element={<TeacherProfile />} />
       <Route path="/admin" element={<AdminPrivateRoute> <AdminPanel /> </AdminPrivateRoute>} />
       <Route path="/admin-login" element={<AdminLogin />} />
+      <Route path="/blank" element={<BlankForm />} />
       <Route path="*" element={<NotfoundPage />} />
       <Route path="/chat/:chatRoomId" element={<Chat />} />
       <Route path="/chats" element={<ChatList />} />
