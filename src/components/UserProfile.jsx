@@ -108,68 +108,6 @@ const UserProfile = () => {
     });
   };
   
-  
-  // const handleCreateChat = () => {
-  //   const db = getDatabase();
-  //   const currentUserId = auth.currentUser?.uid; // ID текущего пользователя
-  //   const uniqueChatId = generateUniqueChatId(currentUserId, userId); // Генерация уникального ID чата
-  
-  //   const chatRoomRef = databaseRef(db, `chatRooms/${uniqueChatId}`);
-  //   const currentUserChatRef = databaseRef(db, `users/${currentUserId}/chats/${uniqueChatId}`);
-  //   const recipientChatRef = databaseRef(db, `users/${userId}/chats/${uniqueChatId}`);
-  
-  //   get(databaseRef(db, `users/${currentUserId}`)).then((snapshot) => {
-  //     const currentUserData = snapshot.val();
-  
-  //     if (!currentUserData) {
-  //       console.error("Не удалось загрузить данные текущего пользователя");
-  //       return;
-  //     }
-  
-  //     get(chatRoomRef).then((snapshot) => {
-  //       if (snapshot.exists()) {
-  //         navigate(`/chat/${uniqueChatId}`);
-  //       } else {
-  //         const chatRoomData = {
-  //           participants: {
-  //             [currentUserId]: true,
-  //             [userId]: true,
-  //           },
-  //           createdAt: new Date().toISOString(),
-  //         };
-  
-  //         const currentUserChatData = {
-  //           chatRoomId: uniqueChatId,
-  //           recipientId: userId,
-  //           recipientName: userData.username,
-  //           recipientAvatar: userData.avatarUrl || "./default-image.png",
-  //           lastMessage: "",
-  //           timestamp: new Date().toISOString(),
-  //         };
-  
-  //         const recipientChatData = {
-  //           chatRoomId: uniqueChatId,
-  //           recipientId: currentUserId,
-  //           recipientName: currentUserData.username,
-  //           recipientAvatar: currentUserData.avatarUrl || "./default-image.png",
-  //           lastMessage: "",
-  //           timestamp: new Date().toISOString(),
-  //         };
-  
-  //         Promise.all([
-  //           set(chatRoomRef, chatRoomData),
-  //           set(currentUserChatRef, currentUserChatData),
-  //           set(recipientChatRef, recipientChatData),
-  //         ])
-  //           .then(() => {
-  //             navigate(`/chat/${uniqueChatId}`);
-  //           })
-  //           .catch((error) => console.error("Ошибка при создании чата:", error));
-  //       }
-  //     });
-  //   });
-  // };  
-  
   // Генерация уникального ID чата
   const generateUniqueChatId = (id1, id2) => {
     const sortedIds = [id1, id2].sort(); // Сортировка ID для уникальности
