@@ -27,71 +27,122 @@ const Chat = () => {
   const [editingMessageId, setEditingMessageId] = useState(null); // Для редактирования сообщения
   const [editMessageText, setEditMessageText] = useState(""); // Текст редактируемого сообщения
   const currentUserId = auth.currentUser?.uid; // Получаем ID текущего пользователя
-
+  const [recipientStatus, setRecipientStatus] = useState("offline");
+  const [lastActive, setLastActive] = useState("");
   const messagesEndRef = useRef(null); // Ссылка на последний элемент сообщений
   const actionsRef = useRef(null);
+  const [showChatActions, setShowChatActions] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteForBoth, setDeleteForBoth] = useState(false);
+  const actionsModalRef = useRef(null);
 
   useEffect(() => {
     const db = getDatabase();
     const messagesRef = databaseRef(db, `chatRooms/${chatRoomId}/messages`);
     const chatRoomRef = databaseRef(db, `chatRooms/${chatRoomId}`);
 
-    // Получение данных текущего пользователя
-    const currentUserRef = databaseRef(db, `users/${currentUserId}`);
-    get(currentUserRef).then((snapshot) => {
-      if (snapshot.exists()) {
-        setCurrentUserData(snapshot.val());
-      }
-    });
+    // Загрузка данных текущего пользователя
+    const loadCurrentUser = async () => {
+      const snapshot = await get(databaseRef(db, `users/${currentUserId}`));
+      if (snapshot.exists()) setCurrentUserData(snapshot.val());
+    };
 
-    // Получение данных участников чата
+    // Загрузка данных получателя
+    const loadRecipientData = (otherParticipantId) => {
+      const recipientRef = databaseRef(db, `users/${otherParticipantId}`);
+      onValue(recipientRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          setRecipientData(data);
+          setRecipientStatus(data.status || "offline");
+          setLastActive(data.lastActive || "");
+        }
+      });
+    };
+
+    // Основная загрузка данных
+    loadCurrentUser();
     onValue(chatRoomRef, (snapshot) => {
       const chatData = snapshot.val();
-      if (chatData && chatData.participants) {
-        const otherParticipantId = Object.keys(chatData.participants).find(
-          (id) => id !== currentUserId
-        );
-        setRecipientId(otherParticipantId);
-
-        // Получаем данные получателя
+      if (chatData?.participants) {
+        const otherParticipantId = Object.keys(chatData.participants)
+          .find(id => id !== currentUserId);
         if (otherParticipantId) {
-          const recipientRef = databaseRef(db, `users/${otherParticipantId}`);
-          onValue(recipientRef, (snapshot) => {
-            setRecipientData(snapshot.val());
-          });
+          setRecipientId(otherParticipantId);
+          loadRecipientData(otherParticipantId);
         }
       }
     });
 
-    // Получение сообщений с данными отправителя
+    // Загрузка сообщений
     onValue(messagesRef, async (snapshot) => {
       const data = snapshot.val();
       if (data) {
         const messagesArray = await Promise.all(
           Object.entries(data).map(async ([key, message]) => {
-            const senderRef = databaseRef(db, `users/${message.senderId}`);
-            const senderSnapshot = await get(senderRef);
-            const senderData = senderSnapshot.val();
-
+            const senderSnapshot = await get(databaseRef(db, `users/${message.senderId}`));
             return {
-              id: key, // Добавляем ID сообщения
+              id: key,
               ...message,
-              senderName: senderData?.username || "Неизвестный пользователь",
-              senderAvatar: senderData?.avatarUrl || "./default-avatar.png",
+              senderName: senderSnapshot.val()?.username || "Неизвестный",
+              senderAvatar: senderSnapshot.val()?.avatarUrl || "./default-avatar.png",
             };
           })
         );
         setMessages(messagesArray);
-
-        // Прокручиваем вниз к последнему сообщению
-        setTimeout(() => {
-          messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-        }, 100);
+        setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
       }
     });
   }, [chatRoomId, currentUserId]);
 
-  
+  // Управление статусом пользователя
+  useEffect(() => {
+    if (!currentUserId) return;
+
+    const db = getDatabase();
+    const userStatusRef = databaseRef(db, `users/${currentUserId}/status`);
+    const lastActiveRef = databaseRef(db, `users/${currentUserId}/lastActive`);
+
+    // Установка начального статуса
+    set(userStatusRef, "online");
+
+    // Обработчики изменения состояния
+    const handleConnectionChange = (isOnline) => {
+      set(userStatusRef, isOnline ? "online" : "offline");
+      set(lastActiveRef, new Date().toISOString());
+    };
+
+    const handleVisibilityChange = () => {
+      handleConnectionChange(document.visibilityState === "visible");
+    };
+
+    // Слушатели событий
+    window.addEventListener("beforeunload", () => handleConnectionChange(false));
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener("beforeunload", () => handleConnectionChange(false));
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      handleConnectionChange(false);
+    };
+  }, [currentUserId]);
+
+  // Рендер статуса
+  const renderStatus = () => {
+    if (recipientStatus === "online") {
+      return <span className="status-online">в сети</span>;
+    }
+    
+    if (lastActive && !isNaN(new Date(lastActive))) {
+      const lastActiveTime = new Date(lastActive).toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      return <span className="status-offline">был(а) в сети: {lastActiveTime}</span>;
+    }
+    
+    return <span className="status-offline">не в сети</span>;
+  };
 
   // Обработчик нажатия на сообщение
   const handleMessageClick = (messageId, event) => {
@@ -184,6 +235,37 @@ const Chat = () => {
     }, 0);
   };
 
+  const handleClearHistory = () => {
+    const db = getDatabase();
+    const messagesRef = databaseRef(db, `chatRooms/${chatRoomId}/messages`);
+    remove(messagesRef)
+      .then(() => {
+        setShowChatActions(false);
+        // Здесь можно добавить уведомление об успехе
+      })
+      .catch((error) => console.error("Ошибка при очистке истории:", error));
+  };
+
+  const handleDeleteChat = () => {
+    const db = getDatabase();
+    const currentUserChatRef = databaseRef(db, `users/${currentUserId}/chats/${chatRoomId}`);
+    const chatRoomRef = databaseRef(db, `chatRooms/${chatRoomId}`);
+
+    remove(currentUserChatRef)
+      .then(() => {
+        if (deleteForBoth && recipientId) {
+          const recipientChatRef = databaseRef(db, `users/${recipientId}/chats/${chatRoomId}`);
+          remove(recipientChatRef);
+        }
+        remove(chatRoomRef)
+          .then(() => {
+            setShowDeleteModal(false);
+            navigate(-1); // Возвращаемся назад после удаления
+          });
+      })
+      .catch((error) => console.error("Ошибка при удалении чата:", error));
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (actionsRef.current && !actionsRef.current.contains(event.target)) {
@@ -199,19 +281,108 @@ const Chat = () => {
 
   return (
     <div className="chat-container">
-      <div className="chat-header">
-        <FaChevronLeft
+          <div className="chat-header">
+        <FaChevronLeft 
           style={{ marginLeft: "10px", color: "white", fontSize: "25px" }}
           onClick={() => navigate(-1)}
         />
+        <div style={{display: "flex", gap: "20px", alignItems: "center"}}>
         <img
           src={recipientData.avatarUrl || "./default-avatar.png"}
           alt={recipientData.username || "Профиль"}
           className="chat-header-avatar"
-          style={{ width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover" }}
+          style={{ width: "45px", height: "45px", borderRadius: "50%", objectFit: "cover" }}
         />
-        <h2>{recipientData.username || "Чат"}</h2>
+        <div className="chat-header-info">
+          <h2>{recipientData.username || "Чат"}</h2>
+          {renderStatus()}
+        </div>
+        </div>
+        
+        {/* Добавляем иконку меню */}
+        <FaEllipsisV 
+          style={{ marginRight: "10px", cursor: "pointer", color: "white", fontSize: "25px" }}
+          onClick={() => setShowChatActions(!showChatActions)}
+        />
+
+        {/* Модальное окно действий */}
+        {showChatActions && (
+  <div className="actions-modal" ref={actionsModalRef}>
+    <div className="actions-modal-content">
+    <button
+      className="modal-close-button"
+      onClick={() => setShowChatActions(false)}
+      style={{
+        position: "absolute",
+        top: "5px",
+        right: "5px",
+        background: "none",
+        border: "none",
+        fontSize: "20px",
+        cursor: "pointer",
+      }}
+    >
+      &times;
+    </button>
+      <button className="action-button" onClick={handleClearHistory}>
+        Очистить историю
+      </button>
+      <button
+        className="action-button delete-button"
+        onClick={() => {
+          setShowChatActions(false);
+          setShowDeleteModal(true);
+        }}
+      >
+        Удалить чат
+      </button>
+    </div>
+  </div>
+)}
       </div>
+
+      {/* Модальное окно подтверждения удаления */}
+      {showDeleteModal && (
+        <div className="delete-modal">
+          <div className="delete-modal-content">
+            <button 
+              className="modal-close-button"
+              onClick={() => setShowDeleteModal(false)}
+            >
+              &times;
+            </button>
+            <h3 className="modal-title">
+              Удалить чат с {recipientData.username}?
+            </h3>
+            <p className="modal-subtitle">Это действие нельзя будет отменить</p>
+            
+            <label className="checkbox-container">
+              <input
+                type="checkbox"
+                checked={deleteForBoth}
+                onChange={(e) => setDeleteForBoth(e.target.checked)}
+              />
+              <span className="checkmark"></span>
+              Также удалить для {recipientData.username}
+            </label>
+
+            <div className="modal-actions">
+              <button 
+                className="modal-button cancel-button"
+                onClick={() => setShowDeleteModal(false)}
+              >
+                Отмена
+              </button>
+              <button 
+                className="modal-button confirm-button"
+                onClick={handleDeleteChat}
+              >
+                Удалить
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="chat-messages">
         {messages.map((message) => (
@@ -265,14 +436,20 @@ const Chat = () => {
               ) : (
                 <p className="chat-message-text">{message.text}</p>
               )}
-              <span className="chat-message-timestamp">
-                {new Date(message.timestamp).toLocaleTimeString()}
-                {message.editedAt && (
-                  <span className="chat-message-edited">
-                    (изменено: {new Date(message.editedAt).toLocaleTimeString()})
-                  </span>
-                )}
-              </span>
+<span className="chat-message-timestamp">
+  {new Date(message.timestamp).toLocaleTimeString([], { 
+    hour: '2-digit', 
+    minute: '2-digit'
+  })}
+  {message.editedAt && (
+    <span className="chat-message-edited">
+      (изменено: {new Date(message.editedAt).toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit'
+      })})
+    </span>
+  )}
+</span>
             </div>
             {selectedMessageId === message.id && (
               <div className="chat-message-actions" ref={actionsRef}>
@@ -312,3 +489,17 @@ const Chat = () => {
 };
 
 export default Chat;
+
+
+
+
+
+
+         {/* <span className="chat-message-timestamp">
+                {new Date(message.timestamp).toLocaleTimeString()}
+                {message.editedAt && (
+                  <span className="chat-message-edited">
+                    (изменено: {new Date(message.editedAt).toLocaleTimeString()})
+                  </span>
+                )}
+              </span> */}

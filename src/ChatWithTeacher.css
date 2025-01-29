@@ -111,7 +111,7 @@
   
   .chat-message-sent {
     margin-left: auto; /* Сообщения пользователя справа */
-    /* text-align: right; */
+    text-align: right;
   }
   
   .chat-message-sent .chat-message-text {
@@ -119,6 +119,7 @@
     color: white;
     border-radius: 15px 15px 0 15px;
     padding: 10px;
+    text-align: left;
   }
   
   .chat-message-received {
@@ -146,7 +147,7 @@
     margin-top: 5px;
   }
   
-  .chat-header {
+  /* .chat-header {
     background-color: #0078ff;
     color: white;
     padding: 10px 0px;
@@ -159,7 +160,57 @@
     position: fixed;
     top: 0;
     width: 100%;
-  }  
+  }   */
+
+/* ChatWithTeacher.css */
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background: #2c3e50;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-info {
+  margin-left: 15px;
+}
+
+.chat-header-info h2 {
+  margin: 0 0 3px 0;
+  font-size: 20px;
+}
+
+.status-online {
+  color: #00ff08;
+  font-size: 0.9em;
+  font-weight: 400;
+}
+
+.status-offline {
+  color: #bdc3c7;
+  font-size: 0.9em;
+  font-weight: 400;
+}
+
+.back-button {
+  cursor: pointer;
+  padding: 8px;
+  margin-right: 10px;
+  background: none;
+  border: none;
+  color: white;
+}
+
+.chat-header-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
   
   .chat-input {
     display: flex;
@@ -322,6 +373,10 @@
       opacity: 1;
     }
   }  
+
+  .chat-edit-input{
+    border: none;
+  }
 
   .chat-cancel-edit-button {
     background: none;
