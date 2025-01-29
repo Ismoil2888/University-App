@@ -106,12 +106,12 @@
     justify-content: center;
     align-items: center;
     margin: 10px;
-    max-width: 60%;
+    max-width: 70%;
   }
   
   .chat-message-sent {
     margin-left: auto; /* Сообщения пользователя справа */
-    text-align: right;
+    /* text-align: right; */
   }
   
   .chat-message-sent .chat-message-text {
@@ -172,7 +172,8 @@
   }
   
   .chat-input-field {
-    flex: 1;
+    /* flex: 1; */
+    width: 65%;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 18px;
@@ -340,3 +341,208 @@
     margin-top: 4px;
     text-align: right;
   }
+
+
+
+
+
+  /* Обновленные стили для ChatWithTeacher.css */
+
+/* Анимации */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Модальные окна */
+.delete-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+  z-index: 1000;
+}
+
+.delete-modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  animation: slideIn 0.3s ease;
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 0;
+  left: 40%;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.modal-close-button:hover {
+  color: #333;
+}
+
+.modal-title {
+  margin: 0 0 10px;
+  font-size: 20px;
+  color: #333;
+}
+
+.modal-subtitle {
+  margin: 0 0 20px;
+  color: #666;
+  font-size: 14px;
+}
+
+.checkbox-container {
+  display: block;
+  position: relative;
+  padding-left: 30px;
+  margin: 15px 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #fff;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+  border-color: #007bff;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.modal-button {
+  flex: 1;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.1s ease, opacity 0.2s ease;
+}
+
+.modal-button:active {
+  transform: scale(0.98);
+}
+
+.cancel-button {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.confirm-button {
+  background: #ff4d4d;
+  color: white;
+}
+
+/* Окно действий */
+.actions-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  animation: fadeIn 0.2s ease;
+}
+
+.actions-modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 80%;
+  max-width: 300px;
+  position: relative;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  animation: slideIn 0.2s ease;
+}
+
+.action-button {
+  display: block;
+  width: 100%;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  background: none;
+  text-align: left;
+  color: #333;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.action-button:hover {
+  background: #f5f5f5;
+}
+
+.delete-button {
+  color: #ff4d4d;
+  font-weight: 500;
+}

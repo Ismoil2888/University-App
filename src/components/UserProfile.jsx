@@ -187,7 +187,6 @@ const UserProfile = () => {
       <button className="up-chat-button" onClick={handleCreateChat}>
         Написать
       </button>
-
       
     </div>
   );

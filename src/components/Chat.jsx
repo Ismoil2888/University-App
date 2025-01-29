@@ -241,12 +241,6 @@ const Chat = () => {
               <p className="chat-message-sender">{message.senderName}</p>
               {editingMessageId === message.id ? (
             <div style={{ display: "flex", alignItems: "center" }}>
-            <input
-              type="text"
-              value={editMessageText}
-              onChange={(e) => setEditMessageText(e.target.value)}
-              className="chat-edit-input"
-            />
             <button
               onClick={() => setEditingMessageId(null)}
               className="chat-cancel-edit-button"
@@ -255,12 +249,18 @@ const Chat = () => {
                 border: "none",
                 color: "red",
                 fontSize: "16px",
-                marginLeft: "8px",
+                marginRight: "18px",
                 cursor: "pointer",
               }}
             >
               ✖
             </button>
+            <input
+              type="text"
+              value={editMessageText}
+              onChange={(e) => setEditMessageText(e.target.value)}
+              className="chat-edit-input"
+            />
           </div>
               ) : (
                 <p className="chat-message-text">{message.text}</p>
