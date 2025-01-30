@@ -33,16 +33,6 @@ const ChatList = () => {
       setNotificationType("");
     }, 3000);
   };
-  
-  // Функция для ошибочных уведомлений
-  const showNotificationError = (message) => {
-    setNotificationType("error");
-    setNotification(message);
-    setTimeout(() => {
-      setNotification("");
-      setNotificationType("");
-    }, 3000);
-  };
 
   const generateUniqueChatId = (userId1, userId2) => {
     return [userId1, userId2].sort().join("_");
@@ -122,7 +112,7 @@ const ChatList = () => {
             <Link to={`/chat/${chat.chatRoomId}`} className="chat-link">
               <div className="chat-list-avatar-info">
                 <img
-                  src={chat.recipientAvatar || "./default-avatar.png"}
+                  src={chat.recipientAvatar || "./default-image.png"}
                   alt={chat.recipientName}
                   className="chat-avatar"
                 />
@@ -132,7 +122,10 @@ const ChatList = () => {
                 </div>
               </div>
               <span className="chat-timestamp">
-                {new Date(chat.timestamp).toLocaleTimeString()}
+                {new Date(chat.timestamp).toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })}
               </span>
             </Link>
             {selectedChatId && (
