@@ -82,7 +82,7 @@ const UserProfile = () => {
             chatRoomId,
             recipientId: userId,
             recipientName: userData.username, // Имя получателя
-            recipientAvatar: userData.avatarUrl || "./default-avatar.png",
+            recipientAvatar: userData.avatarUrl || "./default-image.png",
             lastMessage: "",
             timestamp: new Date().toISOString(),
           };
@@ -91,7 +91,7 @@ const UserProfile = () => {
             chatRoomId,
             recipientId: currentUserId,
             recipientName: currentUserData.username, // Имя текущего пользователя
-            recipientAvatar: currentUserData.avatarUrl || "./default-avatar.png",
+            recipientAvatar: currentUserData.avatarUrl || "./default-image.png",
             lastMessage: "",
             timestamp: new Date().toISOString(),
           };

@@ -112,6 +112,7 @@
   .chat-message-sent {
     margin-left: auto; /* Сообщения пользователя справа */
     text-align: right;
+    margin-right: 15px;
   }
   
   .chat-message-sent .chat-message-text {
@@ -362,7 +363,7 @@
   }
   
   .chat-message-actions button:hover {
-    background: #f9f9f9;
+    background: #eaeaea;
   }
   
   @keyframes fadeIn {
@@ -382,6 +383,7 @@
     margin-right: 15px;
     height: 20px;
     padding: 10px;
+    width: 150px;
   }
 
   .chat-cancel-edit-button {
@@ -549,7 +551,7 @@
 }
 
 .cancel-button {
-  background: #f0f0f0;
+  background: #e1e1e1;
   color: #333;
 }
 
@@ -620,6 +622,56 @@
   transform: translateX(-50%);
   backdrop-filter: blur(5px);
   width: 100px;
+}
+
+
+
+
+
+.delete-message-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.043);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.delete-message-modal .modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+  color: #333;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.modal-buttons .delete-message-button {
+  background: #ff4444;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-buttons .cancel-message-button {
+  background: #e1e1e1;
+  color: black;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 
@@ -704,4 +756,36 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 200px;
+}
+
+
+
+
+
+
+
+
+
+.chat-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.unread-count {
+  background: #4caf50;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.chat-timestamp {
+  font-size: 12px;
+  color: #666;
 }

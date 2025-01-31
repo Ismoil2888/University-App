@@ -58,6 +58,26 @@ function App() {
 </div>;
   }
 
+    // Блокировка контекстного меню
+    const disableContextMenu = () => {
+      const onContextMenu = (event) => event.preventDefault();
+      document.addEventListener("contextmenu", onContextMenu);
+
+      return () => {
+        document.removeEventListener("contextmenu", onContextMenu);
+      };
+    };
+
+    // Блокировка выделения текста
+    const disableTextSelection = () => {
+      const onSelectStart = (event) => event.preventDefault();
+      document.addEventListener("selectstart", onSelectStart);
+
+      return () => {
+        document.removeEventListener("selectstart", onSelectStart);
+      };
+    };
+
   return (
     <Routes>
       <Route path="/" element={isAuthenticated ? <HomePage /> : <SignIn />} />
