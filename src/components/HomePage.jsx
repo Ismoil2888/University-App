@@ -1192,6 +1192,7 @@ const HomePage = () => {
   const userId = auth.currentUser?.uid; // Текущий пользователь
   const [unreadCount, setUnreadCount] = useState(0);
   const navigate = useNavigate();
+  const [unreadChatsCount, setUnreadChatsCount] = useState(0);
 
      // Функция для успешных уведомлений
      const showNotification = (message) => {
@@ -1232,15 +1233,55 @@ const showNotificationError = (message) => {
     if (isMenuOpen) {
       setTimeout(() => {
         setIsMenuOpen(false);
-      }, 0); // Задержка для плавного исчезновения
+      }, 0);
     } else {
       setIsMenuOpen(true);
     }
   };
 
   const toggleMenu = (postId) => {
-    setMenuPostId(postId === menuPostId ? null : postId); // Toggle visibility for the post
+    setMenuPostId(postId === menuPostId ? null : postId);
   };
+
+  useEffect(() => {
+    const db = getDatabase();
+    const user = auth.currentUser;
+  
+    if (user) {
+      const chatsRef = dbRef(db, `users/${user.uid}/chats`);
+      const unsubscribeChats = onValue(chatsRef, (snapshot) => {
+        const chats = snapshot.val();
+        if (chats) {
+          const chatIds = Object.keys(chats);
+          let totalUnreadCount = 0;
+  
+          chatIds.forEach((chatId) => {
+            const messagesRef = dbRef(db, `chatRooms/${chatId}/messages`);
+            const unsubscribeMessages = onValue(messagesRef, (messagesSnapshot) => {
+              const messages = messagesSnapshot.val();
+              if (messages) {
+                const unreadMessages = Object.values(messages).filter(
+                  (msg) => !msg.seenBy?.includes(user.uid) && msg.senderId !== user.uid
+                );
+  
+                if (unreadMessages.length > 0) {
+                  totalUnreadCount += 1;
+                }
+              }
+            });
+  
+            return () => unsubscribeMessages();
+          });
+  
+          setUnreadChatsCount(totalUnreadCount);
+        } else {
+          setUnreadChatsCount(0);
+        }
+      });
+  
+      return () => unsubscribeChats();
+    }
+  }, []);
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -1737,8 +1778,16 @@ const showNotificationError = (message) => {
 
           <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Главная</ul>
 
-          <Link to="/chats"><BsChatTextFill style={{fontSize: "25px", color: "white"}} /></Link>
-
+          <Link to="/chats">
+  <div style={{ position: "relative" }}>
+    <BsChatTextFill style={{ fontSize: "25px", marginRight: "15px", color: "white" }} />
+    {unreadChatsCount > 0 && (
+      <span className="notification-chat-count">
+        {unreadChatsCount}
+      </span>
+    )}
+  </div>
+</Link>
           <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenuu}>          
             <span className="bm-span"></span>
             <span className="bm-span"></span>

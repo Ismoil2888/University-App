@@ -78,6 +78,9 @@ function App() {
       };
     };
 
+    disableContextMenu();
+    disableTextSelection();
+
   return (
     <Routes>
       <Route path="/" element={isAuthenticated ? <HomePage /> : <SignIn />} />
