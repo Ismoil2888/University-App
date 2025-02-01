@@ -1,7 +1,7 @@
 {
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#161b22",
+  "theme_color": "#2c3e50",
   "background_color": "#260C31",
   "short_name": "University App",
   "name": "University",
