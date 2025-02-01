@@ -1,4 +1,9 @@
 /* Основные стили */
+html,
+body {
+  overscroll-behavior-y: contain;
+}
+
 *{
   margin: 0;
   padding: 0;
@@ -47,7 +52,7 @@ height: 0px;
 header {
   position: fixed;
   width: 100%;
-  background-color: #161b22;
+  background-color: #2c3e50;
   z-index: 1999;
   padding: 10px 0;
   /* border-bottom-left-radius: 25px;
@@ -88,7 +93,7 @@ header nav ul li a:hover {
 
 .home-container{
   /* background: #0d1117; */
-  background: #071019;
+  background: #1e2c39;
   color: #c9d1d9; /* Светлый текст */
 }
 
@@ -138,7 +143,7 @@ header nav ul li a:hover {
 
 /* Футер */
 footer {
-  background-color: #161b22;
+  background-color: #2c3e50;
   color: #8b949e;
   text-align: center;
   height: 33px;
@@ -178,7 +183,7 @@ footer {
     width: 100%;
     height: 35px;
     padding: 10px 0;
-    background-color: #161b22;
+    background-color: #2c3e50;
     /* border-top-left-radius: 25px;
     border-top-right-radius: 25px; */
     color: #fff;
@@ -657,14 +662,14 @@ header nav ul li a:hover::before {
           display: flex;
           flex-direction: column;
           align-items: center;
-          background-color: #555;
+          background-color: #1e2c39;
         }
         
         .profile-content {
           width: 90%;
           /* height: 700px; */
           max-width: 500px;
-          background-color: #003968;
+          background-color: #2c3e50;
           color: white;
           padding: 20px 30px;
           border-radius: 10px;
@@ -1764,4 +1769,25 @@ color: transparent;
   margin-top: 50px;
 }
 
+}
+
+/* В ваш CSS-файл */
+.skeleton-media {
+  width: 100%;
+  height: 400px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  border: 1px solid rgb(116, 154, 185);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }

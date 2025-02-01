@@ -1,5 +1,5 @@
 .tch-hero {
-    background-color: #1a1a1a; /* Цвет фона */
+    background-color: #1e2c39; /* Цвет фона */
     padding: 10px 0; /* Отступы сверху и снизу */
     text-align: center; /* Выравнивание текста по центру */
     background-image: url('cyber-background.jpg'); /* Фоновое изображение */
@@ -25,7 +25,7 @@
     padding-top: 20px;
 }
 .teachers-section {
-    background-color: #0d0d0d;
+    background-color: #1e2c39;
     color: #e0e0e0;
     padding: 40px 0;
 }

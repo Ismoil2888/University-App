@@ -1,91 +1,4 @@
-/* Chat.css
 .chat-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    max-width: 600px;
-    margin: 0 auto;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-  }
-  
-  .chat-header {
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-  }
-  
-  .chat-messages {
-    flex: 1;
-    padding: 10px;
-    overflow-y: auto;
-    background-color: #ffffff;
-  }
-  
-  .chat-message {
-    margin-bottom: 10px;
-    padding: 8px 12px;
-    border-radius: 12px;
-    max-width: 75%;
-    word-wrap: break-word;
-  }
-  
-  .chat-message-sent {
-    background-color: #dcf8c6;
-    align-self: flex-end;
-  }
-  
-  .chat-message-received {
-    background-color: #f1f0f0;
-    align-self: flex-start;
-  }
-  
-  .chat-message-text {
-    margin: 0;
-    font-size: 14px;
-  }
-  
-  .chat-message-timestamp {
-    display: block;
-    font-size: 10px;
-    color: #888;
-    text-align: right;
-  }
-  
-  .chat-input {
-    display: flex;
-    padding: 10px;
-    border-top: 1px solid #ccc;
-    background-color: #f9f9f9;
-  }
-  
-  .chat-input-field {
-    flex: 1;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-  }
-  
-  .chat-send-button {
-    margin-left: 10px;
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .chat-send-button:hover {
-    background-color: #0056b3;
-  }   */
-
-  .chat-container {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -149,21 +62,6 @@
     display: flex;
     flex-direction: column;
   }
-  
-  /* .chat-header {
-    background-color: #0078ff;
-    color: white;
-    padding: 10px 0px;
-    text-align: center;
-    font-size: 1.2rem;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    position: fixed;
-    top: 0;
-    width: 100%;
-  }   */
 
 /* ChatWithTeacher.css */
 .chat-header {
@@ -259,10 +157,7 @@
 .chat-list-container {
     padding: 10px;
     max-width: 600px;
-    margin: 0 auto;
-    background-color: #132f45;
-    border-radius: 8px;
-    border: 1px solid #ccc;
+    background-color: #2c3e50;
     height: 100vh;
   }
 

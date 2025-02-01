@@ -1,20 +1,26 @@
-//упрощенка 2
+//упрощенный 2025
 // import React, { useState, useEffect, useRef } from "react";
+// import { useNavigate } from "react-router-dom";
 // import { getDatabase, ref as dbRef, onValue, get, push, set, update, remove } from "firebase/database";
 // import { auth, database } from "../firebase";
 // import defaultAvatar from "../default-image.png";
-// import photo from "../Каримзода.jpg";
 // import "../App.css";
 // import "../PostForm.css";
+// import "swiper/css";
+// import "swiper/css/navigation";
+// import "swiper/css/pagination";
 // import anonymAvatar from '../anonym2.jpg';
 // import { GoKebabHorizontal } from "react-icons/go";
 // import { FaHeart, FaRegHeart, FaRegComment, FaRegBookmark } from "react-icons/fa";
 
 // const HomePage = () => {
+//   const [notification, setNotification] = useState("");
+//   const [notificationType, setNotificationType] = useState("");
+//   const [isMenuOpen, setIsMenuOpen] = useState(false);
 //   const [userAvatarUrl, setUserAvatarUrl] = useState(null);
 //   const [posts, setPosts] = useState([]);
 //   const [menuPostId, setMenuPostId] = useState(null);
-//   const [expandedPosts, setExpandedPosts] = useState({}); 
+//   const [expandedPosts, setExpandedPosts] = useState({}); // Для отслеживания состояния каждого поста
 //   const [commentModal, setCommentModal] = useState({ isOpen: false, postId: null });
 //   const [comments, setComments] = useState([]);
 //   const [newComment, setNewComment] = useState("");
@@ -23,12 +29,89 @@
 //   const actionMenuRef = useRef(null);
 //   const menuRef = useRef(null);
 //   const [userDetails, setUserDetails] = useState({ username: "", avatarUrl: "" });
-//   const userId = auth.currentUser?.uid; 
+//   const userId = auth.currentUser?.uid; // Текущий пользователь
 //   const [unreadCount, setUnreadCount] = useState(0);
+//   const navigate = useNavigate();
+//   const [unreadChatsCount, setUnreadChatsCount] = useState(0);
+//   const [imageLoadedStatus, setImageLoadedStatus] = useState({});
+
+//   const handleImageLoad = (postId) => {
+//     setImageLoadedStatus((prev) => ({
+//       ...prev,
+//       [postId]: true,
+//     }));
+//   };
+  
+//   const handleImageError = (postId) => {
+//     setImageLoadedStatus((prev) => ({
+//       ...prev,
+//       [postId]: true,
+//     }));
+//   };
+    
+//     // Функция для нейтральных уведомлений
+//     const showNotificationNeutral = (message) => {
+//       setNotificationType("neutral");
+//       setNotification(message);
+//       setTimeout(() => {
+//         setNotification("");
+//         setNotificationType("");
+//       }, 3000);
+//     };
+
+//   const goToProfile = (userId) => {
+//     navigate(`/profile/${userId}`);
+//   };
+//   const MAX_TEXT_LENGTH = 100; // Максимальное количество символов до сокращения текста
+
+//   const toggleMenu = (postId) => {
+//     setMenuPostId(postId === menuPostId ? null : postId);
+//   };
+
+//   useEffect(() => {
+//     const db = getDatabase();
+//     const user = auth.currentUser;
+  
+//     if (user) {
+//       const chatsRef = dbRef(db, `users/${user.uid}/chats`);
+//       const unsubscribeChats = onValue(chatsRef, (snapshot) => {
+//         const chats = snapshot.val();
+//         if (chats) {
+//           const chatIds = Object.keys(chats);
+//           let totalUnreadCount = 0;
+  
+//           chatIds.forEach((chatId) => {
+//             const messagesRef = dbRef(db, `chatRooms/${chatId}/messages`);
+//             const unsubscribeMessages = onValue(messagesRef, (messagesSnapshot) => {
+//               const messages = messagesSnapshot.val();
+//               if (messages) {
+//                 const unreadMessages = Object.values(messages).filter(
+//                   (msg) => !msg.seenBy?.includes(user.uid) && msg.senderId !== user.uid
+//                 );
+  
+//                 if (unreadMessages.length > 0) {
+//                   totalUnreadCount += 1;
+//                 }
+//               }
+//             });
+  
+//             return () => unsubscribeMessages();
+//           });
+  
+//           setUnreadChatsCount(totalUnreadCount);
+//         } else {
+//           setUnreadChatsCount(0);
+//         }
+//       });
+  
+//       return () => unsubscribeChats();
+//     }
+//   }, []);
 
 //   useEffect(() => {
 //     const user = auth.currentUser;
 //     if (user) {
+//       // Получаем URL аватарки пользователя
 //       const db = getDatabase();
 //       const userRef = dbRef(db, `users/${user.uid}`);
 //       onValue(userRef, (snapshot) => {
@@ -36,7 +119,7 @@
 //         if (userData && userData.avatarUrl) {
 //           setUserAvatarUrl(userData.avatarUrl);
 //         } else {
-//           setUserAvatarUrl(defaultAvatar);
+//           setUserAvatarUrl(defaultAvatar); // Изображение по умолчанию
 //         }
 //       });
 //     }
@@ -54,11 +137,12 @@
 //             id: key,
 //             ...postsData[key],
 //           }))
-//           .filter((post) => post.status === "approved");
+//           .filter((post) => post.status === "approved"); // Фильтруем только одобренные посты
 //         setPosts(approvedPosts);
 //       }
 //     });
   
+//     // Загрузка данных текущего пользователя
 //     const user = auth.currentUser;
 //     if (user) {
 //       const userRef = dbRef(db, `users/${user.uid}`);
@@ -73,7 +157,7 @@
 //       });
 //     }
   
-//     return () => unsubscribe();
+//     return () => unsubscribe(); // Отписываемся от слушателя при размонтировании компонента
 //   }, []);
 
 //   const handleDeletePost = (postId) => {
@@ -82,6 +166,7 @@
 //     const commentsRef = dbRef(db, `postComments/${postId}`);
 //     const likesRef = dbRef(db, `posts/${postId}/likes`);
   
+//     // Удаляем пост, лайки и комментарии
 //     Promise.all([
 //       remove(postRef),
 //       remove(commentsRef),
@@ -90,7 +175,7 @@
 //       .then(() => {
 //         setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
 //         console.log("Пост и связанные данные успешно удалены.");
-//         alert("Вы удалили свою публикацию.");
+//         showNotificationNeutral("Вы удалили свою публикацию.");
 //       })
 //       .catch((error) => {
 //         console.error("Ошибка удаления поста:", error);
@@ -100,7 +185,7 @@
 //   const toggleTextExpansion = (postId) => {
 //     setExpandedPosts((prev) => ({
 //       ...prev,
-//       [postId]: !prev[postId],
+//       [postId]: !prev[postId], // Переключение между свернутым и развернутым состоянием
 //     }));
 //   };
 
@@ -139,7 +224,7 @@
 //     if (editingCommentId) {
 //       update(dbRef(database, `postComments/${commentModal.postId}/${editingCommentId}`), {
 //         comment: newComment,
-//         timestamp: formattedTimestamp,
+//         timestamp: formattedTimestamp, // Используем читаемую дату
 //       });
 //       setEditingCommentId(null);
 //     } else {
@@ -150,25 +235,27 @@
 //         userId: isAnonymous ? null : auth.currentUser?.uid,
 //         anonymousOwnerId: isAnonymous ? auth.currentUser?.uid : null,
 //         comment: newComment,
-//         timestamp: formattedTimestamp,
+//         timestamp: formattedTimestamp, // Используем читаемую дату
 //       });
 
+//       // Уведомление владельца поста
 //       get(postRef).then((snapshot) => {
 //         const postOwnerId = snapshot.val()?.userId;
 //         if (postOwnerId && postOwnerId !== auth.currentUser?.uid) {
 //           const notificationRef = dbRef(database, `notifications/${postOwnerId}`);
-//           const notificationKey = `comment_${newCommentRef.key}`;
+//           const notificationKey = `comment_${newCommentRef.key}`; // Уникальный ключ для комментария
 //           set(dbRef(database, `notifications/${postOwnerId}/${notificationKey}`), {
 //             avatarUrl: isAnonymous ? anonymAvatar : userDetails.avatarUrl,
 //             username: isAnonymous ? "Анонимно" : userDetails.username,
 //             comment: newComment,
-//             timestamp: formattedTimestamp, 
+//             timestamp: formattedTimestamp, // Используем читаемую дату
 //             userId: isAnonymous ? null : auth.currentUser?.uid,
 //             type: 'comment',
 //           }).catch((error) => console.error("Ошибка при добавлении уведомления: ", error));
 //         }
 //       });
 
+//       // Обновление commentCount
 //       get(commentRef).then((snapshot) => {
 //         const commentCount = snapshot.size || 0;
 //         update(postRef, { commentCount });
@@ -180,7 +267,7 @@
 //   const handleEditComment = (commentId, commentText) => {
 //     setEditingCommentId(commentId);
 //     setNewComment(commentText);
-//     setActionMenuId(null); 
+//     setActionMenuId(null); // Закрыть меню
 //   };
 
 //   const handleDeleteComment = (commentId) => {
@@ -196,8 +283,9 @@
 //     });
 //   };
 
+//   // Обработчик нажатия на лайк
 //   const handleLikeToggle = (postId) => {
-//     if (!userId) return;
+//     if (!userId) return; // Убедитесь, что пользователь авторизован
 
 //     const db = getDatabase();
 //     const postLikesRef = dbRef(db, `posts/${postId}/likes`);
@@ -207,11 +295,12 @@
 //     const updatedLikes = { ...post.likes };
 
 //     if (isLiked) {
-//       delete updatedLikes[userId];
+//       delete updatedLikes[userId]; // Удаляем лайк локально
 //     } else {
-//       updatedLikes[userId] = true; 
+//       updatedLikes[userId] = true; // Добавляем лайк локально
 //     }
 
+//     // Обновляем состояние постов
 //     setPosts((prevPosts) =>
 //       prevPosts.map((p) => {
 //         if (p.id === postId) {
@@ -221,11 +310,14 @@
 //       })
 //     );
 
+//     // Обновляем данные в Firebase
 //     if (isLiked) {
+//       // Снимаем лайк
 //       update(postLikesRef, { [userId]: null }).catch((error) =>
 //         console.error("Ошибка при снятии лайка: ", error)
 //       );
 
+//       // Удаляем уведомление о лайке
 //       get(dbRef(database, `posts/${postId}`)).then((snapshot) => {
 //         const postOwnerId = snapshot.val()?.userId;
 //         if (postOwnerId && postOwnerId !== userId) {
@@ -235,10 +327,12 @@
 //         }
 //       });
 //     } else {
+//       // Добавляем лайк
 //       update(postLikesRef, { [userId]: true }).catch((error) =>
 //         console.error("Ошибка при добавлении лайка: ", error)
 //       );
 
+//       // Добавляем уведомление о лайке
 //       get(dbRef(database, `posts/${postId}`)).then((snapshot) => {
 //         const postOwnerId = snapshot.val()?.userId;
 //         if (postOwnerId && postOwnerId !== userId) {
@@ -276,7 +370,52 @@
 //       });
 //     }
 //   }, []);
+
+//   const toggleActionMenu = (commentId) => {
+//     setActionMenuId((prev) => (prev === commentId ? null : commentId));
+//   };
+
+//   useEffect(() => {
+//     const handleClickOutside = (event) => {
+//       const isInsideMenu = actionMenuRef.current && actionMenuRef.current.contains(event.target);
+//       const isActionButton = event.target.closest(".action-menu button");
+      
+//       // Закрываем меню только если клик произошел за пределами actionMenu и не на кнопках
+//       if (!isInsideMenu && !isActionButton) {
+//         setActionMenuId(null);
+//       }
+//     };
+
+//     document.addEventListener("mousedown", handleClickOutside);
+//     return () => {
+//       document.removeEventListener("mousedown", handleClickOutside);
+//     };
+//   }, []);
+
+//   useEffect(() => {
+//     const handleClickOutside = (event) => {
+//       // Если клик вне menu-options, закрываем меню
+//       if (menuRef.current && !menuRef.current.contains(event.target)) {
+//         setMenuPostId(null);
+//       }
+//     };
+
+//     document.addEventListener("mousedown", handleClickOutside);
+//     return () => {
+//       document.removeEventListener("mousedown", handleClickOutside);
+//     };
+//   }, []);
+
+//   const navbarVariants = {
+//     hidden: { opacity: 0, y: 50 },
+//     visible: {
+//       opacity: 1,
+//       y: 0,
+//       transition: { duration: 0.8, type: 'spring', stiffness: 50 },
+//     },
+//   };
   
+//   // Модальное окно для отображения пользователей, поставивших лайк
 //   const [likesModal, setLikesModal] = useState({ isOpen: false, users: [] });
 
 //   const openLikesModal = (postId) => {
@@ -292,6 +431,8 @@
 //           setLikesModal({ isOpen: true, users: [] });
 //           return;
 //         }
+
+//         // Получаем данные о пользователях, поставивших лайк
 //         const usersPromises = userIds.map((uid) =>
 //           get(dbRef(db, `users/${uid}`)).then((userSnap) => ({
 //             userId: uid,
@@ -299,6 +440,7 @@
 //             avatarUrl: userSnap.val()?.avatarUrl || defaultAvatar,
 //           }))
 //         );
+
 //         Promise.all(usersPromises)
 //           .then((users) => {
 //             setLikesModal({ isOpen: true, users });
@@ -317,43 +459,19 @@
 //     setLikesModal({ isOpen: false, users: [] });
 //   };
 
+//   const handleContextMenu = (event) => {
+//     event.preventDefault();
+//   }
+
 //   return (
 //     <div className="glava">
-// <div className="app">
-//       <main className="hp-main-content">
-//         <section className="hp-news-section">
-//           <div className="hp-news-run">
-//             <marquee behavior="scroll" direction="left">
-//             <div class="scrolling-banner">
-//               <div class="scrolling-text">
-//                 <pre>
-//                  ИҚТИБОС АЗ УМАРИ ХАЙЁМ:  „Не верь тому, кто говорит красиво, в его словах всегда игра. Поверь тому, кто молчаливо, творит красивые дела.“    „Молчанье — щит от многих бед, А болтовня всегда во вред. Язык у человека мал, Но сколько жизней он сломал.“  | Умари Хайём |
-//                 </pre>
-//               </div>
-//             </div>
-//             </marquee>
-//           </div>
-//           <h2>Хабарҳои охирин</h2>
-//           <div className="hp-news-grid">
-//             {Array(6)
-//               .fill(0)
-//               .map((_, index) => (
-//                 <div key={index} className="hp-news-item">
-//                   <div className="hp-news-date">02/12/2024</div>
-//                   <img
-//                     src={photo}
-//                     alt="News"
-//                     className="hp-news-image"
-//                   />
-//                   <p>Масъалаҳои муосири саноати мошинсозӣ</p>
-//                 </div>
-//               ))}
-//           </div>
-//         </section>
-//       </main>
-//     </div>
+//     <div className="home-container" onContextMenu={handleContextMenu}>
+//       {notification && (
+//         <div className={`notification ${notificationType}`}>
+//           {notification}
+//         </div>
+//       )}
 
-//     <div className="home-container">
 //       <main style={{ paddingTop: "70px", paddingBottom: "100px" }}>
 //   <section id="posts">
 //     {posts.length === 0 ? (
@@ -374,14 +492,16 @@
 //                     src={post.userAvatar || defaultAvatar}
 //                     alt="User Avatar"
 //                     className="post-avatar"
+//                     onClick={() => goToProfile(post.userId)}
 //                   />
 //                   <span 
 //                   className="post-username"
+//                   onClick={() => goToProfile(post.userId)}
 //                   >{post.userName}</span>
 //                 </div>
 //                 {post.userId === auth.currentUser?.uid && (
 //                   <div className="three-dot-menu">
-//                     <span>...</span>
+//                     <span onClick={() => toggleMenu(post.id)}>...</span>
 //                     {menuPostId === post.id && (
 //                       <div ref={menuRef} className="menu-options">
 //                         <span>Изменить</span>
@@ -393,12 +513,24 @@
 //               </div>
 
 //               {post.mediaUrl && (
-//                 post.mediaUrl.endsWith(".mp4") ? (
-//                   <video controls src={post.mediaUrl} className="post-media" />
-//                 ) : (
-//                   <img src={post.mediaUrl} alt="Post Media" className="post-media" />
-//                 )
-//               )}
+//   post.mediaUrl.endsWith(".mp4") ? (
+//     <video controls src={post.mediaUrl} className="post-media" />
+//   ) : (
+//     <>
+//       {!imageLoadedStatus[post.id] && (
+//         <div className="skeleton-media" />
+//       )}
+//       <img 
+//         src={post.mediaUrl} 
+//         alt="Post Media" 
+//         className="post-media" 
+//         style={{ display: imageLoadedStatus[post.id] ? 'block' : 'none' }}
+//         onLoad={() => handleImageLoad(post.id)}
+//         onError={() => handleImageError(post.id)}
+//       />
+//     </>
+//   )
+// )}
 
 //               <div className="post-actions">
 //                 {isLiked ? (
@@ -430,6 +562,30 @@
 
 //               <p className="post-content">
 //                 <span className="post-username">{post.userName}</span>{" "}
+//                 {post.description.length > MAX_TEXT_LENGTH && !expandedPosts[post.id] ? (
+//                   <>
+//                     {post.description.slice(0, MAX_TEXT_LENGTH)} ...
+//                     <span
+//                       className="toggle-text"
+//                       onClick={() => toggleTextExpansion(post.id)}
+//                     >
+//                       ещё
+//                     </span>
+//                   </>
+//                 ) : (
+//                   <>
+//                     {post.description}
+//                     {post.description.length > MAX_TEXT_LENGTH && (
+//                       <span
+//                         className="toggle-text"
+//                         onClick={() => toggleTextExpansion(post.id)}
+//                         style={{ marginLeft: "5px"}}
+//                       >
+//                         свернуть
+//                       </span>
+//                     )}
+//                   </>
+//                 )}
 //               </p>
 
 //               <p 
@@ -457,11 +613,13 @@
 //                           <img 
 //                             src={comment.avatarUrl || defaultAvatar} 
 //                             alt={comment.username} 
-//                             className="comment-avatar"
+//                             className="comment-avatar" 
+//                             onClick={() => goToProfile(comment.userId)}
 //                           />
 //                           <div className="comment-content">
 //                             <p
 //                               className="comment-username"
+//                               onClick={() => goToProfile(comment.userId)}
 //                             >
 //                               {comment.username}
 //                             </p>
@@ -473,6 +631,7 @@
 //                               <>
 //                                 <GoKebabHorizontal 
 //                                   style={{fontSize: "20px", color: "grey"}} 
+//                                   onClick={() => toggleActionMenu(comment.id)} 
 //                                   className="action-icon"
 //                                 />
 //                                 {actionMenuId === comment.id && (
@@ -514,8 +673,8 @@
 //                       {likesModal.users.length > 0 ? (
 //                         likesModal.users.map((user) => (
 //                           <div key={user.userId} className="like-user">
-//                             <img src={user.avatarUrl} alt={user.username} className="like-avatar" />
-//                             <span className="like-username">{user.username}</span>
+//                             <img src={user.avatarUrl} alt={user.username} className="like-avatar" onClick={() => goToProfile(post.userId)} />
+//                             <span className="like-username" onClick={() => goToProfile(user.userId)}>{user.username}</span>
 //                           </div>
 //                         ))
 //                       ) : (
@@ -538,12 +697,6 @@
 // };
 
 // export default HomePage;
-
-
-
-
-
-
 
 
 
@@ -1193,6 +1346,21 @@ const HomePage = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const navigate = useNavigate();
   const [unreadChatsCount, setUnreadChatsCount] = useState(0);
+  const [imageLoadedStatus, setImageLoadedStatus] = useState({});
+
+  const handleImageLoad = (postId) => {
+    setImageLoadedStatus((prev) => ({
+      ...prev,
+      [postId]: true,
+    }));
+  };
+  
+  const handleImageError = (postId) => {
+    setImageLoadedStatus((prev) => ({
+      ...prev,
+      [postId]: true,
+    }));
+  };
 
      // Функция для успешных уведомлений
      const showNotification = (message) => {
@@ -1850,12 +2018,24 @@ const showNotificationError = (message) => {
               </div>
 
               {post.mediaUrl && (
-                post.mediaUrl.endsWith(".mp4") ? (
-                  <video controls src={post.mediaUrl} className="post-media" />
-                ) : (
-                  <img src={post.mediaUrl} alt="Post Media" className="post-media" />
-                )
-              )}
+  post.mediaUrl.endsWith(".mp4") ? (
+    <video controls src={post.mediaUrl} className="post-media" />
+  ) : (
+    <>
+      {!imageLoadedStatus[post.id] && (
+        <div className="skeleton-media" />
+      )}
+      <img 
+        src={post.mediaUrl} 
+        alt="Post Media" 
+        className="post-media" 
+        style={{ display: imageLoadedStatus[post.id] ? 'block' : 'none' }}
+        onLoad={() => handleImageLoad(post.id)}
+        onError={() => handleImageError(post.id)}
+      />
+    </>
+  )
+)}
 
               <div className="post-actions">
                 {isLiked ? (
