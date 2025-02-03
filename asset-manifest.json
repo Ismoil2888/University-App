@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/static/css/main.d71b69ce.css",
-    "main.js": "/static/js/main.a42d663b.js",
-    "static/js/453.5a5e4368.chunk.js": "/static/js/453.5a5e4368.chunk.js",
+    "main.css": "/static/css/main.ee92b266.css",
+    "main.js": "/static/js/main.33a4abdd.js",
+    "static/js/453.54a84d69.chunk.js": "/static/js/453.54a84d69.chunk.js",
     "static/media/Ttulogo.png": "/static/media/Ttulogo.9f1ba24657d744625136.png",
     "static/media/osimi.png": "/static/media/osimi.4bdf6c1eea990bf8e297.png",
     "static/media/basic-logo.png": "/static/media/basic-logo.b85a726a2b7cef73406c.png",
@@ -18,12 +18,12 @@
     "static/media/book-icon.png": "/static/media/book-icon.0420ae430b803a32c888.png",
     "static/media/edit-icon.png": "/static/media/edit-icon.e492a56b8c19c7656365.png",
     "index.html": "/index.html",
-    "main.d71b69ce.css.map": "/static/css/main.d71b69ce.css.map",
-    "main.a42d663b.js.map": "/static/js/main.a42d663b.js.map",
-    "453.5a5e4368.chunk.js.map": "/static/js/453.5a5e4368.chunk.js.map"
+    "main.ee92b266.css.map": "/static/css/main.ee92b266.css.map",
+    "main.33a4abdd.js.map": "/static/js/main.33a4abdd.js.map",
+    "453.54a84d69.chunk.js.map": "/static/js/453.54a84d69.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d71b69ce.css",
-    "static/js/main.a42d663b.js"
+    "static/css/main.ee92b266.css",
+    "static/js/main.33a4abdd.js"
   ]
 }
