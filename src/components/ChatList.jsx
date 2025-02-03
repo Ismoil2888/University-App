@@ -175,7 +175,7 @@ const ChatList = () => {
                 <img
                   src={chat.recipientAvatar || "./default-image.png"}
                   alt={chat.recipientName}
-                  className="chat-avatar"
+                  className="chat-avatar skeleton-media-avatars"
                 />
                 <div className="chat-info">
                   <h3 className="chat-name">{chat.recipientName}</h3>

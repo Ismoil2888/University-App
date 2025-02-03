@@ -160,7 +160,7 @@ const NotificationsPage = () => {
               <img
                 src={notification.avatarUrl || defaultAvatar}
                 alt="Sender Avatar"
-                className="notification-avatar"
+                className="notification-avatar skeleton-media-avatars"
                 onClick={() => goToProfile(notification.userId)}
               />
               <div className="notification-info">

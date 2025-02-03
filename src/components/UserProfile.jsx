@@ -126,7 +126,7 @@ const UserProfile = () => {
           <img
             src={userData.avatarUrl || "./default-image.png"}
             alt={userData.username}
-            className="up-user-avatar"
+            className="up-user-avatar skeleton-media-avatars"
             onClick={() => setIsAvatarModalOpen(true)}
           />
           <div>

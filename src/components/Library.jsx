@@ -495,7 +495,7 @@ const Library = ({ userId }) => {
                     src={comment.avatarUrl || defaultAvatar}
                     alt={comment.username}
                     onClick={() => goToProfile(comment.userId)} // Переход по клику на аватар
-                    className="comment-avatar"
+                    className="comment-avatar skeleton-media-avatars"
                   />
                   <div className="comment-content">
                     <p className="comment-username" onClick={() => goToProfile(comment.userId)}>{comment.username}</p>
@@ -553,7 +553,7 @@ const Library = ({ userId }) => {
         <Link to="/post"><FaPlusCircle className="footer-icon" /></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon  active-icon" style={{}} /></Link>
         <Link to="/myprofile">
-          <img src={userAvatarUrl} alt="User Avatar" className="footer-avatar" />
+          <img src={userAvatarUrl} alt="User Avatar" className="footer-avatar skeleton-media-avatars" />
         </Link>
         </motion.nav>
       </div>

@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^13.5.0",
     "browser-image-compression": "^2.0.2",
     "cors": "^2.8.5",
+    "crypto-js": "^4.2.0",
     "date-fns": "^4.1.0",
     "firebase": "^10.14.1",
     "framer-motion": "^11.11.9",

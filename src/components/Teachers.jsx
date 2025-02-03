@@ -619,7 +619,7 @@ const goToProfile = (userId) => {
           ) : (
             filteredTeachers.map((teacher) => (
               <div className="teacher-card" key={teacher.id}>
-                <img src={teacher.photo || defaultTeacherImg} alt={`${teacher.name} ${teacher.surname}`} />
+                <img src={teacher.photo || defaultTeacherImg} alt={`${teacher.name} ${teacher.surname}`} className="skeleton-media-avatars" />
                 <h3>{`${teacher.name} ${teacher.surname}`}</h3>
                 <p><strong>Предмет:</strong> {teacher.subject}</p>
                 <p><strong>Статус:</strong> {teacher.status}</p>
@@ -655,7 +655,7 @@ const goToProfile = (userId) => {
             <img
               src={comment.avatarUrl || "./default-avatar.png"}
               alt={comment.username}
-              className="comment-avatar"
+              className="comment-avatar skeleton-media-avatars"
               onClick={() => goToProfile(comment.userId)} // Переход по клику на аватар
               style={{ cursor: "pointer" }} // Добавить стиль для указания, что элемент кликабельный      
             />

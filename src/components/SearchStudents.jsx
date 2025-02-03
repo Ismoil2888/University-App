@@ -286,7 +286,7 @@ const SearchStudents = () => {
                   className="chat-page-chat-item"
                 >
                   <div style={{display: "flex", alignItems: "center"}}>
-                  <img src={user.avatarUrl || "./default-image.png"} alt={user.username} className="chat-page-avatarka" />
+                  <img src={user.avatarUrl || "./default-image.png"} alt={user.username} className="chat-page-avatarka skeleton-media-avatars" />
                   <div 
                     className="chat-page-chat-info"
                     onClick={() => goToProfileFromHistory(user.uid)}
@@ -330,7 +330,7 @@ const SearchStudents = () => {
         <Link to="/post"><FaPlusCircle className="footer-icon" /></Link>
         <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>
         <Link to="/myprofile">
-          <img src={userAvatarUrl} alt="User Avatar" className="footer-avatar" />
+          <img src={userAvatarUrl} alt="" className="footer-avatar skeleton-media-avatars" />
         </Link>
       </div>
     </div>

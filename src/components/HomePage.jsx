@@ -1996,7 +1996,7 @@ const showNotificationError = (message) => {
                   <img
                     src={post.userAvatar || defaultAvatar}
                     alt="User Avatar"
-                    className="post-avatar"
+                    className="post-avatar skeleton-media-avatars"
                     onClick={() => goToProfile(post.userId)}
                   />
                   <span 
@@ -2118,7 +2118,7 @@ const showNotificationError = (message) => {
                           <img 
                             src={comment.avatarUrl || defaultAvatar} 
                             alt={comment.username} 
-                            className="comment-avatar" 
+                            className="comment-avatar skeleton-media-avatars" 
                             onClick={() => goToProfile(comment.userId)}
                           />
                           <div className="comment-content">
@@ -2178,7 +2178,7 @@ const showNotificationError = (message) => {
                       {likesModal.users.length > 0 ? (
                         likesModal.users.map((user) => (
                           <div key={user.userId} className="like-user">
-                            <img src={user.avatarUrl} alt={user.username} className="like-avatar" onClick={() => goToProfile(post.userId)} />
+                            <img src={user.avatarUrl} alt={user.username} className="like-avatar skeleton-media-avatars" onClick={() => goToProfile(post.userId)} />
                             <span className="like-username" onClick={() => goToProfile(user.userId)}>{user.username}</span>
                           </div>
                         ))
@@ -2213,7 +2213,7 @@ const showNotificationError = (message) => {
           <Link to="/post"><FaPlusCircle className="footer-icon" /></Link>
           <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>
           <Link to="/myprofile">
-            <img src={userAvatarUrl} alt="User Avatar" className="footer-avatar" />
+            <img src={userAvatarUrl} alt="" className="footer-avatar skeleton-media-avatars" />
           </Link>
         </motion.nav> 
       </div>
