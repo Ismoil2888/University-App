@@ -231,7 +231,7 @@
 
   .chat-message-actions {
     position: absolute;
-    right: 150px;
+    right: 70px;
     z-index: 100;
     background: white;
     border: 1px solid #ccc;
@@ -699,28 +699,63 @@
   border-bottom: 1px solid #ddd;
 }
 
-.emoji-button {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  padding: 4px;
-  transition: transform 0.2s;
-}
-
-.emoji-button:hover {
-  transform: scale(1.2);
-}
-
+/* Анимация для списка эмодзи */
 .emoji-full-list {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 5px;
-  padding: 8px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform-origin: top center;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  padding: 0 8px;
+}
+
+.emoji-full-list.open {
   max-height: 200px;
-  overflow-y: auto;
-  background: white;
-  border-bottom: 1px solid #ddd;
+  opacity: 1;
+  padding: 8px;
+  transform: scaleY(1) rotate(0deg);
+  animation: emojiSlideIn 0.5s ease-out;
+}
+
+@keyframes emojiSlideIn {
+  0% {
+    transform: scaleY(0) rotate(-10deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scaleY(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* Анимация для кнопки стрелки */
+.emoji-more-button {
+  transition: all 0.3s ease;
+  transform: rotate(0deg);
+}
+
+.emoji-more-button.open {
+  transform: rotate(180deg);
+  animation: bounceArrow 0.5s ease;
+}
+
+@keyframes bounceArrow {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(90deg) scale(1.2); }
+  100% { transform: rotate(180deg) scale(1); }
+}
+
+/* Дополнительные стили для плавности */
+.emoji-button {
+  transition: all 0.2s ease;
+  transform: scale(1);
+}
+
+.emoji-button:hover {
+  transform: scale(1.2) rotate(5deg);
 }
 
 .message-reactions {

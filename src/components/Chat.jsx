@@ -194,13 +194,13 @@
 
 //   const handleMessageClick = (message, event) => {
 //     if (event.target.tagName === "INPUT" || event.target.tagName === "BUTTON") return;
-    
+
 //     // Закрываем меню при клике на то же сообщение
 //     if (selectedMessageId === message.id) {
 //       setSelectedMessageId(null);
 //       return;
 //     }
-    
+
 //     // Открываем меню для нового сообщения
 //     setSelectedMessageId(message.id);
 //   };
@@ -720,61 +720,48 @@ const Chat = () => {
   const [notificationType, setNotificationType] = useState(""); // Для типа уведомления
   const [messageToDelete, setMessageToDelete] = useState(null);
   const EMOJI_LIST = ['👍', '👎', '😄', '😡', '❤️', '🎉', '😢', '👀', '🔥', '🤔'];
-const QUICK_EMOJIS = ['👍', '❤️', '😄', '😡', '🎉'];
-const [showFullEmojiPicker, setShowFullEmojiPicker] = useState(false);
-const [selectedEmojiMessageId, setSelectedEmojiMessageId] = useState(null);
-const SECRET_KEY = process.env.REACT_APP_CHAT_SECRET;
+  const QUICK_EMOJIS = ['👍', '❤️', '😄', '😡', '🎉'];
+  const [showFullEmojiPicker, setShowFullEmojiPicker] = useState(false);
+  const [selectedEmojiMessageId, setSelectedEmojiMessageId] = useState(null);
+  const SECRET_KEY = process.env.REACT_APP_CHAT_SECRET;
 
-const handleAddReaction = async (messageId, emoji) => {
-  const db = getDatabase();
-  const message = messages.find(m => m.id === messageId);
-  
-  // Проверка максимального количества реакций
-  const userReactionsCount = Object.values(message?.reactions || {})
-    .flat()
-    .filter(r => r.userId === currentUserId).length;
-  
-  if (userReactionsCount >= 3 && !message.reactions?.[emoji]?.some(r => r.userId === currentUserId)) {
-    showNotificationError("Максимум 3 реакции на сообщение");
-    return;
-  }
+  const handleAddReaction = async (messageId, emoji) => {
+    const db = getDatabase();
+    const message = messages.find(m => m.id === messageId);
 
-  const messageRef = databaseRef(db, `chatRooms/${chatRoomId}/messages/${messageId}/reactions/${emoji}`);
-  const snapshot = await get(messageRef);
-  const currentReactions = snapshot.val() || [];
-  
-  const userReactionIndex = currentReactions.findIndex(r => r.userId === currentUserId);
-  
-  let newReaction = null;
-  
-  if (userReactionIndex > -1) {
-    const updatedReactions = currentReactions.filter(r => r.userId !== currentUserId);
-    await set(messageRef, updatedReactions);
-  } else {
-    newReaction = { 
-      userId: currentUserId, 
-      timestamp: new Date().toISOString(),
-      emoji 
-    };
-    await set(messageRef, [...currentReactions, newReaction]);
-  }
+    // Проверка максимального количества реакций
+    const userReactionsCount = Object.values(message?.reactions || {})
+      .flat()
+      .filter(r => r.userId === currentUserId).length;
 
-  setMessages(prev => prev.map(msg => {
-    if (msg.id === messageId) {
-      const reactions = msg.reactions || {};
-      reactions[emoji] = reactions[emoji]?.filter(r => r.userId !== currentUserId) || [];
-      
-      if (userReactionIndex === -1 && newReaction) {
-        reactions[emoji] = [...reactions[emoji], newReaction];
-      }
-      
-      return { ...msg, reactions };
+    if (userReactionsCount >= 3 && !message.reactions?.[emoji]?.some(r => r.userId === currentUserId)) {
+      showNotificationError("Максимум 3 реакции на сообщение");
+      return;
     }
-    return msg;
-  }));
-  
-  setSelectedMessageId(null); // Закрываем меню после выбора
-};
+
+    const messageRef = databaseRef(db, `chatRooms/${chatRoomId}/messages/${messageId}/reactions/${emoji}`);
+    const snapshot = await get(messageRef);
+    const currentReactions = snapshot.val() || [];
+
+    const userReactionIndex = currentReactions.findIndex(r => r.userId === currentUserId);
+
+    if (userReactionIndex > -1) {
+      // Удаляем реакцию
+      const updatedReactions = currentReactions.filter(r => r.userId !== currentUserId);
+      await set(messageRef, updatedReactions);
+    } else {
+      // Добавляем новую реакцию
+      const newReaction = {
+        userId: currentUserId,
+        timestamp: new Date().toISOString(),
+        emoji
+      };
+      await set(messageRef, [...currentReactions, newReaction]);
+    }
+
+    // УБИРАЕМ РУЧНОЕ ОБНОВЛЕНИЕ СОСТОЯНИЯ
+    setSelectedMessageId(null);
+  };
 
   // Функция для успешных уведомлений
   const showNotification = (message) => {
@@ -787,14 +774,14 @@ const handleAddReaction = async (messageId, emoji) => {
   };
 
   // Функция для ошибочных уведомлений
-const showNotificationError = (message) => {
-  setNotificationType("error");
-  setNotification(message);
-  setTimeout(() => {
-    setNotification("");
-    setNotificationType("");
-  }, 3000);
-};
+  const showNotificationError = (message) => {
+    setNotificationType("error");
+    setNotification(message);
+    setTimeout(() => {
+      setNotification("");
+      setNotificationType("");
+    }, 3000);
+  };
 
   useEffect(() => {
     const db = getDatabase();
@@ -834,35 +821,10 @@ const showNotificationError = (message) => {
       }
     });
 
-    // 4. Первая подписка на сообщения (загрузка и рендеринг)
-    const unsubscribeMessages1 = onValue(messagesRef, async (snapshot) => {
+    const unsubscribeMessages = onValue(messagesRef, async (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        const messagesArray = await Promise.all(
-          Object.entries(data).map(async ([key, message]) => {
-            const senderSnapshot = await get(databaseRef(db, `users/${message.senderId}`));
-            return {
-              id: key,
-              ...message,
-              text: decryptMessage(message.text),
-              senderName: senderSnapshot.val()?.username || "Неизвестный",
-              senderAvatar: senderSnapshot.val()?.avatarUrl || "./default-image.png",
-              replyTo: message.replyTo ? {
-                ...message.replyTo,
-                text: decryptMessage(message.replyTo.text)
-              } : null
-            };
-          })
-        );
-        messagesArray.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-        setMessages(messagesArray);
-      }
-    });
-
-    // 5. Вторая подписка на сообщения (обновление статуса просмотра)
-    const unsubscribeMessages2 = onValue(messagesRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
+        // Обновление статуса просмотра (функция из unsubscribeMessages2)
         const updates = {};
         Object.entries(data).forEach(([key, message]) => {
           if (
@@ -873,21 +835,46 @@ const showNotificationError = (message) => {
           }
         });
 
+        // Применяем обновления статуса просмотра
         if (Object.keys(updates).length > 0) {
           update(messagesRef, updates);
         }
+
+        // Загрузка и обработка сообщений (функция из unsubscribeMessages1)
+        const messagesArray = await Promise.all(
+          Object.entries(data).map(async ([key, message]) => {
+            const senderSnapshot = await get(databaseRef(db, `users/${message.senderId}`));
+
+            // Обработка реакций
+            const reactions = message.reactions ?
+              Object.entries(message.reactions).reduce((acc, [emoji, reactions]) => {
+                acc[emoji] = Array.isArray(reactions) ? reactions : [];
+                return acc;
+              }, {}) : {};
+
+            return {
+              id: key,
+              ...message,
+              text: decryptMessage(message.text),
+              senderName: senderSnapshot.val()?.username || "Неизвестный",
+              senderAvatar: senderSnapshot.val()?.avatarUrl || "./default-image.png",
+              replyTo: message.replyTo ? {
+                ...message.replyTo,
+                text: decryptMessage(message.replyTo.text)
+              } : null,
+              reactions // Добавляем реакции
+            };
+          })
+        );
+
+        // Сортировка и обновление состояния
+        messagesArray.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+        setMessages(messagesArray);
       }
     });
 
-    // Инициализация
-    loadCurrentUser();
+    return () => unsubscribeMessages();
 
-    // Cleanup-функция при размонтировании
-    return () => {
-      unsubscribeChatRoom();
-      unsubscribeMessages1();
-      unsubscribeMessages2();
-    };
   }, [chatRoomId, currentUserId]);
 
   useEffect(() => {
@@ -940,13 +927,13 @@ const showNotificationError = (message) => {
 
   const handleMessageClick = (message, event) => {
     if (event.target.tagName === "INPUT" || event.target.tagName === "BUTTON") return;
-    
+
     // Закрываем меню при клике на то же сообщение
     if (selectedMessageId === message.id) {
       setSelectedMessageId(null);
       return;
     }
-    
+
     // Открываем меню для нового сообщения
     setSelectedMessageId(message.id);
   };
@@ -973,24 +960,24 @@ const showNotificationError = (message) => {
 
   const handleSaveEditedMessage = () => {
     if (editMessageText.trim() === "") return;
-  
+
     const encryptedText = encryptMessage(editMessageText);
     const updatedMessage = {
       text: encryptedText,
       editedAt: new Date().toISOString()
     };
-  
+
     const db = getDatabase();
     const messageRef = databaseRef(db, `chatRooms/${chatRoomId}/messages/${editingMessageId}`);
-  
+
     update(messageRef, updatedMessage)
       .then(() => {
         setMessages((prevMessages) =>
           prevMessages.map((msg) =>
-            msg.id === editingMessageId ? { 
-              ...msg, 
+            msg.id === editingMessageId ? {
+              ...msg,
               text: editMessageText,
-              editedAt: updatedMessage.editedAt 
+              editedAt: updatedMessage.editedAt
             } : msg
           )
         );
@@ -998,7 +985,7 @@ const showNotificationError = (message) => {
         setEditMessageText("");
       });
   };
-  
+
   // Обновляем функцию копирования сообщения
   const handleCopyMessage = (ciphertext) => {
     const decryptedText = decryptMessage(ciphertext);
@@ -1010,70 +997,70 @@ const showNotificationError = (message) => {
         console.error('Ошибка при копировании текста:', err);
       });
   };
-  
+
   const hashMessage = (text) => {
-  return CryptoJS.HmacSHA256(text, SECRET_KEY).toString();
-};
-
-// Модифицируем функцию отправки сообщения
-const encryptMessage = (text) => {
-  return CryptoJS.AES.encrypt(text, SECRET_KEY).toString();
-};
-
-const decryptMessage = (ciphertext) => {
-  try {
-    const bytes = CryptoJS.AES.decrypt(ciphertext, SECRET_KEY);
-    return bytes.toString(CryptoJS.enc.Utf8);
-  } catch (e) {
-    return "Не удалось расшифровать сообщение";
-  }
-};
-
-// Обновляем функцию отправки сообщений
-const handleSendMessage = () => {
-  if (newMessage.trim() === "") return;
-
-  // Шифруем сообщение
-  const encryptedText = encryptMessage(newMessage);
-  const encryptedReply = replyingTo ? {
-    ...replyingTo,
-    text: encryptMessage(replyingTo.text)
-  } : null;
-
-  const messageData = {
-    senderId: currentUserId,
-    senderName: currentUserData.username || "Вы",
-    senderAvatar: currentUserData.avatarUrl || "./default-image.png",
-    text: encryptedText,
-    timestamp: new Date().toISOString(),
-    seenBy: [],
-    replyTo: encryptedReply
+    return CryptoJS.HmacSHA256(text, SECRET_KEY).toString();
   };
 
-  // Оптимистичное добавление расшифрованного сообщения
-  setMessages((prevMessages) => [...prevMessages, {
-    ...messageData,
-    text: newMessage,
-    replyTo: replyingTo
-  }]);
-  
-  setNewMessage("");
+  // Модифицируем функцию отправки сообщения
+  const encryptMessage = (text) => {
+    return CryptoJS.AES.encrypt(text, SECRET_KEY).toString();
+  };
 
-  const db = getDatabase();
-  const messagesRef = databaseRef(db, `chatRooms/${chatRoomId}/messages`);
+  const decryptMessage = (ciphertext) => {
+    try {
+      const bytes = CryptoJS.AES.decrypt(ciphertext, SECRET_KEY);
+      return bytes.toString(CryptoJS.enc.Utf8);
+    } catch (e) {
+      return "Не удалось расшифровать сообщение";
+    }
+  };
 
-  push(messagesRef, messageData)
-    .catch((error) => {
-      console.error("Ошибка при отправке сообщения:", error);
-      setMessages((prevMessages) =>
-        prevMessages.filter((msg) => msg.timestamp !== messageData.timestamp)
-      );
-    });
+  // Обновляем функцию отправки сообщений
+  const handleSendMessage = () => {
+    if (newMessage.trim() === "") return;
 
-  setTimeout(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, 0);
-};
+    // Шифруем сообщение
+    const encryptedText = encryptMessage(newMessage);
+    const encryptedReply = replyingTo ? {
+      ...replyingTo,
+      text: encryptMessage(replyingTo.text)
+    } : null;
+
+    const messageData = {
+      senderId: currentUserId,
+      senderName: currentUserData.username || "Вы",
+      senderAvatar: currentUserData.avatarUrl || "./default-image.png",
+      text: encryptedText,
+      timestamp: new Date().toISOString(),
+      seenBy: [],
+      replyTo: encryptedReply
+    };
+
+    // Оптимистичное добавление расшифрованного сообщения
+    setMessages((prevMessages) => [...prevMessages, {
+      ...messageData,
+      text: newMessage,
+      replyTo: replyingTo
+    }]);
+
+    setNewMessage("");
+
+    const db = getDatabase();
+    const messagesRef = databaseRef(db, `chatRooms/${chatRoomId}/messages`);
+
+    push(messagesRef, messageData)
+      .catch((error) => {
+        console.error("Ошибка при отправке сообщения:", error);
+        setMessages((prevMessages) =>
+          prevMessages.filter((msg) => msg.timestamp !== messageData.timestamp)
+        );
+      });
+
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 0);
+  };
 
   const handleClearHistory = () => {
     const db = getDatabase();
@@ -1297,28 +1284,28 @@ const handleSendMessage = () => {
                     </div>
                   ) : (
                     <p className="chat-message-text">{message.text}
-{message.reactions && Object.keys(message.reactions).length > 0 && (
-  <div className="message-reactions">
-    {Object.entries(message.reactions).map(([emoji, reactions]) => {
-      const hasUserReaction = reactions.some(r => r.userId === currentUserId);
-      return (
-        <span
-          key={emoji}
-          className={`reaction-bubble ${hasUserReaction ? 'user-reaction' : ''}`}
-          title={reactions.map(r => r.userId === currentUserId ? 'Вы' : r.userId).join(', ')}
-          onClick={(e) => {
-            e.stopPropagation();
-            handleAddReaction(message.id, emoji);
-          }}
-        >
-          {emoji}
-          {reactions.length > 1 && ` ${reactions.length}`}
-        </span>
-      );
-    })}
-  </div>
-)}
-</p>
+                      {message.reactions && Object.keys(message.reactions).length > 0 && (
+                        <div className="message-reactions">
+                          {Object.entries(message.reactions).map(([emoji, reactions]) => {
+                            const hasUserReaction = reactions.some(r => r.userId === currentUserId);
+                            return (
+                              <span
+                                key={emoji}
+                                className={`reaction-bubble ${hasUserReaction ? 'user-reaction' : ''}`}
+                                title={reactions.map(r => r.userId === currentUserId ? 'Вы' : r.userId).join(', ')}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleAddReaction(message.id, emoji);
+                                }}
+                              >
+                                {emoji}
+                                {reactions.length > 1 && ` ${reactions.length}`}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </p>
                   )}
                   <span className="chat-message-timestamp">
                     доставлено: {new Date(message.timestamp).toLocaleTimeString([], {
@@ -1339,125 +1326,125 @@ const handleSendMessage = () => {
                   </span>
                 </div>
                 {selectedMessageId === message.id && (
-  <div 
-    className="chat-message-actions" 
-    ref={actionsRef}
-    onClick={(e) => {
-      e.stopPropagation();
-      // Закрываем меню только при клике на обычные кнопки, не эмодзи
-      if (!e.target.closest('.emoji-button, .emoji-more-button')) {
-        setSelectedMessageId(null);
-      }
-    }}
-  >
-    <div className="emoji-quick-bar">
-      {QUICK_EMOJIS.map(emoji => (
-        <button 
-  key={emoji}
-  className="emoji-button"
-  onClick={(e) => {
-    e.stopPropagation();
-    handleAddReaction(message.id, emoji);
-    setSelectedMessageId(null); // Закрываем меню
-  }}
->
-          {emoji}
-        </button>
-      ))}
-      <button 
-        className="emoji-more-button"
-        onClick={(e) => {
-          e.stopPropagation();
-          setShowFullEmojiPicker(!showFullEmojiPicker);
-        }}
-      >
-        ▼
-      </button>
-    </div>
+                  <div
+                    className="chat-message-actions"
+                    ref={actionsRef}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // Закрываем меню только при клике на обычные кнопки, не эмодзи
+                      if (!e.target.closest('.emoji-button, .emoji-more-button')) {
+                        setSelectedMessageId(null);
+                      }
+                    }}
+                  >
+                    <div className="emoji-quick-bar">
+                      {QUICK_EMOJIS.map(emoji => (
+                        <button
+                          key={emoji}
+                          className="emoji-button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAddReaction(message.id, emoji);
+                            setSelectedMessageId(null); // Закрываем меню
+                          }}
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                      <button
+                        className={`emoji-more-button ${showFullEmojiPicker ? 'open' : ''}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowFullEmojiPicker(!showFullEmojiPicker);
+                        }}
+                      >
+                        ▼
+                      </button>
+                    </div>
 
-    {/* Полный список смайлов */}
-    {showFullEmojiPicker && (
-      <div className="emoji-full-list">
-        {EMOJI_LIST.map(emoji => (
-    <button
-    key={emoji}
-    className="emoji-button"
-    onClick={(e) => {
-      e.stopPropagation();
-      handleAddReaction(message.id, emoji);
-      setShowFullEmojiPicker(false);
-      setSelectedMessageId(null); // Закрываем меню
-    }}
-  >
-            {emoji}
-          </button>
-        ))}
-      </div>
-    )}
+                    {/* Полный список смайлов */}
+                    {showFullEmojiPicker && (
+                      <div className={`emoji-full-list ${showFullEmojiPicker ? 'open' : ''}`}>
+                        {EMOJI_LIST.map(emoji => (
+                          <button
+                            key={emoji}
+                            className="emoji-button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAddReaction(message.id, emoji);
+                              setShowFullEmojiPicker(false);
+                              setSelectedMessageId(null);
+                            }}
+                          >
+                            {emoji}
+                          </button>
+                        ))}
+                      </div>
+                    )}
 
-    {message.senderId === currentUserId ? (
-      <>
-        <button onClick={() => setReplyingTo(message)}>
-          <FaReply /> Ответить
-        </button>
-        <button onClick={() => handleCopyMessage(message.text)}>
-          <FaCopy /> Копировать
-        </button>
-        <button onClick={() => handleEditMessage(message.id, message.text)}>
-          <FaEdit /> Редактировать
-        </button>
-        <button onClick={() => {
-          setMessageToDelete(message.id);
-          setShowDeleteMessageModal(true);
-        }}>
-          <FaTrash /> Удалить
-        </button>
-      </>
-    ) : (
-      <>
-        <button onClick={() => setReplyingTo(message)}>
-          <FaReply /> Ответить
-        </button>
-        <button onClick={() => handleCopyMessage(message.text)}>
-          <FaCopy /> Копировать
-        </button>
-        <button onClick={() => {
-          setMessageToDelete(message.id);
-          setShowDeleteMessageModal(true);
-        }}>
-          <FaTrash /> Удалить
-        </button>
-      </>
-    )}
-  </div>
-)}
+                    {message.senderId === currentUserId ? (
+                      <>
+                        <button onClick={() => setReplyingTo(message)}>
+                          <FaReply /> Ответить
+                        </button>
+                        <button onClick={() => handleCopyMessage(message.text)}>
+                          <FaCopy /> Копировать
+                        </button>
+                        <button onClick={() => handleEditMessage(message.id, message.text)}>
+                          <FaEdit /> Редактировать
+                        </button>
+                        <button onClick={() => {
+                          setMessageToDelete(message.id);
+                          setShowDeleteMessageModal(true);
+                        }}>
+                          <FaTrash /> Удалить
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button onClick={() => setReplyingTo(message)}>
+                          <FaReply /> Ответить
+                        </button>
+                        <button onClick={() => handleCopyMessage(message.text)}>
+                          <FaCopy /> Копировать
+                        </button>
+                        <button onClick={() => {
+                          setMessageToDelete(message.id);
+                          setShowDeleteMessageModal(true);
+                        }}>
+                          <FaTrash /> Удалить
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
 
-{showDeleteMessageModal && (
-  <div className="delete-message-modal" onClick={() => setShowDeleteMessageModal(false)}>
-    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-      <h3>Вы уверены, что хотите удалить сообщение?</h3>
-      <div className="modal-buttons">
-        <button 
-          className="cancel-message-button"
-          onClick={() => setShowDeleteMessageModal(false)}
-        >
-          Отмена
-        </button>
-        <button 
-          className="delete-message-button"
-          onClick={() => {
-            if (messageToDelete) {
-              handleDeleteMessage(messageToDelete);
-            }
-            setShowDeleteMessageModal(false);
-          }}
-        >
-          Удалить
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+                {showDeleteMessageModal && (
+                  <div className="delete-message-modal" onClick={() => setShowDeleteMessageModal(false)}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                      <h3>Вы уверены, что хотите удалить сообщение?</h3>
+                      <div className="modal-buttons">
+                        <button
+                          className="cancel-message-button"
+                          onClick={() => setShowDeleteMessageModal(false)}
+                        >
+                          Отмена
+                        </button>
+                        <button
+                          className="delete-message-button"
+                          onClick={() => {
+                            if (messageToDelete) {
+                              handleDeleteMessage(messageToDelete);
+                            }
+                            setShowDeleteMessageModal(false);
+                          }}
+                        >
+                          Удалить
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </React.Fragment>
           );
