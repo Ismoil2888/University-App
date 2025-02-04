@@ -1,8 +1,8 @@
 {
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#2c3e50",
-  "background_color": "#2c3e50",
+  "theme_color": "#1e2c39",
+  "background_color": "#1e2c39",
   "short_name": "University App",
   "name": "University",
   "icons": [
