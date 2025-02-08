@@ -272,7 +272,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { RiSettingsLine } from "react-icons/ri";
 import { FaPlusCircle } from "react-icons/fa";
-import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen , FiUserCheck} from "react-icons/fi";
+import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen, FiUserCheck, FiSearch } from "react-icons/fi";
 import basiclogo from "../basic-logo.png";
 import ttulogo from "../Ttulogo.png";
 import "../MyProfile.css";
@@ -295,45 +295,45 @@ const MyProfile = () => {
   const menuRef = useRef(null);
   const [userUid, setUserUid] = useState(null);
   const navigate = useNavigate();
-      const [isMobile, setIsMobile] = useState(false);
-        const [isMenuOpen, setIsMenuOpen] = useState(() => {
-          // Восстанавливаем состояние из localStorage при инициализации
-          const savedState = localStorage.getItem('isMenuOpen');
-          return savedState ? JSON.parse(savedState) : true;
-        });
-      
-        // Сохраняем состояние в localStorage при изменении
-        useEffect(() => {
-          localStorage.setItem('isMenuOpen', JSON.stringify(isMenuOpen));
-        }, [isMenuOpen]);
-      
-        // Обработчик изменения размера окна
-        useEffect(() => {
-          const checkMobile = () => {
-            const mobile = window.innerWidth < 700;
-            setIsMobile(mobile);
-            if (mobile) {
-              setIsMenuOpen(false);
-            } else {
-              // Восстанавливаем состояние только для десктопа
-              const savedState = localStorage.getItem('isMenuOpen');
-              setIsMenuOpen(savedState ? JSON.parse(savedState) : true);
-            }
-          };
-      
-          checkMobile();
-          window.addEventListener('resize', checkMobile);
-          return () => window.removeEventListener('resize', checkMobile);
-        }, []);
-      
-        // Модифицированная функция переключения меню
-        const toggleMenuDesktop = () => {
-          setIsMenuOpen(prev => {
-            const newState = !prev;
-            localStorage.setItem('isMenuOpen', JSON.stringify(newState));
-            return newState;
-          });
-        };
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(() => {
+    // Восстанавливаем состояние из localStorage при инициализации
+    const savedState = localStorage.getItem('isMenuOpen');
+    return savedState ? JSON.parse(savedState) : true;
+  });
+
+  // Сохраняем состояние в localStorage при изменении
+  useEffect(() => {
+    localStorage.setItem('isMenuOpen', JSON.stringify(isMenuOpen));
+  }, [isMenuOpen]);
+
+  // Обработчик изменения размера окна
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 700;
+      setIsMobile(mobile);
+      if (mobile) {
+        setIsMenuOpen(false);
+      } else {
+        // Восстанавливаем состояние только для десктопа
+        const savedState = localStorage.getItem('isMenuOpen');
+        setIsMenuOpen(savedState ? JSON.parse(savedState) : true);
+      }
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Модифицированная функция переключения меню
+  const toggleMenuDesktop = () => {
+    setIsMenuOpen(prev => {
+      const newState = !prev;
+      localStorage.setItem('isMenuOpen', JSON.stringify(newState));
+      return newState;
+    });
+  };
 
   const handleClickOutside = (e) => {
     if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -350,17 +350,17 @@ const MyProfile = () => {
         // Пользователь вошел в систему, используем его UID
         setUserUid(user.uid);
 
-                // Получаем URL аватарки пользователя
-                const db = getDatabase();
-                const userRef = databaseRef(db, `users/${user.uid}`);
-                onValue(userRef, (snapshot) => {
-                  const userData = snapshot.val();
-                  if (userData && userData.avatarUrl) {
-                    setUserAvatarUrl(userData.avatarUrl);
-                  } else {
-                    setUserAvatarUrl("./default-image.png"); // Изображение по умолчанию
-                  }
-                });
+        // Получаем URL аватарки пользователя
+        const db = getDatabase();
+        const userRef = databaseRef(db, `users/${user.uid}`);
+        onValue(userRef, (snapshot) => {
+          const userData = snapshot.val();
+          if (userData && userData.avatarUrl) {
+            setUserAvatarUrl(userData.avatarUrl);
+          } else {
+            setUserAvatarUrl("./default-image.png"); // Изображение по умолчанию
+          }
+        });
 
       } else {
         navigate("/"); // Перенаправляем на страницу входа, если пользователь не аутентифицирован
@@ -438,10 +438,10 @@ const MyProfile = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  
+
 
   const [isMenuOpenMobile, setIsMenuOpenMobile] = useState(false);
-  
+
   const toggleMenuMobile = () => {
     if (isMenuOpenMobile) {
       setTimeout(() => {
@@ -462,12 +462,12 @@ const MyProfile = () => {
 
   return (
     <div className="my-profile-container">
-           <div className={`sidebar ${isMenuOpen ? "open" : "closed"}`}>
+      <div className={`sidebar ${isMenuOpen ? "open" : "closed"}`}>
         <div className="sidebar-header">
-        <img style={{width: "50px", height: "45px"}} src={ttulogo} alt="" />
+          <img style={{ width: "50px", height: "45px" }} src={ttulogo} alt="" />
           {isMenuOpen ? (
             <>
-                <h2>TTU</h2>
+              <h2>TTU</h2>
               <FiChevronLeft
                 className="toggle-menu"
                 onClick={toggleMenuDesktop}
@@ -486,6 +486,10 @@ const MyProfile = () => {
             <FiHome className="menu-icon" />
             {isMenuOpen && <span>Главная</span>}
           </Link>
+          <Link to="/searchpage" className="menu-item">
+            <FiSearch className="menu-icon" />
+            {isMenuOpen && <span>Поиск</span>}
+          </Link>
           <Link to="/teachers" className="menu-item">
             <FiUserCheck className="menu-icon" />
             {isMenuOpen && <span>Преподаватели</span>}
@@ -495,7 +499,7 @@ const MyProfile = () => {
             {isMenuOpen && <span>Библиотека</span>}
           </Link>
           <Link to="/myprofile" className="menu-item">
-            <FiUser className="menu-icon" style={{borderBottom: "1px solid rgb(200, 255, 0)", borderRadius: "15px", padding: "5px"}}/>
+            <FiUser className="menu-icon" style={{ borderBottom: "1px solid rgb(200, 255, 0)", borderRadius: "15px", padding: "5px" }} />
             {isMenuOpen && <span>Профиль</span>}
           </Link>
           <Link to="/chats" className="menu-item">
@@ -523,36 +527,36 @@ const MyProfile = () => {
           )}
         </div>
       </div>
-<header className="head-line">
+      <header className="head-line">
 
-<div className="header-nav-2">
+        <div className="header-nav-2">
 
-       <Link to="/authdetails">
-        <RiSettingsLine style={{color: "white", fontSize: "25px", marginLeft: "15px"}} />
-       </Link>
+          <Link to="/authdetails">
+            <RiSettingsLine style={{ color: "white", fontSize: "25px", marginLeft: "15px" }} />
+          </Link>
 
-        <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Профиль</ul>
+          <ul className="logo-app" style={{ color: "#58a6ff", fontSize: "25px" }}>Профиль</ul>
 
-<div className={`burger-menu-icon ${isMenuOpenMobile ? 'open' : ''}`} onClick={toggleMenuMobile}>
-  <span className="bm-span"></span>
-  <span className="bm-span"></span>
-  <span className="bm-span"></span>
-</div>
+          <div className={`burger-menu-icon ${isMenuOpenMobile ? 'open' : ''}`} onClick={toggleMenuMobile}>
+            <span className="bm-span"></span>
+            <span className="bm-span"></span>
+            <span className="bm-span"></span>
+          </div>
 
 
-      <div className={`burger-menu ${isMenuOpenMobile ? 'open' : ''}`}>
-        <ul>
-          <li><Link to="/home"><FontAwesomeIcon icon={faHome} /> Главная</Link></li>
-          <li><Link to="/about"><FontAwesomeIcon icon={faInfoCircle} /> О факультете</Link></li>
-          <li><Link to="/teachers"><FontAwesomeIcon icon={faChalkboardTeacher} /> Преподаватели</Link></li>
-          <li><Link to="/schedule"><FontAwesomeIcon icon={faCalendarAlt} /> Расписание</Link></li>
-          <li><Link to="/library"><FontAwesomeIcon icon={faBook} /> Библиотека</Link></li>
-          <li><Link to="/contacts"><FontAwesomeIcon icon={faPhone} /> Контакты</Link></li>
-          <li><Link to="/authdetails"><FontAwesomeIcon icon={faUserCog} /> Настройки Профиля</Link></li>
-        </ul>
-      </div>
+          <div className={`burger-menu ${isMenuOpenMobile ? 'open' : ''}`}>
+            <ul>
+              <li><Link to="/home"><FontAwesomeIcon icon={faHome} /> Главная</Link></li>
+              <li><Link to="/about"><FontAwesomeIcon icon={faInfoCircle} /> О факультете</Link></li>
+              <li><Link to="/teachers"><FontAwesomeIcon icon={faChalkboardTeacher} /> Преподаватели</Link></li>
+              <li><Link to="/schedule"><FontAwesomeIcon icon={faCalendarAlt} /> Расписание</Link></li>
+              <li><Link to="/library"><FontAwesomeIcon icon={faBook} /> Библиотека</Link></li>
+              <li><Link to="/contacts"><FontAwesomeIcon icon={faPhone} /> Контакты</Link></li>
+              <li><Link to="/authdetails"><FontAwesomeIcon icon={faUserCog} /> Настройки Профиля</Link></li>
+            </ul>
+          </div>
 
-      </div>
+        </div>
       </header>
 
       {authUser ? (
@@ -567,25 +571,25 @@ const MyProfile = () => {
             </Link>
 
             <div className="avatar-section">
-              <img 
-                src={avatarUrl} 
-                alt="Avatar" className="avatar" 
+              <img
+                src={avatarUrl}
+                alt="Avatar" className="avatar"
                 onClick={() => setIsAvatarModalOpen(true)}
               />
             </div>
 
             {isAvatarModalOpen && (
-           <div className="avatar-modal" onClick={() => setIsAvatarModalOpen(false)}>
-             <div className="avatar-overlay">
-               <img
-                 src={avatarUrl}
-                 alt="Avatar"
-                 className="full-size-avatar"
-                 onClick={() => setIsAvatarModalOpen(false)}
-               />
-             </div>
-           </div>
-         )}
+              <div className="avatar-modal" onClick={() => setIsAvatarModalOpen(false)}>
+                <div className="avatar-overlay">
+                  <img
+                    src={avatarUrl}
+                    alt="Avatar"
+                    className="full-size-avatar"
+                    onClick={() => setIsAvatarModalOpen(false)}
+                  />
+                </div>
+              </div>
+            )}
 
             <div className="username-section">
               <h2>{username}</h2>
@@ -611,8 +615,8 @@ const MyProfile = () => {
                 <h3>Номер телефона</h3>
                 <p>{phoneNumber}</p>
               </div>
-              <FaRegAddressBook 
-              style={{ fontSize: "22px" }} 
+              <FaRegAddressBook
+                style={{ fontSize: "22px" }}
               />
             </div>
 
@@ -621,9 +625,9 @@ const MyProfile = () => {
                 <h3>О себе</h3>
                 <p>{aboutMe}</p>
               </div>
-              <FcAbout 
-              className="edit-icon-auth" 
-              style={{ fontSize: "25px", cursor: "pointer" }} 
+              <FcAbout
+                className="edit-icon-auth"
+                style={{ fontSize: "25px", cursor: "pointer" }}
               />
             </div>
 
@@ -646,14 +650,14 @@ const MyProfile = () => {
           </div>
 
           <div className="footer-nav">
-        <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" style={{}} /></Link>
-        <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
-        <Link to="/post"><FaPlusCircle className="footer-icon" /></Link>
-        <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>
-        <Link to="/myprofile">
-          <img src={userAvatarUrl} alt="" className="footer-avatar skeleton-media-avatars" />
-        </Link>
-      </div>
+            <Link to="/home"><FontAwesomeIcon icon={faHome} className="footer-icon" style={{}} /></Link>
+            <Link to="/searchpage"><FontAwesomeIcon icon={faSearch} className="footer-icon" /></Link>
+            <Link to="/post"><FaPlusCircle className="footer-icon" /></Link>
+            <Link to="/library"><FontAwesomeIcon icon={faBook} className="footer-icon" /></Link>
+            <Link to="/myprofile">
+              <img src={userAvatarUrl} alt="" className="footer-avatar skeleton-media-avatars" />
+            </Link>
+          </div>
         </div>
       ) : (
         <h2 className="signed-out-h2" data-text="T I K">

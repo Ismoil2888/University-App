@@ -134,7 +134,7 @@ const SignUp = () => {
           {error && <p style={{ color: "red", marginTop: "55px", position: "absolute", marginLeft: "50px" }}>{error}</p>}
           <div className="register-link">
             <p>
-              Уже есть аккаунт? <Link className="a" to="/">Войти</Link>
+              Уже есть аккаунт? <Link className="a" to="/signin">Войти</Link>
             </p>
           </div>
         </form>

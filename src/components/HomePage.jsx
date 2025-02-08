@@ -1385,7 +1385,7 @@ import { BsChatTextFill } from "react-icons/bs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaPlusCircle, FaHeart, FaRegHeart, FaRegComment, FaRegBookmark } from "react-icons/fa";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch, faBell } from "@fortawesome/free-solid-svg-icons";
-import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen, FiUserCheck } from "react-icons/fi";
+import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen, FiUserCheck, FiUsers, FiSearch } from "react-icons/fi";
 
 const HomePage = () => {
   const [notification, setNotification] = useState("");
@@ -1944,6 +1944,10 @@ const showNotificationError = (message) => {
           <Link to="/" className="menu-item">
             <FiHome className="menu-icon" style={{borderBottom: "1px solid rgb(255, 255, 255)", borderRadius: "15px", padding: "5px"}}/>
             {isMenuOpen && <span>Главная</span>}
+          </Link>
+          <Link to="/searchpage" className="menu-item">
+             <FiSearch className="menu-icon" />
+             {isMenuOpen && <span>Поиск</span>}
           </Link>
           <Link to="/teachers" className="menu-item">
              <FiUserCheck className="menu-icon" />

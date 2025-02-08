@@ -693,7 +693,7 @@ import {
 import { auth } from "../firebase";
 import "../ChatWithTeacher.css";
 import CryptoJS from 'crypto-js';
-import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen, FiUserCheck } from "react-icons/fi";
+import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen, FiUserCheck, FiSearch } from "react-icons/fi";
 import basiclogo from "../basic-logo.png";
 import ttulogo from "../Ttulogo.png";
 
@@ -726,61 +726,61 @@ const Chat = () => {
   const QUICK_EMOJIS = ['👍', '❤️', '😄', '😡', '🎉'];
   const [showFullEmojiPicker, setShowFullEmojiPicker] = useState(false);
   const [selectedEmojiMessageId, setSelectedEmojiMessageId] = useState(null);
-    const [isMobile, setIsMobile] = useState(false);
-      const [isMenuOpen, setIsMenuOpen] = useState(() => {
-        // Восстанавливаем состояние из localStorage при инициализации
-        const savedState = localStorage.getItem('isMenuOpen');
-        return savedState ? JSON.parse(savedState) : true;
-      });
-    
-      // Сохраняем состояние в localStorage при изменении
-      useEffect(() => {
-        localStorage.setItem('isMenuOpen', JSON.stringify(isMenuOpen));
-      }, [isMenuOpen]);
-    
-      // Обработчик изменения размера окна
-      useEffect(() => {
-        const checkMobile = () => {
-          const mobile = window.innerWidth < 700;
-          setIsMobile(mobile);
-          if (mobile) {
-            setIsMenuOpen(false);
-          } else {
-            // Восстанавливаем состояние только для десктопа
-            const savedState = localStorage.getItem('isMenuOpen');
-            setIsMenuOpen(savedState ? JSON.parse(savedState) : true);
-          }
-        };
-    
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
-      }, []);
-    
-      // Модифицированная функция переключения меню
-      const toggleMenu = () => {
-        setIsMenuOpen(prev => {
-          const newState = !prev;
-          localStorage.setItem('isMenuOpen', JSON.stringify(newState));
-          return newState;
-        });
-      };
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(() => {
+    // Восстанавливаем состояние из localStorage при инициализации
+    const savedState = localStorage.getItem('isMenuOpen');
+    return savedState ? JSON.parse(savedState) : true;
+  });
 
-      const mainContentStyle = {
-        marginLeft: isMobile ? (isMenuOpen ? "360px" : "0px") : (isMenuOpen ? "360px" : "110px"),
-        transition: "margin 0.3s ease",
-      };      
-    
-      const currentUserHeader = {
-        marginRight: isMenuOpen ? "400px" : "80px",
-        marginBottom: isMenuOpen ? "11px" : "0px",
-        transition: "margin 0.3s ease",
-      };
-    
-      const HeaderDesktop = {
-        margin: isMenuOpen ? "12px" : "0 20px",
-        transition: "margin 0.3s ease",
-      };
+  // Сохраняем состояние в localStorage при изменении
+  useEffect(() => {
+    localStorage.setItem('isMenuOpen', JSON.stringify(isMenuOpen));
+  }, [isMenuOpen]);
+
+  // Обработчик изменения размера окна
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 700;
+      setIsMobile(mobile);
+      if (mobile) {
+        setIsMenuOpen(false);
+      } else {
+        // Восстанавливаем состояние только для десктопа
+        const savedState = localStorage.getItem('isMenuOpen');
+        setIsMenuOpen(savedState ? JSON.parse(savedState) : true);
+      }
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Модифицированная функция переключения меню
+  const toggleMenu = () => {
+    setIsMenuOpen(prev => {
+      const newState = !prev;
+      localStorage.setItem('isMenuOpen', JSON.stringify(newState));
+      return newState;
+    });
+  };
+
+  const mainContentStyle = {
+    marginLeft: isMobile ? (isMenuOpen ? "360px" : "0px") : (isMenuOpen ? "360px" : "110px"),
+    transition: "margin 0.3s ease",
+  };
+
+  const currentUserHeader = {
+    marginRight: isMenuOpen ? "400px" : "80px",
+    marginBottom: isMenuOpen ? "11px" : "0px",
+    transition: "margin 0.3s ease",
+  };
+
+  const HeaderDesktop = {
+    margin: isMenuOpen ? "12px" : "0 20px",
+    transition: "margin 0.3s ease",
+  };
 
   const goToProfile = (recipientId) => {
     navigate(`/profile/${recipientId}`);
@@ -1170,12 +1170,12 @@ const Chat = () => {
 
   return (
     <div className="glava">
-             <div className={`sidebar ${isMenuOpen ? "open" : "closed"}`}>
+      <div className={`sidebar ${isMenuOpen ? "open" : "closed"}`}>
         <div className="sidebar-header">
-        <img style={{width: "50px", height: "45px"}} src={ttulogo} alt="" />
+          <img style={{ width: "50px", height: "45px" }} src={ttulogo} alt="" />
           {isMenuOpen ? (
             <>
-            <h2>TTU</h2>
+              <h2>TTU</h2>
               <FiChevronLeft
                 className="toggle-menu"
                 onClick={toggleMenu}
@@ -1194,6 +1194,10 @@ const Chat = () => {
             <FiHome className="menu-icon" />
             {isMenuOpen && <span>Главная</span>}
           </Link>
+          <Link to="/searchpage" className="menu-item">
+            <FiSearch className="menu-icon" />
+            {isMenuOpen && <span>Поиск</span>}
+          </Link>
           <Link to="/teachers" className="menu-item">
             <FiUserCheck className="menu-icon" />
             {isMenuOpen && <span>Преподаватели</span>}
@@ -1207,7 +1211,7 @@ const Chat = () => {
             {isMenuOpen && <span>Профиль</span>}
           </Link>
           <Link to="/chats" className="menu-item">
-            <FiMessageSquare className="menu-icon" style={{borderBottom: "1px solid rgb(200, 255, 0)", borderRadius: "15px", padding: "5px"}}/>
+            <FiMessageSquare className="menu-icon" style={{ borderBottom: "1px solid rgb(200, 255, 0)", borderRadius: "15px", padding: "5px" }} />
             {isMenuOpen && <span>Сообщения</span>}
           </Link>
           <Link to="/notifications" className="menu-item">
@@ -1231,392 +1235,392 @@ const Chat = () => {
           )}
         </div>
       </div>
-    <div className="chat-container" style={mainContentStyle}>
-      {notification && (
-        <div className={`notification ${notificationType}`}>
-          {notification}
-        </div>
-      )} {/* Уведомление */}
-      <div className="chat-header">
-        <FaChevronLeft
-          style={{ marginLeft: "10px", color: "white", fontSize: "25px" }}
-          onClick={() => navigate(-1)}
-        />
-        <div style={{ display: "flex", gap: "20px", alignItems: "center" }} onClick={() => goToProfile(recipientId)}>
-          <img
-            src={recipientData.avatarUrl || "./default-image.png"}
-            alt={recipientData.username || "Профиль"}
-            className="chat-header-avatar"
-            style={{ width: "45px", height: "45px", borderRadius: "50%", objectFit: "cover" }}
-          />
-          <div className="chat-header-info">
-            <h2>{recipientData.username || "Чат"}</h2>
-            {renderStatus()}
+      <div className="chat-container" style={mainContentStyle}>
+        {notification && (
+          <div className={`notification ${notificationType}`}>
+            {notification}
           </div>
+        )} {/* Уведомление */}
+        <div className="chat-header">
+          <FaChevronLeft
+            style={{ marginLeft: "10px", color: "white", fontSize: "25px" }}
+            onClick={() => navigate(-1)}
+          />
+          <div style={{ display: "flex", gap: "20px", alignItems: "center" }} onClick={() => goToProfile(recipientId)}>
+            <img
+              src={recipientData.avatarUrl || "./default-image.png"}
+              alt={recipientData.username || "Профиль"}
+              className="chat-header-avatar"
+              style={{ width: "45px", height: "45px", borderRadius: "50%", objectFit: "cover" }}
+            />
+            <div className="chat-header-info">
+              <h2>{recipientData.username || "Чат"}</h2>
+              {renderStatus()}
+            </div>
+          </div>
+
+          {/* Добавляем иконку меню */}
+          <FaEllipsisV
+            style={{ marginRight: "10px", cursor: "pointer", color: "white", fontSize: "25px" }}
+            onClick={() => setShowChatActions(!showChatActions)}
+          />
+
+          {/* Модальное окно действий */}
+          {showChatActions && (
+            <div className="actions-modal" onClick={() => setShowChatActions(false)}>
+              <div className="actions-modal-content" onClick={(e) => e.stopPropagation()}>
+                <button
+                  className="modal-close-button"
+                  onClick={() => setShowChatActions(false)}
+                  style={{
+                    position: "absolute",
+                    top: "5px",
+                    right: "5px",
+                    background: "none",
+                    border: "none",
+                    fontSize: "20px",
+                    cursor: "pointer",
+                  }}
+                >
+                  &times;
+                </button>
+                <button className="action-button" onClick={handleClearHistory}>
+                  Очистить историю
+                </button>
+                <button
+                  className="action-button delete-button"
+                  onClick={() => {
+                    setShowChatActions(false);
+                    setShowDeleteModal(true);
+                  }}
+                >
+                  Удалить чат
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Добавляем иконку меню */}
-        <FaEllipsisV
-          style={{ marginRight: "10px", cursor: "pointer", color: "white", fontSize: "25px" }}
-          onClick={() => setShowChatActions(!showChatActions)}
-        />
-
-        {/* Модальное окно действий */}
-        {showChatActions && (
-          <div className="actions-modal" onClick={() => setShowChatActions(false)}>
-            <div className="actions-modal-content" onClick={(e) => e.stopPropagation()}>
+        {/* Модальное окно подтверждения удаления */}
+        {showDeleteModal && (
+          <div className="delete-modal">
+            <div className="delete-modal-content">
               <button
                 className="modal-close-button"
-                onClick={() => setShowChatActions(false)}
-                style={{
-                  position: "absolute",
-                  top: "5px",
-                  right: "5px",
-                  background: "none",
-                  border: "none",
-                  fontSize: "20px",
-                  cursor: "pointer",
-                }}
+                onClick={() => setShowDeleteModal(false)}
               >
                 &times;
               </button>
-              <button className="action-button" onClick={handleClearHistory}>
-                Очистить историю
-              </button>
-              <button
-                className="action-button delete-button"
-                onClick={() => {
-                  setShowChatActions(false);
-                  setShowDeleteModal(true);
-                }}
-              >
-                Удалить чат
-              </button>
+              <h3 className="modal-title">
+                Удалить чат с {recipientData.username}?
+              </h3>
+              <p className="modal-subtitle">Это действие нельзя будет отменить</p>
+
+              <label className="checkbox-container">
+                <input
+                  type="checkbox"
+                  checked={deleteForBoth}
+                  onChange={(e) => setDeleteForBoth(e.target.checked)}
+                />
+                <span className="checkmark"></span>
+                Также удалить для {recipientData.username}
+              </label>
+
+              <div className="modal-actions">
+                <button
+                  className="modal-button cancel-button"
+                  onClick={() => setShowDeleteModal(false)}
+                >
+                  Отмена
+                </button>
+                <button
+                  className="modal-button confirm-button"
+                  onClick={handleDeleteChat}
+                >
+                  Удалить
+                </button>
+              </div>
             </div>
           </div>
         )}
-      </div>
 
-      {/* Модальное окно подтверждения удаления */}
-      {showDeleteModal && (
-        <div className="delete-modal">
-          <div className="delete-modal-content">
-            <button
-              className="modal-close-button"
-              onClick={() => setShowDeleteModal(false)}
-            >
-              &times;
-            </button>
-            <h3 className="modal-title">
-              Удалить чат с {recipientData.username}?
-            </h3>
-            <p className="modal-subtitle">Это действие нельзя будет отменить</p>
+        <div className="chat-messages">
+          {messages.map((message, index) => {
+            const currentDate = new Date(message.timestamp);
+            const prevMessage = messages[index - 1];
+            const prevDate = prevMessage ? new Date(prevMessage.timestamp) : null;
+            const showDate = !prevDate || currentDate.toDateString() !== prevDate.toDateString();
 
-            <label className="checkbox-container">
-              <input
-                type="checkbox"
-                checked={deleteForBoth}
-                onChange={(e) => setDeleteForBoth(e.target.checked)}
-              />
-              <span className="checkmark"></span>
-              Также удалить для {recipientData.username}
-            </label>
-
-            <div className="modal-actions">
-              <button
-                className="modal-button cancel-button"
-                onClick={() => setShowDeleteModal(false)}
-              >
-                Отмена
-              </button>
-              <button
-                className="modal-button confirm-button"
-                onClick={handleDeleteChat}
-              >
-                Удалить
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div className="chat-messages">
-        {messages.map((message, index) => {
-          const currentDate = new Date(message.timestamp);
-          const prevMessage = messages[index - 1];
-          const prevDate = prevMessage ? new Date(prevMessage.timestamp) : null;
-          const showDate = !prevDate || currentDate.toDateString() !== prevDate.toDateString();
-
-          return (
-            <React.Fragment key={message.id}>
-              {showDate && (
-                <div className="chat-date-divider">
-                  {currentDate.toLocaleDateString('ru-RU', {
-                    day: 'numeric',
-                    month: 'long'
-                  })}
-                </div>
-              )}
-              <div
-                className={`chat-message ${message.senderId === currentUserId
-                  ? "chat-message-sent"
-                  : "chat-message-received"
-                  }`}
-                onClick={(e) => handleMessageClick(message, e)}
-              >
-                <img
-                  src={message.senderAvatar || "./default-image.png"}
-                  alt={message.senderName}
-                  className="chat-message-avatar"
-                  style={{
-                    width: "30px",
-                    height: "30px",
-                    borderRadius: "50%",
-                    marginRight: "10px",
-                  }}
-                />
-                <div>
-                  <p className="chat-message-sender">{message.senderName}</p>
-                  {message.replyTo && (
-                    <div className="message-reply">
-                      <span>{message.replyTo.senderName}</span>
-                      <p>{message.replyTo.text}</p>
-                    </div>
-                  )}
-                  {editingMessageId === message.id ? (
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <button
-                        onClick={() => setEditingMessageId(null)}
-                        className="chat-cancel-edit-button"
-                        style={{
-                          background: "none",
-                          border: "none",
-                          color: "red",
-                          fontSize: "16px",
-                          marginRight: "18px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        ✖
-                      </button>
-                      <input
-                        type="text"
-                        value={editMessageText}
-                        onChange={(e) => setEditMessageText(e.target.value)}
-                        className="chat-edit-input"
-                      />
-                    </div>
-                  ) : (
-                    <p className="chat-message-text">{message.text}
-                      {message.reactions && Object.keys(message.reactions).length > 0 && (
-                        <div className="message-reactions">
-                          {Object.entries(message.reactions).map(([emoji, reactions]) => {
-                            const hasUserReaction = reactions.some(r => r.userId === currentUserId);
-                            return (
-                              <span
-                                key={emoji}
-                                className={`reaction-bubble ${hasUserReaction ? 'user-reaction' : ''}`}
-                                title={reactions.map(r => r.userId === currentUserId ? 'Вы' : r.userId).join(', ')}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleAddReaction(message.id, emoji);
-                                }}
-                              >
-                                {emoji}
-                                {reactions.length > 1 && ` ${reactions.length}`}
-                              </span>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </p>
-                  )}
-                  <span className="chat-message-timestamp">
-                    доставлено: {new Date(message.timestamp).toLocaleTimeString([], {
-                      hour: '2-digit',
-                      minute: '2-digit'
+            return (
+              <React.Fragment key={message.id}>
+                {showDate && (
+                  <div className="chat-date-divider">
+                    {currentDate.toLocaleDateString('ru-RU', {
+                      day: 'numeric',
+                      month: 'long'
                     })}
-                    {message.editedAt && (
-                      <span className="chat-message-edited">
-                        (изменено: {new Date(message.editedAt).toLocaleTimeString([], {
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })})
-                      </span>
-                    )}
-                    {message.senderId === currentUserId && message.seenBy?.includes(recipientId) && (
-                      <span className="chat-message-seen">просмотрено</span>
-                    )}
-                  </span>
-                </div>
-                {selectedMessageId === message.id && (
-                  <div
-                    className="chat-message-actions"
-                    ref={actionsRef}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // Закрываем меню только при клике на обычные кнопки, не эмодзи
-                      if (!e.target.closest('.emoji-button, .emoji-more-button')) {
-                        setSelectedMessageId(null);
-                      }
+                  </div>
+                )}
+                <div
+                  className={`chat-message ${message.senderId === currentUserId
+                    ? "chat-message-sent"
+                    : "chat-message-received"
+                    }`}
+                  onClick={(e) => handleMessageClick(message, e)}
+                >
+                  <img
+                    src={message.senderAvatar || "./default-image.png"}
+                    alt={message.senderName}
+                    className="chat-message-avatar"
+                    style={{
+                      width: "30px",
+                      height: "30px",
+                      borderRadius: "50%",
+                      marginRight: "10px",
                     }}
-                  >
-                    <div className="emoji-quick-bar">
-                      {QUICK_EMOJIS.map(emoji => (
+                  />
+                  <div>
+                    <p className="chat-message-sender">{message.senderName}</p>
+                    {message.replyTo && (
+                      <div className="message-reply">
+                        <span>{message.replyTo.senderName}</span>
+                        <p>{message.replyTo.text}</p>
+                      </div>
+                    )}
+                    {editingMessageId === message.id ? (
+                      <div style={{ display: "flex", alignItems: "center" }}>
                         <button
-                          key={emoji}
-                          className="emoji-button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleAddReaction(message.id, emoji);
-                            setSelectedMessageId(null); // Закрываем меню
+                          onClick={() => setEditingMessageId(null)}
+                          className="chat-cancel-edit-button"
+                          style={{
+                            background: "none",
+                            border: "none",
+                            color: "red",
+                            fontSize: "16px",
+                            marginRight: "18px",
+                            cursor: "pointer",
                           }}
                         >
-                          {emoji}
+                          ✖
                         </button>
-                      ))}
-                      <button
-                        className={`emoji-more-button ${showFullEmojiPicker ? 'open' : ''}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setShowFullEmojiPicker(!showFullEmojiPicker);
-                        }}
-                      >
-                        ▼
-                      </button>
-                    </div>
-
-                    {/* Полный список смайлов */}
-                    {showFullEmojiPicker && (
-                      <div className={`emoji-full-list ${showFullEmojiPicker ? 'open' : ''}`}>
-                        {EMOJI_LIST.map(emoji => (
+                        <input
+                          type="text"
+                          value={editMessageText}
+                          onChange={(e) => setEditMessageText(e.target.value)}
+                          className="chat-edit-input"
+                        />
+                      </div>
+                    ) : (
+                      <p className="chat-message-text">{message.text}
+                        {message.reactions && Object.keys(message.reactions).length > 0 && (
+                          <div className="message-reactions">
+                            {Object.entries(message.reactions).map(([emoji, reactions]) => {
+                              const hasUserReaction = reactions.some(r => r.userId === currentUserId);
+                              return (
+                                <span
+                                  key={emoji}
+                                  className={`reaction-bubble ${hasUserReaction ? 'user-reaction' : ''}`}
+                                  title={reactions.map(r => r.userId === currentUserId ? 'Вы' : r.userId).join(', ')}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleAddReaction(message.id, emoji);
+                                  }}
+                                >
+                                  {emoji}
+                                  {reactions.length > 1 && ` ${reactions.length}`}
+                                </span>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </p>
+                    )}
+                    <span className="chat-message-timestamp">
+                      доставлено: {new Date(message.timestamp).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                      {message.editedAt && (
+                        <span className="chat-message-edited">
+                          (изменено: {new Date(message.editedAt).toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })})
+                        </span>
+                      )}
+                      {message.senderId === currentUserId && message.seenBy?.includes(recipientId) && (
+                        <span className="chat-message-seen">просмотрено</span>
+                      )}
+                    </span>
+                  </div>
+                  {selectedMessageId === message.id && (
+                    <div
+                      className="chat-message-actions"
+                      ref={actionsRef}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // Закрываем меню только при клике на обычные кнопки, не эмодзи
+                        if (!e.target.closest('.emoji-button, .emoji-more-button')) {
+                          setSelectedMessageId(null);
+                        }
+                      }}
+                    >
+                      <div className="emoji-quick-bar">
+                        {QUICK_EMOJIS.map(emoji => (
                           <button
                             key={emoji}
                             className="emoji-button"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleAddReaction(message.id, emoji);
-                              setShowFullEmojiPicker(false);
-                              setSelectedMessageId(null);
+                              setSelectedMessageId(null); // Закрываем меню
                             }}
                           >
                             {emoji}
                           </button>
                         ))}
-                      </div>
-                    )}
-
-                    {message.senderId === currentUserId ? (
-                      <>
-                        <button onClick={() => setReplyingTo(message)}>
-                          <FaReply /> Ответить
-                        </button>
-                        <button onClick={() => handleCopyMessage(message.text)}>
-                          <FaCopy /> Копировать
-                        </button>
-                        <button onClick={() => handleEditMessage(message.id, message.text)}>
-                          <FaEdit /> Редактировать
-                        </button>
-                        <button onClick={() => {
-                          setMessageToDelete(message.id);
-                          setShowDeleteMessageModal(true);
-                        }}>
-                          <FaTrash /> Удалить
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <button onClick={() => setReplyingTo(message)}>
-                          <FaReply /> Ответить
-                        </button>
-                        <button onClick={() => handleCopyMessage(message.text)}>
-                          <FaCopy /> Копировать
-                        </button>
-                        <button onClick={() => {
-                          setMessageToDelete(message.id);
-                          setShowDeleteMessageModal(true);
-                        }}>
-                          <FaTrash /> Удалить
-                        </button>
-                      </>
-                    )}
-                  </div>
-                )}
-
-                {showDeleteMessageModal && (
-                  <div className="delete-message-modal" onClick={() => setShowDeleteMessageModal(false)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                      <h3>Вы уверены, что хотите удалить сообщение?</h3>
-                      <div className="modal-buttons">
                         <button
-                          className="cancel-message-button"
-                          onClick={() => setShowDeleteMessageModal(false)}
-                        >
-                          Отмена
-                        </button>
-                        <button
-                          className="delete-message-button"
-                          onClick={() => {
-                            if (messageToDelete) {
-                              handleDeleteMessage(messageToDelete);
-                            }
-                            setShowDeleteMessageModal(false);
+                          className={`emoji-more-button ${showFullEmojiPicker ? 'open' : ''}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowFullEmojiPicker(!showFullEmojiPicker);
                           }}
                         >
-                          Удалить
+                          ▼
                         </button>
                       </div>
+
+                      {/* Полный список смайлов */}
+                      {showFullEmojiPicker && (
+                        <div className={`emoji-full-list ${showFullEmojiPicker ? 'open' : ''}`}>
+                          {EMOJI_LIST.map(emoji => (
+                            <button
+                              key={emoji}
+                              className="emoji-button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleAddReaction(message.id, emoji);
+                                setShowFullEmojiPicker(false);
+                                setSelectedMessageId(null);
+                              }}
+                            >
+                              {emoji}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+
+                      {message.senderId === currentUserId ? (
+                        <>
+                          <button onClick={() => setReplyingTo(message)}>
+                            <FaReply /> Ответить
+                          </button>
+                          <button onClick={() => handleCopyMessage(message.text)}>
+                            <FaCopy /> Копировать
+                          </button>
+                          <button onClick={() => handleEditMessage(message.id, message.text)}>
+                            <FaEdit /> Редактировать
+                          </button>
+                          <button onClick={() => {
+                            setMessageToDelete(message.id);
+                            setShowDeleteMessageModal(true);
+                          }}>
+                            <FaTrash /> Удалить
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button onClick={() => setReplyingTo(message)}>
+                            <FaReply /> Ответить
+                          </button>
+                          <button onClick={() => handleCopyMessage(message.text)}>
+                            <FaCopy /> Копировать
+                          </button>
+                          <button onClick={() => {
+                            setMessageToDelete(message.id);
+                            setShowDeleteMessageModal(true);
+                          }}>
+                            <FaTrash /> Удалить
+                          </button>
+                        </>
+                      )}
                     </div>
-                  </div>
-                )}
+                  )}
+
+                  {showDeleteMessageModal && (
+                    <div className="delete-message-modal" onClick={() => setShowDeleteMessageModal(false)}>
+                      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <h3>Вы уверены, что хотите удалить сообщение?</h3>
+                        <div className="modal-buttons">
+                          <button
+                            className="cancel-message-button"
+                            onClick={() => setShowDeleteMessageModal(false)}
+                          >
+                            Отмена
+                          </button>
+                          <button
+                            className="delete-message-button"
+                            onClick={() => {
+                              if (messageToDelete) {
+                                handleDeleteMessage(messageToDelete);
+                              }
+                              setShowDeleteMessageModal(false);
+                            }}
+                          >
+                            Удалить
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </React.Fragment>
+            );
+          })}
+          <div ref={messagesEndRef} />
+        </div>
+
+        <div className="chat-input">
+          {replyingTo && (
+            <div className="reply-preview">
+              <div className="reply-line"></div>
+              <div className="reply-content">
+                <span>{replyingTo.senderName}</span>
+                <p>{replyingTo.text}</p>
+                <button onClick={() => setReplyingTo(null)}>×</button>
               </div>
-            </React.Fragment>
-          );
-        })}
-        <div ref={messagesEndRef} />
-      </div>
-
-      <div className="chat-input">
-        {replyingTo && (
-          <div className="reply-preview">
-            <div className="reply-line"></div>
-            <div className="reply-content">
-              <span>{replyingTo.senderName}</span>
-              <p>{replyingTo.text}</p>
-              <button onClick={() => setReplyingTo(null)}>×</button>
             </div>
-          </div>
-        )}
+          )}
 
-        <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Введите сообщение..."
-          className="chat-input-field"
-        />
-        {editingMessageId ? (
-          <button onClick={handleSaveEditedMessage} className="chat-send-button">
-            Изменить
-          </button>
-        ) : (
-          <button
-            onClick={() => {
-              if (replyingTo) {
-                // Отправка сообщения с прикрепленным ответом
-                handleSendMessage();
-                setReplyingTo(null);
-              } else {
-                handleSendMessage();
-              }
-            }}
-            className="chat-send-button"
-          >
-            {replyingTo ? "Ответить" : "Отправить"}
-          </button>
-        )}
+          <input
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Введите сообщение..."
+            className="chat-input-field"
+          />
+          {editingMessageId ? (
+            <button onClick={handleSaveEditedMessage} className="chat-send-button">
+              Изменить
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                if (replyingTo) {
+                  // Отправка сообщения с прикрепленным ответом
+                  handleSendMessage();
+                  setReplyingTo(null);
+                } else {
+                  handleSendMessage();
+                }
+              }}
+              className="chat-send-button"
+            >
+              {replyingTo ? "Ответить" : "Отправить"}
+            </button>
+          )}
+        </div>
       </div>
-    </div>
     </div>
   );
 };

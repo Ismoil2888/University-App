@@ -686,7 +686,6 @@ header nav ul li a:hover::before {
           justify-content: space-between;
           align-items: start;
           padding-bottom: 10px;
-          /* border-bottom: 1px solid grey; */
           box-shadow: 0 10px 5px -5px rgba(255, 255, 255, 0.2);
         }
         

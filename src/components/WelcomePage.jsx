@@ -65,6 +65,9 @@ const WelcomePage = () => {
             <li><Link to="/library">Китобхонаи электронӣ</Link></li>
             <li><Link to="/contacts">Тамос</Link></li>
         </ul>
+        <ul>
+          <li><Link to="/signup" style={{marginLeft: "25px", fontWeight: "bold", color: "lightgreen", border: "1px solid lightgreen", borderRadius: "15px", padding: "5px", background: "white"}}>Ба система ворид шудан</Link></li>
+        </ul>
       </nav>
 
       <main className="hp-main-content">

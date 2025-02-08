@@ -10,7 +10,7 @@
   }
 
   .chat-page-header{
-    background-color: #191c20;
+    background-color: #054857;
   }
 
   .search-main{
@@ -32,14 +32,14 @@
 
   .h2-icon-block h2{
     color: #ffffff;
-    background-color: #222932;
+    background-color: #1e2c39;
     position: absolute;
     margin-top: 150px;
     font-size: 27px;
   }
   
   .chat-page-header {
-    width: 95%;
+    width: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -57,6 +57,12 @@
     font-size: 24px;
     cursor: pointer;
     color: rgb(99, 122, 253);
+  }
+
+  @media (width > 700px) {
+    .chat-page-search-icon{
+      margin-top: 20px;
+    }
   }
   
   .chat-page-menu-dropdown {
@@ -92,12 +98,11 @@
   
   .chat-page-search-bar {
     display: flex;
-    width: 100%;
+    width: 60%;
     padding: 10px;
     align-items: center;
     justify-content: space-around;
     animation: fadeIn 0.6s ease-out;
-    /* background-color: #fff; */
   }
 
   .search-page-search-icon{
@@ -109,7 +114,6 @@
   
   .chat-page-search-bar input {
     width: 80%;
-    /* flex: 1; */
     padding: 5px;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -194,7 +198,6 @@
     justify-content: flex-start;
     align-items: center;
     padding: 10px;
-    /* background-color: #f6f6f6; Цвет фона */
     overflow-x: auto;
   }
   
@@ -224,7 +227,6 @@
     color: #ffffff;
     text-align: center;
     white-space: nowrap; /* Чтобы текст не переносился на другую строку */
-    /* overflow: hidden; */
     text-overflow: ellipsis; /* Сокращение текста с многоточием, если он слишком длинный */
   }
 

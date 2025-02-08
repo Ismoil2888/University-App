@@ -85,12 +85,13 @@ function App() {
     <Routes>
       <Route path="/" element={isAuthenticated ? <HomePage /> : <WelcomePage />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/authdetails" element={<AuthDetails />} />
-      <Route path="/myprofile" element={<MyProfile />} />
+      <Route path="/signin" element={<SignIn />} />
+      <Route path="/authdetails" element={<PrivateRoute> <AuthDetails /> </PrivateRoute>} />
+      <Route path="/myprofile" element={<PrivateRoute> <MyProfile /> </PrivateRoute>} />
       <Route path="/profile/:userId" element={<UserProfile />} />      
       <Route path="/about" element={<PrivateRoute> <About /> </PrivateRoute>} />
       <Route path="/home" element={<PrivateRoute>  <HomePage /> </PrivateRoute>} />
-      <Route path="/notifications" element={<NotificationsPage />} />
+      <Route path="/notifications" element={<PrivateRoute> <NotificationsPage /> </PrivateRoute>} />
       <Route path="/post" element={<PrivateRoute>  <PostForm /> </PrivateRoute>} />
       <Route path="/schedule" element={<PrivateRoute> <Schedule /> </PrivateRoute>} />
       <Route path="/teachers" element={<PrivateRoute> <Teachers /> </PrivateRoute>} />
@@ -100,15 +101,14 @@ function App() {
       <Route path="/searchpage" element={<PrivateRoute> <SearchPage /> </PrivateRoute>} />
       <Route path="/searchstudents" element={<PrivateRoute> <SearchStudents /> </PrivateRoute>} />
       <Route path="/welcomepage" element={<WelcomePage />} />
-      <Route path="/teachers" element={<TeachersPage />} />
       <Route path="/teacher-login" element={<TeacherLogin />} />
       <Route path="/teacher-profile/:id" element={<TeacherProfile />} />
       <Route path="/admin" element={<AdminPrivateRoute> <AdminPanel /> </AdminPrivateRoute>} />
       <Route path="/admin-login" element={<AdminLogin />} />
       <Route path="/blank" element={<BlankForm />} />
       <Route path="*" element={<NotfoundPage />} />
-      <Route path="/chat/:chatRoomId" element={<Chat />} />
-      <Route path="/chats" element={<ChatList />} />
+      <Route path="/chat/:chatRoomId" element={<PrivateRoute> <Chat /> </PrivateRoute>} />
+      <Route path="/chats" element={<PrivateRoute> <ChatList /> </PrivateRoute>} />
     </Routes>
   );
 }

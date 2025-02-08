@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
 import defaultAvatar from '../default-image.png';
 import anonymAvatar from '../anonym2.jpg';
-import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen, FiUserCheck } from "react-icons/fi";
+import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen, FiUserCheck, FiSearch } from "react-icons/fi";
 import ttulogo from "../Ttulogo.png";
 
 const Library = ({ userId }) => {
@@ -393,10 +393,10 @@ const Library = ({ userId }) => {
     <div className="glava">
       <div className={`sidebar ${isMenuOpen ? "open" : "closed"}`}>
         <div className="sidebar-header">
-        <img style={{width: "50px", height: "45px"}} src={ttulogo} alt="" />
+          <img style={{ width: "50px", height: "45px" }} src={ttulogo} alt="" />
           {isMenuOpen ? (
             <>
-                <h2>TTU</h2>
+              <h2>TTU</h2>
               <FiChevronLeft
                 className="toggle-menu"
                 onClick={toggleMenu}
@@ -415,12 +415,16 @@ const Library = ({ userId }) => {
             <FiHome className="menu-icon" />
             {isMenuOpen && <span>Главная</span>}
           </Link>
+          <Link to="/searchpage" className="menu-item">
+            <FiSearch className="menu-icon" />
+            {isMenuOpen && <span>Поиск</span>}
+          </Link>
           <Link to="/teachers" className="menu-item">
             <FiUserCheck className="menu-icon" />
             {isMenuOpen && <span>Преподаватели</span>}
           </Link>
           <Link to="/library" className="menu-item">
-            <FiBookOpen className="menu-icon" style={{borderBottom: "1px solid rgb(200, 255, 0)", borderRadius: "15px", padding: "5px"}}/>
+            <FiBookOpen className="menu-icon" style={{ borderBottom: "1px solid rgb(200, 255, 0)", borderRadius: "15px", padding: "5px" }} />
             {isMenuOpen && <span>Библиотека</span>}
           </Link>
           <Link to="/myprofile" className="menu-item">
@@ -501,160 +505,160 @@ const Library = ({ userId }) => {
 
 
         <motion.nav
-            variants={navbarVariants}
-            initial="hidden"
-            animate="visible"
-          >
-        <div className="library-main">
-          <section className="library-header">
-            <h1>Библиотека Факультета Информационной Безопасности</h1>
-            <div className="search-filter">
-              <input
-                type="search"
-                id="search-input"
-                value={searchQuery}
-                onChange={(e) => {
-                  handleSearch(e.target.value);
-                  setIsSearchFocused(false);
-                }}
-                placeholder="Поиск книг..."
-                onFocus={() => setIsSearchFocused(true)}
-                onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
-              />
-              {searchQuery && (
-                <FaTimes className="clear-search-icon" onClick={clearSearch} />
-              )}
+          variants={navbarVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <div className="library-main">
+            <section className="library-header">
+              <h1>Библиотека Факультета Информационной Безопасности</h1>
+              <div className="search-filter">
+                <input
+                  type="search"
+                  id="search-input"
+                  value={searchQuery}
+                  onChange={(e) => {
+                    handleSearch(e.target.value);
+                    setIsSearchFocused(false);
+                  }}
+                  placeholder="Поиск книг..."
+                  onFocus={() => setIsSearchFocused(true)}
+                  onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
+                />
+                {searchQuery && (
+                  <FaTimes className="clear-search-icon" onClick={clearSearch} />
+                )}
 
-              {isSearchFocused && searchHistory.length > 0 && !searchQuery && (
-                <div className="search-history">
-                  <h3>Недавнее</h3>
-                  <button className="clear-all-btn" onClick={clearHistory}>Очистить все</button>
-                  <ul>
-                    {searchHistory.map((title, index) => (
-                      <li
-                        key={index}
-                        className="search-history-item"
-                        onClick={() => handleHistoryClick(title)}
-                      >
-                        <span>{title}</span>
-                        <FaTimes className="remove-history-icon" onClick={() => removeFromHistory(title)} />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </section>
-
-          <section className="book-grid">
-            {filteredBooks.length > 0 ? (
-              filteredBooks.map((book, index) => {
-
-                return (
-                  <div key={index} className="book-card" onClick={() => openBookModal(book)}>
-                    <img src={bookIcon} alt="Book Icon" className="book-icon" />
-                    <div className="book-info">
-                      <h4>{book.title}</h4>
-                      <p style={{ color: "gray" }}>{book.description}</p>
-                      <p className="published-date">Опубликовано: {book.publishedDate}</p>
-                    </div>
-                    <div className="book-actions">
-                      <div className="comment-icon-and-count">
-                        <FaCommentDots className="comment-icon"
-                          onClick={(event) => {
-                            event.stopPropagation(); // Предотвращает открытие модального окна книги
-                            openCommentModal(book.id); // Открывает модальное окно комментариев
-                          }}
-                        />
-                        <span className="comment-count">{book.commentCount}</span>
-                      </div>
-                    </div>
+                {isSearchFocused && searchHistory.length > 0 && !searchQuery && (
+                  <div className="search-history">
+                    <h3>Недавнее</h3>
+                    <button className="clear-all-btn" onClick={clearHistory}>Очистить все</button>
+                    <ul>
+                      {searchHistory.map((title, index) => (
+                        <li
+                          key={index}
+                          className="search-history-item"
+                          onClick={() => handleHistoryClick(title)}
+                        >
+                          <span>{title}</span>
+                          <FaTimes className="remove-history-icon" onClick={() => removeFromHistory(title)} />
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                );
-              })
-            ) : (
-              <p>Книги не найдены</p>
-            )}
-          </section>
-
-          {showModal && selectedBook && (
-            <div className="modal-book">
-              <div className="modal-content-book">
-                <h3>{selectedBook.title}</h3>
-                <p>{selectedBook.description}</p>
-                <div className="modal-book-buttons">
-                  <a href={selectedBook.fileURL} target="_blank" rel="noopener noreferrer">
-                    <button>Открыть</button>
-                  </a>
-                  <a href={selectedBook.fileURL} download>
-                    <button>Скачать</button>
-                  </a>
-                  <button onClick={closeBookModal}>Закрыть</button>
-                </div>
+                )}
               </div>
-            </div>
-          )}
+            </section>
 
-          {commentModal.isOpen && (
-            <div className="comment-modal-overlay">
-              <div className="comment-modal">
-                <div className="modal-header">
-                  <h3>Комментарии</h3>
-                  <button className="close-modal" onClick={closeCommentModal}>
-                    &times;
-                  </button>
-                </div>
-                <div className="comments-list">
-                  {comments
-                    .slice() // Создаёт копию массива, чтобы не мутировать оригинал
-                    .reverse() // Изменяет порядок на обратный
-                    .map((comment) => (
-                      <div className="comment" key={comment.id}>
-                        <img
-                          src={comment.avatarUrl || defaultAvatar}
-                          alt={comment.username}
-                          onClick={() => goToProfile(comment.userId)} // Переход по клику на аватар
-                          className="comment-avatar skeleton-media-avatars"
-                        />
-                        <div className="comment-content">
-                          <p className="comment-username" onClick={() => goToProfile(comment.userId)}>{comment.username}</p>
-                          <p className="comment-text">{comment.comment}</p>
-                          <span className="comment-timestamp">{comment.timestamp}</span>
-                        </div>
-                        <div ref={actionMenuRef} className="menu-icon-container">
-                          {(comment.userId === auth.currentUser?.uid || comment.anonymousOwnerId === auth.currentUser?.uid) && (
-                            <>
-                              <GoKebabHorizontal
-                                style={{ fontSize: "20px", color: "grey" }}
-                                onClick={() => toggleActionMenu(comment.id)}
-                                className="action-icon"
-                              />
-                              {actionMenuId === comment.id && (
-                                <div className={`action-menu show`}>
-                                  <button onClick={() => handleEditComment(comment.id, comment.comment)}>Изменить</button>
-                                  <button onClick={() => handleDeleteComment(comment.id)}>Удалить</button>
-                                </div>
-                              )}
-                            </>
-                          )}
+            <section className="book-grid">
+              {filteredBooks.length > 0 ? (
+                filteredBooks.map((book, index) => {
+
+                  return (
+                    <div key={index} className="book-card" onClick={() => openBookModal(book)}>
+                      <img src={bookIcon} alt="Book Icon" className="book-icon" />
+                      <div className="book-info">
+                        <h4>{book.title}</h4>
+                        <p style={{ color: "gray" }}>{book.description}</p>
+                        <p className="published-date">Опубликовано: {book.publishedDate}</p>
+                      </div>
+                      <div className="book-actions">
+                        <div className="comment-icon-and-count">
+                          <FaCommentDots className="comment-icon"
+                            onClick={(event) => {
+                              event.stopPropagation(); // Предотвращает открытие модального окна книги
+                              openCommentModal(book.id); // Открывает модальное окно комментариев
+                            }}
+                          />
+                          <span className="comment-count">{book.commentCount}</span>
                         </div>
                       </div>
-                    ))}
-                </div>
-                <div className="new-comment">
-                  <input
-                    type="text"
-                    placeholder="Напишите комментарий..."
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                  />
-                  <button onClick={() => handleCommentSubmit(false)}>Отправить</button>
-                  <button onClick={() => handleCommentSubmit(true)}>Отправить анонимно</button>
+                    </div>
+                  );
+                })
+              ) : (
+                <p>Книги не найдены</p>
+              )}
+            </section>
+
+            {showModal && selectedBook && (
+              <div className="modal-book">
+                <div className="modal-content-book">
+                  <h3>{selectedBook.title}</h3>
+                  <p>{selectedBook.description}</p>
+                  <div className="modal-book-buttons">
+                    <a href={selectedBook.fileURL} target="_blank" rel="noopener noreferrer">
+                      <button>Открыть</button>
+                    </a>
+                    <a href={selectedBook.fileURL} download>
+                      <button>Скачать</button>
+                    </a>
+                    <button onClick={closeBookModal}>Закрыть</button>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+
+            {commentModal.isOpen && (
+              <div className="comment-modal-overlay">
+                <div className="comment-modal">
+                  <div className="modal-header">
+                    <h3>Комментарии</h3>
+                    <button className="close-modal" onClick={closeCommentModal}>
+                      &times;
+                    </button>
+                  </div>
+                  <div className="comments-list">
+                    {comments
+                      .slice() // Создаёт копию массива, чтобы не мутировать оригинал
+                      .reverse() // Изменяет порядок на обратный
+                      .map((comment) => (
+                        <div className="comment" key={comment.id}>
+                          <img
+                            src={comment.avatarUrl || defaultAvatar}
+                            alt={comment.username}
+                            onClick={() => goToProfile(comment.userId)} // Переход по клику на аватар
+                            className="comment-avatar skeleton-media-avatars"
+                          />
+                          <div className="comment-content">
+                            <p className="comment-username" onClick={() => goToProfile(comment.userId)}>{comment.username}</p>
+                            <p className="comment-text">{comment.comment}</p>
+                            <span className="comment-timestamp">{comment.timestamp}</span>
+                          </div>
+                          <div ref={actionMenuRef} className="menu-icon-container">
+                            {(comment.userId === auth.currentUser?.uid || comment.anonymousOwnerId === auth.currentUser?.uid) && (
+                              <>
+                                <GoKebabHorizontal
+                                  style={{ fontSize: "20px", color: "grey" }}
+                                  onClick={() => toggleActionMenu(comment.id)}
+                                  className="action-icon"
+                                />
+                                {actionMenuId === comment.id && (
+                                  <div className={`action-menu show`}>
+                                    <button onClick={() => handleEditComment(comment.id, comment.comment)}>Изменить</button>
+                                    <button onClick={() => handleDeleteComment(comment.id)}>Удалить</button>
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                  <div className="new-comment">
+                    <input
+                      type="text"
+                      placeholder="Напишите комментарий..."
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                    />
+                    <button onClick={() => handleCommentSubmit(false)}>Отправить</button>
+                    <button onClick={() => handleCommentSubmit(true)}>Отправить анонимно</button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </motion.nav>
 
         <footer className="footer-desktop">
