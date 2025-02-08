@@ -599,12 +599,10 @@ const goToProfile = (userId) => {
     <div className="glava">
       <div className={`sidebar ${isMenuOpen ? "open" : "closed"}`}>
         <div className="sidebar-header">
+        <img style={{width: "50px", height: "45px"}} src={ttulogo} alt="" />
           {isMenuOpen ? (
             <>
-            <div style={{display: "flex", gap: "15px"}}>
-            <img style={{width: "45px", height: "45px"}} src={ttulogo} alt="" />
               <h2>TTU</h2>
-            </div>
               <FiChevronLeft 
                 className="toggle-menu" 
                 onClick={toggleMenu}

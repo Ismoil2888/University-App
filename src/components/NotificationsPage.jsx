@@ -59,6 +59,11 @@ const NotificationsPage = () => {
     });
   };
 
+  const mainContentStyle = {
+    marginLeft: isMobile ? (isMenuOpen ? "360px" : "0px") : (isMenuOpen ? "360px" : "80px"),
+    transition: "margin 0.3s ease",
+  };
+
   const goToProfile = (userId) => {
     navigate(`/profile/${userId}`);
   };
@@ -142,15 +147,13 @@ const NotificationsPage = () => {
   };
 
   return (
-    <div className="notifications-page">
-            <div className={`sidebar ${isMenuOpen ? "open" : "closed"}`}>
+    <div className="glava">
+               <div className={`sidebar ${isMenuOpen ? "open" : "closed"}`}>
         <div className="sidebar-header">
+        <img style={{width: "50px", height: "45px"}} src={ttulogo} alt="" />
           {isMenuOpen ? (
             <>
-            <div style={{display: "flex", gap: "15px"}}>
-            <img style={{width: "45px", height: "45px"}} src={ttulogo} alt="" />
               <h2>TTU</h2>
-            </div>
               <FiChevronLeft 
                 className="toggle-menu" 
                 onClick={toggleMenu}
@@ -206,6 +209,7 @@ const NotificationsPage = () => {
         )}
         </div>
       </div>
+    <div className="notifications-page" style={mainContentStyle}>
       <header className="head-line">
         {/* <nav>
           <ul>
@@ -289,6 +293,7 @@ const NotificationsPage = () => {
           <p className="no-notifications">У вас пока нет уведомлений.</p>
         )}
       </main>
+    </div>
     </div>
   );
 };

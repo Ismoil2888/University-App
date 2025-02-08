@@ -452,10 +452,6 @@ const MyProfile = () => {
     }
   };
 
-  const handleContextMenu = (event) => {
-    event.preventDefault();
-  }
-
   const renderStatus = () => {
     if (status === "online") {
       return <span className="status-online">в сети</span>;
@@ -465,15 +461,13 @@ const MyProfile = () => {
   };
 
   return (
-    <div className="my-profile-container" onContextMenu={handleContextMenu}>
+    <div className="my-profile-container">
            <div className={`sidebar ${isMenuOpen ? "open" : "closed"}`}>
         <div className="sidebar-header">
+        <img style={{width: "50px", height: "45px"}} src={ttulogo} alt="" />
           {isMenuOpen ? (
             <>
-              <div style={{ display: "flex", gap: "15px" }}>
-                <img style={{ width: "45px", height: "45px" }} src={ttulogo} alt="" />
                 <h2>TTU</h2>
-              </div>
               <FiChevronLeft
                 className="toggle-menu"
                 onClick={toggleMenuDesktop}
