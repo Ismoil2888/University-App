@@ -244,15 +244,27 @@
   }
 
   @media (width < 770px) {
-    .app{
-      display: none;
-    }
 
     .swiper{
       width: 100%;
       border-radius: 25px;
       object-fit: cover;
     }
+
+    .sidebar{
+      display: none;
+      z-index: 0;
+    }
+
+    .home-container {
+      margin-left: 0 !important;
+      width: 100%;
+    }
+  }
+
+  .main-content.mobile {
+    margin-left: 0 !important;
+    width: 100%;
   }
 
   @media (width > 770px) {
@@ -277,10 +289,6 @@
     font-size: 15px;
     position: absolute;
     animation: slideIn 0.2s ease;
-}
-
-.home-container{
-  display: none;
 }
 
 .swiper{
@@ -494,4 +502,147 @@ width: 90%; */
   padding: 2px 6px;
   font-size: 12px;
   font-weight: bold;
+}
+
+
+
+
+
+
+
+
+
+/* Стили для бокового меню */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  background: #2c3e50;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  z-index: 99999;
+  transition: width 0.3s ease;
+}
+
+.sidebar h2{
+  color: #9daddf;
+}
+
+.sidebar.open {
+  width: 360px;
+}
+
+.sidebar.closed {
+  width: 110px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14.7px;
+  border-bottom: 1px solid #07202d;
+}
+
+.toggle-menu {
+  font-size: 24px;
+  cursor: pointer;
+  color: #58a6ff;
+  transition: transform 0.3s ease;
+  margin-left: 11px;
+}
+
+.toggle-menu:hover {
+  color: #c4ccce;
+}
+
+.menu-items {
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 25px;
+  color: #ffffff;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.active-circle{
+  width: 10px;
+  height: 10px;
+  background-color: #00ff08;
+  border-radius: 50%;
+}
+
+.menu-item:hover {
+  background: #bcc0c4;
+}
+
+.menu-icon {
+  font-size: 24px;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.menu-item span {
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar.closed .menu-item span {
+  opacity: 0;
+}
+
+.badge {
+  background: #ff4757;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  margin-left: auto;
+}
+
+.logo-and-tik {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  gap: 70px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #07202d;
+}
+
+.currentUserHeader {
+  position: absolute;
+  bottom: 8px;
+  right: 105px;
+  display: flex;
+  align-items: center;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 15px;
+  object-fit: cover;
+}
+
+.tiklogo{
+  width: 48px;
+  height: 46px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.glava{
+  display: flex;
+  background-color: #1e2c39;
 }

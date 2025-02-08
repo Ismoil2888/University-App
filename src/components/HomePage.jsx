@@ -12,6 +12,7 @@
 // import anonymAvatar from '../anonym2.jpg';
 // import { GoKebabHorizontal } from "react-icons/go";
 // import { FaHeart, FaRegHeart, FaRegComment, FaRegBookmark } from "react-icons/fa";
+// import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookmark } from "react-icons/fi";
 
 // const HomePage = () => {
 //   const [notification, setNotification] = useState("");
@@ -34,6 +35,12 @@
 //   const navigate = useNavigate();
 //   const [unreadChatsCount, setUnreadChatsCount] = useState(0);
 //   const [imageLoadedStatus, setImageLoadedStatus] = useState({});
+
+//   // Добавляем стиль для основного контента
+//   const mainContentStyle = {
+//     marginLeft: isMenuOpen ? "250px" : "80px",
+//     transition: "margin 0.3s ease",
+//   };
 
 //   const handleImageLoad = (postId) => {
 //     setImageLoadedStatus((prev) => ({
@@ -465,6 +472,69 @@
 
 //   return (
 //     <div className="glava">
+//          <div className={`sidebar ${isMenuOpen ? "open" : "closed"}`}>
+//         <div className="sidebar-header">
+//           {isMenuOpen ? (
+//             <>
+//               <h2>Меню</h2>
+//               <FiChevronLeft 
+//                 className="toggle-menu" 
+//                 onClick={() => setIsMenuOpen(false)}
+//               />
+//             </>
+//           ) : (
+//             <FiChevronRight 
+//               className="toggle-menu" 
+//               onClick={() => setIsMenuOpen(true)}
+//             />
+//           )}
+//         </div>
+
+//         <nav className="menu-items">
+//           <a href="/" className="menu-item">
+//             <FiHome className="menu-icon" />
+//             {isMenuOpen && <span>Главная</span>}
+//           </a>
+//           <a href="/profile" className="menu-item">
+//             <FiUser className="menu-icon" />
+//             {isMenuOpen && <span>Профиль</span>}
+//           </a>
+//           <a href="/messages" className="menu-item">
+//             <FiMessageSquare className="menu-icon" />
+//             {isMenuOpen && <span>Сообщения</span>}
+//             {unreadChatsCount > 0 && (
+//               <span className="badge">{unreadChatsCount}</span>
+//             )}
+//           </a>
+//           <a href="/notifications" className="menu-item">
+//             <FiBell className="menu-icon" />
+//             {isMenuOpen && <span>Уведомления</span>}
+//             {unreadCount > 0 && (
+//               <span className="badge">{unreadCount}</span>
+//             )}
+//           </a>
+//           <a href="/saved" className="menu-item">
+//             <FiBookmark className="menu-icon" />
+//             {isMenuOpen && <span>Сохраненное</span>}
+//           </a>
+//           <a href="/settings" className="menu-item">
+//             <FiSettings className="menu-icon" />
+//             {isMenuOpen && <span>Настройки</span>}
+//           </a>
+//         </nav>
+
+//         {isMenuOpen && (
+//           <div className="current-user">
+//             <img 
+//               src={userAvatarUrl || defaultAvatar} 
+//               alt="User Avatar" 
+//               className="user-avatar"
+//             />
+//             <span>{userDetails.username}</span>
+//           </div>
+//         )}
+//       </div>
+//       <div className="main-container">
 //     <div className="home-container" onContextMenu={handleContextMenu}>
 //       {notification && (
 //         <div className={`notification ${notificationType}`}>
@@ -691,6 +761,7 @@
 //     )}
 //   </section>
 // </main>
+//     </div>
 //     </div>
 //     </div>
 //   );
@@ -1302,34 +1373,24 @@ import { auth, database } from "../firebase";
 import defaultAvatar from "../default-image.png";
 import basiclogo from "../basic-logo.png";
 import ttulogo from "../Ttulogo.png";
-import defaultImage from "../Ttulogo.jpg";
-import glkorpusosimi from "../glkorpusosimi.jpg";
-import osimi from "../osimi.png";
-import photo from "../Каримзода.jpg";
 import "../App.css";
 import "../PostForm.css";
-import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import anonymAvatar from '../anonym2.jpg';
-import teacherImage from "../teacher.png";
-import ttustudents from "../ttustudents.jpg";
-import ttustudents1 from "../ttustudents1.jpg";
-import ttustudents2 from "../ttustudents2.jpg";
-import ttustudents3 from "../ttustudents3.jpg";
 import { GoKebabHorizontal } from "react-icons/go";
 import { motion } from 'framer-motion';
 import { BsChatTextFill } from "react-icons/bs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaPlusCircle, FaHeart, FaRegHeart, FaRegComment, FaRegBookmark } from "react-icons/fa";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch, faBell } from "@fortawesome/free-solid-svg-icons";
+import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen, FiUserCheck } from "react-icons/fi";
 
 const HomePage = () => {
   const [notification, setNotification] = useState("");
   const [notificationType, setNotificationType] = useState("");
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpenMobile, setIsMenuOpenMobile] = useState(false);
   const [userAvatarUrl, setUserAvatarUrl] = useState(null);
   const [posts, setPosts] = useState([]);
   const [menuPostId, setMenuPostId] = useState(null);
@@ -1347,6 +1408,62 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [unreadChatsCount, setUnreadChatsCount] = useState(0);
   const [imageLoadedStatus, setImageLoadedStatus] = useState({});
+  const [isMobile, setIsMobile] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(() => {
+      // Восстанавливаем состояние из localStorage при инициализации
+      const savedState = localStorage.getItem('isMenuOpen');
+      return savedState ? JSON.parse(savedState) : true;
+    });
+  
+    // Сохраняем состояние в localStorage при изменении
+    useEffect(() => {
+      localStorage.setItem('isMenuOpen', JSON.stringify(isMenuOpen));
+    }, [isMenuOpen]);
+  
+    // Обработчик изменения размера окна
+    useEffect(() => {
+      const checkMobile = () => {
+        const mobile = window.innerWidth < 700;
+        setIsMobile(mobile);
+        if (mobile) {
+          setIsMenuOpen(false);
+        } else {
+          // Восстанавливаем состояние только для десктопа
+          const savedState = localStorage.getItem('isMenuOpen');
+          setIsMenuOpen(savedState ? JSON.parse(savedState) : true);
+        }
+      };
+  
+      checkMobile();
+      window.addEventListener('resize', checkMobile);
+      return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+  
+    // Модифицированная функция переключения меню
+    const toggleMenuDesktop = () => {
+      setIsMenuOpen(prev => {
+        const newState = !prev;
+        localStorage.setItem('isMenuOpen', JSON.stringify(newState));
+        return newState;
+      });
+    };
+
+  // Добавляем стиль для основного контента
+  const mainContentStyle = {
+    marginLeft: isMenuOpen ? "360px" : "80px",
+    transition: "margin 0.3s ease",
+  };
+
+  const currentUserHeader = {
+    marginRight: isMenuOpen ? "400px" : "80px",
+    marginBottom: isMenuOpen ? "11px" : "0px",
+    transition: "margin 0.3s ease",
+  };
+
+  const HeaderDesktop = {
+    margin: isMenuOpen ? "12px" : "0 20px",
+    transition: "margin 0.3s ease",
+  };
 
   const handleImageLoad = (postId) => {
     setImageLoadedStatus((prev) => ({
@@ -1397,13 +1514,13 @@ const showNotificationError = (message) => {
   };
   const MAX_TEXT_LENGTH = 100; // Максимальное количество символов до сокращения текста
 
-  const toggleMenuu = () => {
-    if (isMenuOpen) {
+  const toggleMenuMobile = () => {
+    if (isMenuOpenMobile) {
       setTimeout(() => {
-        setIsMenuOpen(false);
+        setIsMenuOpenMobile(false);
       }, 0);
     } else {
-      setIsMenuOpen(true);
+      setIsMenuOpenMobile(true);
     }
   };
 
@@ -1802,107 +1919,70 @@ const showNotificationError = (message) => {
     setLikesModal({ isOpen: false, users: [] });
   };
 
-  const handleContextMenu = (event) => {
-    event.preventDefault();
-  }
-
   return (
     <div className="glava">
-<div className="app">
-      <div className="hp-header">
-        <div className="hp-header-logo">
-          <img src={basiclogo} alt="Логотип" />
+       <div className={`sidebar ${isMenuOpen ? "open" : "closed"}`}>
+        <div className="sidebar-header">
+        <img style={{width: "50px", height: "45px"}} src={ttulogo} alt="" />
+          {isMenuOpen ? (
+            <>
+              <h2>TTU</h2>
+              <FiChevronLeft 
+                className="toggle-menu" 
+                onClick={toggleMenuDesktop}
+              />
+            </>
+          ) : (
+            <FiChevronRight 
+              className="toggle-menu" 
+              onClick={toggleMenuDesktop}
+            />
+          )}
         </div>
-        <div className="hp-header-title">
-        <h1>
-          ФАКУЛТЕТИ ТЕХНОЛОГИЯҲОИ РАҚАМӢ,
-        </h1>
-        <h1>СИСТЕМАҲО ВА ҲИФЗИ ИТТИЛООТ</h1>
-        </div>
-        <div className="hp-header-icon">
-          <img src={ttulogo} alt="Логотип 2" />
+
+        <nav className="menu-items">
+          <Link to="/" className="menu-item">
+            <FiHome className="menu-icon" style={{borderBottom: "1px solid rgb(255, 255, 255)", borderRadius: "15px", padding: "5px"}}/>
+            {isMenuOpen && <span>Главная</span>}
+          </Link>
+          <Link to="/teachers" className="menu-item">
+             <FiUserCheck className="menu-icon" />
+             {isMenuOpen && <span>Преподаватели</span>}
+          </Link>
+          <Link to="/library" className="menu-item">
+             <FiBookOpen className="menu-icon" />
+             {isMenuOpen && <span>Библиотека</span>}
+          </Link>
+          <Link to="/myprofile" className="menu-item">
+            <FiUser className="menu-icon" />
+            {isMenuOpen && <span>Профиль</span>}
+          </Link>
+          <Link to="/chats" className="menu-item">
+            <FiMessageSquare className="menu-icon" />
+            {isMenuOpen && <span>Сообщения</span>}
+          </Link>
+          <Link to="/notifications" className="menu-item">
+            <FiBell className="menu-icon" />
+            {isMenuOpen && <span>Уведомления</span>}
+          </Link>
+          <Link to="/authdetails" className="menu-item">
+            <FiSettings className="menu-icon" />
+            {isMenuOpen && <span>Настройки</span>}
+          </Link>
+        </nav>
+
+        <div className="logo-and-tik">
+            <img 
+              src={basiclogo} 
+              alt="logo"
+              className="tiklogo"
+            />
+        {isMenuOpen && (
+          <span style={{fontSize: "35px", fontWeight: "bold", color: "#9daddf"}}>TIK</span>
+        )}
         </div>
       </div>
-
-      <nav className="hp-navbar">
-        <ul>
-          <li><Link to="/home">Асосӣ</Link></li>
-            <li><Link to="/about">Факултет</Link></li>
-            <li>Кафедраҳо</li>
-            <li><Link to="/teachers">Омӯзгорон</Link></li>
-            <li><Link to="/schedule">Ҷадвали дарсҳо</Link></li>
-            <li><Link to="/library">Китобхонаи электронӣ</Link></li>
-            <li><Link to="/contacts">Тамос</Link></li>
-        </ul>
-      </nav>
-
-      <main className="hp-main-content">
-        <section className="slider-section">
-        <h2 className="section-title" style={{color: "black"}}>Галерея</h2>
-        <Swiper className="swiper"
-          modules={[Navigation, Pagination, Autoplay]}
-          navigation
-          pagination={{ clickable: true }}
-          autoplay={{ delay: 3000 }}
-          spaceBetween={30}
-          slidesPerView={1}
-          loop
-        >
-          <SwiperSlide><img style={{width: "100%"}} src={glkorpusosimi} alt="Фото 1" /></SwiperSlide>
-          <SwiperSlide><img style={{width: "100%"}} src={ttustudents} alt="Фото 1" /></SwiperSlide>
-          <SwiperSlide><img style={{width: "100%"}} src={ttustudents1} alt="Фото 2" /></SwiperSlide>
-          <SwiperSlide><img style={{width: "100%"}} src={ttustudents2} alt="Фото 3" /></SwiperSlide>
-          <SwiperSlide><img style={{width: "100%"}} src={ttustudents3} alt="Фото 4" /></SwiperSlide>
-          <SwiperSlide><img style={{width: "100%"}} src={ttustudents} alt="Фото 1" /></SwiperSlide>
-          <SwiperSlide><img style={{width: "100%"}} src={ttustudents1} alt="Фото 2" /></SwiperSlide>
-          <SwiperSlide><img style={{width: "100%"}} src={ttustudents2} alt="Фото 3" /></SwiperSlide>
-          <SwiperSlide><img style={{width: "100%"}} src={ttustudents3} alt="Фото 4" /></SwiperSlide>
-        </Swiper>
-      </section>
-        <section className="hp-news-section">
-          <div className="hp-news-run">
-            <marquee behavior="scroll" direction="left">
-            <div class="scrolling-banner">
-              <div class="scrolling-text">
-                <pre>
-                 ИҚТИБОС АЗ УМАРИ ХАЙЁМ:  „Не верь тому, кто говорит красиво, в его словах всегда игра. Поверь тому, кто молчаливо, творит красивые дела.“    „Молчанье — щит от многих бед, А болтовня всегда во вред. Язык у человека мал, Но сколько жизней он сломал.“  | Умари Хайём |
-                </pre>
-              </div>
-            </div>
-            </marquee>
-          </div>
-          <h2>Хабарҳои охирин</h2>
-          <div className="hp-news-grid">
-            {Array(6)
-              .fill(0)
-              .map((_, index) => (
-                <div key={index} className="hp-news-item">
-                  <div className="hp-news-date">02/12/2024</div>
-                  <img
-                    src={photo}
-                    alt="News"
-                    className="hp-news-image"
-                  />
-                  <p>Масъалаҳои муосири саноати мошинсозӣ</p>
-                </div>
-              ))}
-          </div>
-        </section>
-      </main>
-
-      <footer className="hp-footer">
-        <p>
-          Донишгоҳи техникии Тоҷикистон ба номи академик М.С. Осимӣ
-          <br />
-          Чумҳурии Тоҷикистон, 734042, ш. Душанбе, хиёбони академик Раҳимҷонов
-          10
-        </p>
-        <p>Email: info@ttu.tj, ttu@ttu.tj</p>
-        <p>+992 (372) 21-35-11 | +992 (372) 23-02-46</p>
-      </footer>
-    </div>
-
-    <div className="home-container" onContextMenu={handleContextMenu}>
+    <div className="home-container" style={mainContentStyle}>
       {notification && (
         <div className={`notification ${notificationType}`}>
           {notification}
@@ -1910,28 +1990,25 @@ const showNotificationError = (message) => {
       )}
 
       <header>
-        <nav>
+        <nav style={HeaderDesktop}>
           <ul>
             <li><Link to="/home">Главная</Link></li>
             <li><Link to="/about">О факультете</Link></li>
             <li><Link to="/teachers">Преподаватели</Link></li>
-            <li><Link to="/schedule">Расписание</Link></li>
-            <li><Link to="/library">Библиотека</Link></li>
-            <li><Link to="/contacts">Контакты</Link></li>
           </ul>
-          <ul style={{color: "#58a6ff", fontSize: "25px"}}>Главная</ul>
-          <ul>
-            <li>
-              <Link to="/myprofile">
-              {/* <FaUser className="user-icon"></FaUser> */}
-              </Link>
-            </li>
-          </ul>
+          <Link to="/myprofile">
+          <div className="currentUserHeader" style={currentUserHeader}>
+            <img 
+              src={userAvatarUrl || defaultAvatar} 
+              alt="User Avatar" 
+              className="user-avatar"
+            />
+            <span style={{fontSize: "25px"}}>{userDetails.username}</span>
+          </div>
+          </Link>
         </nav>
 
         <div className="header-nav-2">
-
-          {/* <img src={basiclogo} width="50px" alt="logo" style={{marginLeft: "10px"}} /> */}
 
           <Link to="/notifications">
             <div style={{ position: "relative" }}>
@@ -1956,13 +2033,13 @@ const showNotificationError = (message) => {
     )}
   </div>
 </Link>
-          <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenuu}>          
+          <div className={`burger-menu-icon ${isMenuOpenMobile ? 'open' : ''}`} onClick={toggleMenuMobile}>          
             <span className="bm-span"></span>
             <span className="bm-span"></span>
             <span className="bm-span"></span>
           </div>
 
-          <div className={`burger-menu ${isMenuOpen ? 'open' : ''}`}>         
+          <div className={`burger-menu ${isMenuOpenMobile ? 'open' : ''}`}>         
           <ul>
              <li><Link to="/home"><FontAwesomeIcon icon={faHome} style={{color: "red"}} /> Главная</Link></li>
              <li><Link to="/about"><FontAwesomeIcon icon={faInfoCircle} /> О факультете</Link></li>
@@ -1977,12 +2054,19 @@ const showNotificationError = (message) => {
         </div>
       </header>
 
-      <main style={{ paddingTop: "70px", paddingBottom: "100px" }}>
+
+      <main className="homepage-main" style={{ paddingTop: "80px", paddingBottom: "100px" }}>
   <section id="posts">
     {posts.length === 0 ? (
+            <motion.nav
+            variants={navbarVariants}
+            initial="hidden"
+            animate="visible"
+          >
       <div className="no-posts-message">
         <h2>Платформа для студентов факультета ТИК Таджикского Технического Университета</h2>
       </div>
+      </motion.nav>
     ) : (
       posts
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -2198,7 +2282,7 @@ const showNotificationError = (message) => {
 </main>
 
       <footer className="footer-desktop">
-        <p>&copy; 2024 Факультет Кибербезопасности. Все права защищены.</p>
+        <p>&copy; 2025 Факультет Кибербезопасности. Все права защищены.</p>
       </footer>
 
       <div className="footer-nav">

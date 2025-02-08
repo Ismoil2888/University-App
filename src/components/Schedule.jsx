@@ -267,7 +267,7 @@ const Schedule = () => {
       </section>
 
       <footer className="footer-desktop">
-        <p>&copy; 2024 Факультет Кибербезопасности. Все права защищены.</p>
+        <p>&copy; 2025 Факультет Кибербезопасности. Все права защищены.</p>
       </footer>
 
       <div className="footer-nav">

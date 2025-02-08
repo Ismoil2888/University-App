@@ -210,3 +210,9 @@
     align-items: center;
     color: red;
   }
+
+  @media (width > 984px) {
+    .my-profile-content{
+      margin-bottom: 50px;
+    }    
+  }

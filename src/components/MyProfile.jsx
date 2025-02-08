@@ -272,6 +272,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { RiSettingsLine } from "react-icons/ri";
 import { FaPlusCircle } from "react-icons/fa";
+import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen , FiUserCheck} from "react-icons/fi";
+import basiclogo from "../basic-logo.png";
+import ttulogo from "../Ttulogo.png";
 import "../MyProfile.css";
 import "../App.css";
 
@@ -292,6 +295,45 @@ const MyProfile = () => {
   const menuRef = useRef(null);
   const [userUid, setUserUid] = useState(null);
   const navigate = useNavigate();
+      const [isMobile, setIsMobile] = useState(false);
+        const [isMenuOpen, setIsMenuOpen] = useState(() => {
+          // Восстанавливаем состояние из localStorage при инициализации
+          const savedState = localStorage.getItem('isMenuOpen');
+          return savedState ? JSON.parse(savedState) : true;
+        });
+      
+        // Сохраняем состояние в localStorage при изменении
+        useEffect(() => {
+          localStorage.setItem('isMenuOpen', JSON.stringify(isMenuOpen));
+        }, [isMenuOpen]);
+      
+        // Обработчик изменения размера окна
+        useEffect(() => {
+          const checkMobile = () => {
+            const mobile = window.innerWidth < 700;
+            setIsMobile(mobile);
+            if (mobile) {
+              setIsMenuOpen(false);
+            } else {
+              // Восстанавливаем состояние только для десктопа
+              const savedState = localStorage.getItem('isMenuOpen');
+              setIsMenuOpen(savedState ? JSON.parse(savedState) : true);
+            }
+          };
+      
+          checkMobile();
+          window.addEventListener('resize', checkMobile);
+          return () => window.removeEventListener('resize', checkMobile);
+        }, []);
+      
+        // Модифицированная функция переключения меню
+        const toggleMenuDesktop = () => {
+          setIsMenuOpen(prev => {
+            const newState = !prev;
+            localStorage.setItem('isMenuOpen', JSON.stringify(newState));
+            return newState;
+          });
+        };
 
   const handleClickOutside = (e) => {
     if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -398,15 +440,15 @@ const MyProfile = () => {
   }, []);
   
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpenMobile, setIsMenuOpenMobile] = useState(false);
   
-  const toggleMenu = () => {
-    if (isMenuOpen) {
+  const toggleMenuMobile = () => {
+    if (isMenuOpenMobile) {
       setTimeout(() => {
-        setIsMenuOpen(false);
+        setIsMenuOpenMobile(false);
       }, 0);
     } else {
-      setIsMenuOpen(true);
+      setIsMenuOpenMobile(true);
     }
   };
 
@@ -424,26 +466,70 @@ const MyProfile = () => {
 
   return (
     <div className="my-profile-container" onContextMenu={handleContextMenu}>
+           <div className={`sidebar ${isMenuOpen ? "open" : "closed"}`}>
+        <div className="sidebar-header">
+          {isMenuOpen ? (
+            <>
+              <div style={{ display: "flex", gap: "15px" }}>
+                <img style={{ width: "45px", height: "45px" }} src={ttulogo} alt="" />
+                <h2>TTU</h2>
+              </div>
+              <FiChevronLeft
+                className="toggle-menu"
+                onClick={toggleMenuDesktop}
+              />
+            </>
+          ) : (
+            <FiChevronRight
+              className="toggle-menu"
+              onClick={toggleMenuDesktop}
+            />
+          )}
+        </div>
 
-<header>
-        <nav>
-          <ul>
-            <li><Link to="/home">Главная</Link></li>
-            <li><Link to="/about">О факультете</Link></li>
-            <li><Link to="/teachers">Преподаватели</Link></li>
-            <li><Link to="/schedule">Расписание</Link></li>
-            <li><Link to="/library">Библиотека</Link></li>
-            <li><Link to="/contacts">Контакты</Link></li>
-          </ul>
-          <ul style={{color: "#58a6ff", fontSize: "25px"}}>Профиль</ul>
-          <ul>
-            <li>
-              <Link to="/myprofile">
-              <FaUser className="user-icon"></FaUser>
-              </Link>
-            </li>
-          </ul>
+        <nav className="menu-items">
+          <Link to="/" className="menu-item">
+            <FiHome className="menu-icon" />
+            {isMenuOpen && <span>Главная</span>}
+          </Link>
+          <Link to="/teachers" className="menu-item">
+            <FiUserCheck className="menu-icon" />
+            {isMenuOpen && <span>Преподаватели</span>}
+          </Link>
+          <Link to="/library" className="menu-item">
+            <FiBookOpen className="menu-icon" />
+            {isMenuOpen && <span>Библиотека</span>}
+          </Link>
+          <Link to="/myprofile" className="menu-item">
+            <FiUser className="menu-icon" style={{borderBottom: "1px solid rgb(200, 255, 0)", borderRadius: "15px", padding: "5px"}}/>
+            {isMenuOpen && <span>Профиль</span>}
+          </Link>
+          <Link to="/chats" className="menu-item">
+            <FiMessageSquare className="menu-icon" />
+            {isMenuOpen && <span>Сообщения</span>}
+          </Link>
+          <Link to="/notifications" className="menu-item">
+            <FiBell className="menu-icon" />
+            {isMenuOpen && <span>Уведомления</span>}
+          </Link>
+          <Link to="/authdetails" className="menu-item">
+            <FiSettings className="menu-icon" />
+            {isMenuOpen && <span>Настройки</span>}
+          </Link>
         </nav>
+
+        <div className="logo-and-tik">
+          <img
+            src={basiclogo}
+            alt="logo"
+            className="tiklogo"
+          />
+          {isMenuOpen && (
+            <span style={{ fontSize: "35px", fontWeight: "bold", color: "#9daddf" }}>TIK</span>
+          )}
+        </div>
+      </div>
+<header className="head-line">
 
 <div className="header-nav-2">
 
@@ -453,14 +539,14 @@ const MyProfile = () => {
 
         <ul className="logo-app" style={{color: "#58a6ff", fontSize: "25px"}}>Профиль</ul>
 
-<div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu} onContextMenu={handleContextMenu}>
+<div className={`burger-menu-icon ${isMenuOpenMobile ? 'open' : ''}`} onClick={toggleMenuMobile}>
   <span className="bm-span"></span>
   <span className="bm-span"></span>
   <span className="bm-span"></span>
 </div>
 
 
-      <div className={`burger-menu ${isMenuOpen ? 'open' : ''}`}>
+      <div className={`burger-menu ${isMenuOpenMobile ? 'open' : ''}`}>
         <ul>
           <li><Link to="/home"><FontAwesomeIcon icon={faHome} /> Главная</Link></li>
           <li><Link to="/about"><FontAwesomeIcon icon={faInfoCircle} /> О факультете</Link></li>

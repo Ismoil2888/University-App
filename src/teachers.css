@@ -1,20 +1,25 @@
 .tch-hero {
-    background-color: #1e2c39; /* Цвет фона */
+    background-color: #1e2c39;
     padding: 10px 0; /* Отступы сверху и снизу */
-    text-align: center; /* Выравнивание текста по центру */
-    background-image: url('cyber-background.jpg'); /* Фоновое изображение */
-    background-size: cover; /* Заполнение всего элемента */
-    background-position: center; /* Центрирование изображения */
-    height: 400px; /* Высота баннера */
+    text-align: center;
+    background-image: url('cyber-background.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    width: 100%;
     position: relative; /* Установка контекста для абсолютного позиционирования */
 }
 
+.glav-container{
+  width: 100%;
+}
+
 .tch-hero h1 {
-    font-size: 2em; /* Размер шрифта заголовка */
-    margin: 0; /* Убираем отступы */
-    position: absolute; /* Позиционирование заголовка */
-    bottom: 100px; /* Отступ от низа */
-    left: 50%; /* Центрирование по горизонтали */
+    font-size: 2em;
+    margin: 0;
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
     transform: translateX(-50%); /* Центрирование по горизонтали */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Тень для текста */
     color: #ffffff; /* Цвет текста */
@@ -28,6 +33,7 @@
     background-color: #1e2c39;
     color: #e0e0e0;
     padding: 40px 0;
+    width: 100%;
 }
 
 .teachers-section .tch-container {

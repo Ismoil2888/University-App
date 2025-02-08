@@ -678,7 +678,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaChevronLeft, FaEllipsisV, FaEdit, FaTrash, FaReply, FaCopy } from "react-icons/fa";
 import {
   getDatabase,
@@ -693,6 +693,9 @@ import {
 import { auth } from "../firebase";
 import "../ChatWithTeacher.css";
 import CryptoJS from 'crypto-js';
+import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen, FiUserCheck } from "react-icons/fi";
+import basiclogo from "../basic-logo.png";
+import ttulogo from "../Ttulogo.png";
 
 const Chat = () => {
   const { chatRoomId } = useParams();
@@ -723,6 +726,65 @@ const Chat = () => {
   const QUICK_EMOJIS = ['👍', '❤️', '😄', '😡', '🎉'];
   const [showFullEmojiPicker, setShowFullEmojiPicker] = useState(false);
   const [selectedEmojiMessageId, setSelectedEmojiMessageId] = useState(null);
+    const [isMobile, setIsMobile] = useState(false);
+      const [isMenuOpen, setIsMenuOpen] = useState(() => {
+        // Восстанавливаем состояние из localStorage при инициализации
+        const savedState = localStorage.getItem('isMenuOpen');
+        return savedState ? JSON.parse(savedState) : true;
+      });
+    
+      // Сохраняем состояние в localStorage при изменении
+      useEffect(() => {
+        localStorage.setItem('isMenuOpen', JSON.stringify(isMenuOpen));
+      }, [isMenuOpen]);
+    
+      // Обработчик изменения размера окна
+      useEffect(() => {
+        const checkMobile = () => {
+          const mobile = window.innerWidth < 700;
+          setIsMobile(mobile);
+          if (mobile) {
+            setIsMenuOpen(false);
+          } else {
+            // Восстанавливаем состояние только для десктопа
+            const savedState = localStorage.getItem('isMenuOpen');
+            setIsMenuOpen(savedState ? JSON.parse(savedState) : true);
+          }
+        };
+    
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+      }, []);
+    
+      // Модифицированная функция переключения меню
+      const toggleMenu = () => {
+        setIsMenuOpen(prev => {
+          const newState = !prev;
+          localStorage.setItem('isMenuOpen', JSON.stringify(newState));
+          return newState;
+        });
+      };
+
+      const mainContentStyle = {
+        marginLeft: isMobile ? (isMenuOpen ? "360px" : "0px") : (isMenuOpen ? "360px" : "80px"),
+        transition: "margin 0.3s ease",
+      };      
+    
+      const currentUserHeader = {
+        marginRight: isMenuOpen ? "400px" : "80px",
+        marginBottom: isMenuOpen ? "11px" : "0px",
+        transition: "margin 0.3s ease",
+      };
+    
+      const HeaderDesktop = {
+        margin: isMenuOpen ? "12px" : "0 20px",
+        transition: "margin 0.3s ease",
+      };
+
+  const goToProfile = (recipientId) => {
+    navigate(`/profile/${recipientId}`);
+  };
   const SECRET_KEY = process.env.REACT_APP_CHAT_SECRET;
 
   const handleAddReaction = async (messageId, emoji) => {
@@ -1107,7 +1169,71 @@ const Chat = () => {
   }, []);
 
   return (
-    <div className="chat-container">
+    <div className="glava">
+             <div className={`sidebar ${isMenuOpen ? "open" : "closed"}`}>
+        <div className="sidebar-header">
+          {isMenuOpen ? (
+            <>
+              <div style={{ display: "flex", gap: "15px" }}>
+                <img style={{ width: "45px", height: "45px" }} src={ttulogo} alt="" />
+                <h2>TTU</h2>
+              </div>
+              <FiChevronLeft
+                className="toggle-menu"
+                onClick={toggleMenu}
+              />
+            </>
+          ) : (
+            <FiChevronRight
+              className="toggle-menu"
+              onClick={toggleMenu}
+            />
+          )}
+        </div>
+
+        <nav className="menu-items">
+          <Link to="/" className="menu-item">
+            <FiHome className="menu-icon" />
+            {isMenuOpen && <span>Главная</span>}
+          </Link>
+          <Link to="/teachers" className="menu-item">
+            <FiUserCheck className="menu-icon" />
+            {isMenuOpen && <span>Преподаватели</span>}
+          </Link>
+          <Link to="/library" className="menu-item">
+            <FiBookOpen className="menu-icon" />
+            {isMenuOpen && <span>Библиотека</span>}
+          </Link>
+          <Link to="/myprofile" className="menu-item">
+            <FiUser className="menu-icon" />
+            {isMenuOpen && <span>Профиль</span>}
+          </Link>
+          <Link to="/chats" className="menu-item">
+            <FiMessageSquare className="menu-icon" style={{borderBottom: "1px solid rgb(200, 255, 0)", borderRadius: "15px", padding: "5px"}}/>
+            {isMenuOpen && <span>Сообщения</span>}
+          </Link>
+          <Link to="/notifications" className="menu-item">
+            <FiBell className="menu-icon" />
+            {isMenuOpen && <span>Уведомления</span>}
+          </Link>
+          <Link to="/authdetails" className="menu-item">
+            <FiSettings className="menu-icon" />
+            {isMenuOpen && <span>Настройки</span>}
+          </Link>
+        </nav>
+
+        <div className="logo-and-tik">
+          <img
+            src={basiclogo}
+            alt="logo"
+            className="tiklogo"
+          />
+          {isMenuOpen && (
+            <span style={{ fontSize: "35px", fontWeight: "bold", color: "#9daddf" }}>TIK</span>
+          )}
+        </div>
+      </div>
+    <div className="chat-container" style={mainContentStyle}>
       {notification && (
         <div className={`notification ${notificationType}`}>
           {notification}
@@ -1118,7 +1244,7 @@ const Chat = () => {
           style={{ marginLeft: "10px", color: "white", fontSize: "25px" }}
           onClick={() => navigate(-1)}
         />
-        <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "20px", alignItems: "center" }} onClick={() => goToProfile(recipientId)}>
           <img
             src={recipientData.avatarUrl || "./default-image.png"}
             alt={recipientData.username || "Профиль"}
@@ -1492,6 +1618,7 @@ const Chat = () => {
           </button>
         )}
       </div>
+    </div>
     </div>
   );
 };

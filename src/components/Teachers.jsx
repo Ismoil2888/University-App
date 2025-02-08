@@ -331,6 +331,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { GoKebabHorizontal } from "react-icons/go";
 import anonymAvatar from '../anonym2.jpg';
+import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen, FiUserCheck } from "react-icons/fi";
+import ttulogo from "../Ttulogo.png";
 
 const Teachers = () => {
   const [teachers, setTeachers] = useState([]);
@@ -344,7 +346,62 @@ const Teachers = () => {
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [actionMenuId, setActionMenuId] = useState(null);
   const actionMenuRef = useRef(null); // Реф для отслеживания кликов за пределами
+  const [isMobile, setIsMobile] = useState(false);
+  
+    const [isMenuOpen, setIsMenuOpen] = useState(() => {
+      // Восстанавливаем состояние из localStorage при инициализации
+      const savedState = localStorage.getItem('isMenuOpen');
+      return savedState ? JSON.parse(savedState) : true;
+    });
+  
+    // Сохраняем состояние в localStorage при изменении
+    useEffect(() => {
+      localStorage.setItem('isMenuOpen', JSON.stringify(isMenuOpen));
+    }, [isMenuOpen]);
+  
+    // Обработчик изменения размера окна
+    useEffect(() => {
+      const checkMobile = () => {
+        const mobile = window.innerWidth < 700;
+        setIsMobile(mobile);
+        if (mobile) {
+          setIsMenuOpen(false);
+        } else {
+          // Восстанавливаем состояние только для десктопа
+          const savedState = localStorage.getItem('isMenuOpen');
+          setIsMenuOpen(savedState ? JSON.parse(savedState) : true);
+        }
+      };
+  
+      checkMobile();
+      window.addEventListener('resize', checkMobile);
+      return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+  
+    // Модифицированная функция переключения меню
+    const toggleMenuDesktop = () => {
+      setIsMenuOpen(prev => {
+        const newState = !prev;
+        localStorage.setItem('isMenuOpen', JSON.stringify(newState));
+        return newState;
+      });
+    };
 
+    const mainContentStyle = {
+      marginLeft: isMobile ? (isMenuOpen ? "360px" : "0px") : (isMenuOpen ? "360px" : "80px"),
+      transition: "margin 0.3s ease",
+    };
+  
+    const currentUserHeader = {
+      marginRight: isMenuOpen ? "400px" : "80px",
+      marginBottom: isMenuOpen ? "11px" : "0px",
+      transition: "margin 0.3s ease",
+    };
+  
+    const HeaderDesktop = {
+      margin: isMenuOpen ? "12px" : "0 20px",
+      transition: "margin 0.3s ease",
+    };
 
 const navigate = useNavigate();
 
@@ -488,7 +545,7 @@ const goToProfile = (userId) => {
     setActionMenuId((prev) => (prev === commentId ? null : commentId));
   };
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [userAvatarUrl, setUserAvatarUrl] = useState(null);
 
   useEffect(() => {
@@ -538,34 +595,89 @@ const goToProfile = (userId) => {
       },
     };
 
-    const handleContextMenu = (event) => {
-      event.preventDefault();
-    }
-
   return (
-    <div className="glav-cotainer" onContextMenu={handleContextMenu}>
+    <div className="glava">
+      <div className={`sidebar ${isMenuOpen ? "open" : "closed"}`}>
+        <div className="sidebar-header">
+          {isMenuOpen ? (
+            <>
+            <div style={{display: "flex", gap: "15px"}}>
+            <img style={{width: "45px", height: "45px"}} src={ttulogo} alt="" />
+              <h2>TTU</h2>
+            </div>
+              <FiChevronLeft 
+                className="toggle-menu" 
+                onClick={toggleMenu}
+              />
+            </>
+          ) : (
+            <FiChevronRight 
+              className="toggle-menu" 
+              onClick={toggleMenu}
+            />
+          )}
+        </div>
+
+        <nav className="menu-items">
+          <Link to="/" className="menu-item">
+            <FiHome className="menu-icon" />
+            {isMenuOpen && <span>Главная</span>}
+          </Link>
+          <Link to="/teachers" className="menu-item">
+             <FiUserCheck className="menu-icon" style={{borderBottom: "1px solid rgb(200, 255, 0)", borderRadius: "15px", padding: "5px"}}/>
+             {isMenuOpen && <span>Преподаватели</span>}
+          </Link>
+          <Link to="/library" className="menu-item">
+             <FiBookOpen className="menu-icon" />
+             {isMenuOpen && <span>Библиотека</span>}
+          </Link>
+          <Link to="/myprofile" className="menu-item">
+            <FiUser className="menu-icon" />
+            {isMenuOpen && <span>Профиль</span>}
+          </Link>
+          <Link to="/chats" className="menu-item">
+            <FiMessageSquare className="menu-icon" />
+            {isMenuOpen && <span>Сообщения</span>}
+          </Link>
+          <Link to="/notifications" className="menu-item">
+            <FiBell className="menu-icon" />
+            {isMenuOpen && <span>Уведомления</span>}
+          </Link>
+          <Link to="/authdetails" className="menu-item">
+            <FiSettings className="menu-icon" />
+            {isMenuOpen && <span>Настройки</span>}
+          </Link>
+        </nav>
+
+        <div className="logo-and-tik">
+            <img 
+              src={basiclogo} 
+              alt="logo" 
+              className="tiklogo"
+            />
+        {isMenuOpen && (
+          <span style={{fontSize: "35px", fontWeight: "bold", color: "#9daddf"}}>TIK</span>
+        )}
+        </div>
+      </div>
+    <div className="glav-container" style={mainContentStyle}>
       <header>
-        <nav>
+      <nav style={HeaderDesktop}>
           <ul>
             <li><Link to="/home">Главная</Link></li>
             <li><Link to="/about">О факультете</Link></li>
             <li><Link to="/teachers">Преподаватели</Link></li>
-            <li><Link to="/schedule">Расписание</Link></li>
-            <li><Link to="/library">Библиотека</Link></li>
-            <li><Link to="/contacts">Контакты</Link></li>
           </ul>
-          <ul style={{color: "#58a6ff", fontSize: "25px"}}>Преподаватели</ul>
-          <ul>
-            <li>
-            <Link to="/myprofile">
-          <img 
-            src={userAvatarUrl} 
-            alt="User Avatar" 
-            className="footer-avatar" 
-          />
-        </Link>
-            </li>
-          </ul>
+          <Link to="/myprofile">
+          <div className="currentUserHeader" style={currentUserHeader}>
+            <img 
+              src={userAvatarUrl || "./default-image.png"} 
+              alt="User Avatar" 
+              className="user-avatar"
+            />
+            <span style={{fontSize: "25px"}}>{userDetails.username}</span>
+          </div>
+          </Link>
         </nav>
 
         <div className="header-nav-2">
@@ -597,11 +709,16 @@ const goToProfile = (userId) => {
 
       <section className="tch-hero">
         <div className="faculty-image">
-          <img style={{ height: "240px", marginTop: "58px" }} width="255px" src={logoTip} alt="Фото преподавателей" />
+          <img style={{ height: "240px", marginTop: "70px" }} width="255px" src={logoTip} alt="Фото преподавателей" />
         </div>
         <h1>Преподавательский Состав</h1>
       </section>
 
+      <motion.nav
+            variants={navbarVariants}
+            initial="hidden"
+            animate="visible"
+          >
       <section className="teachers-section">
         <div className="search-bar">
           <input 
@@ -708,10 +825,11 @@ const goToProfile = (userId) => {
     </div>
   </div>
 )}
+</motion.nav>
 
 
       <footer className="footer-desktop">
-        <p>&copy; 2024 Факультет Кибербезопасности. Все права защищены.</p>
+        <p>&copy; 2025 Факультет Кибербезопасности. Все права защищены.</p>
       </footer>
 
       <div className="footer-nav">
@@ -730,6 +848,7 @@ const goToProfile = (userId) => {
         </Link>
         </motion.nav>
       </div>
+    </div>
     </div>
   );
 };
