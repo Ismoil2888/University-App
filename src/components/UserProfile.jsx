@@ -12,6 +12,9 @@ import {
 import { FaLock, FaPhone, FaUserEdit, FaChevronLeft, FaEllipsisV } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import "../UserProfile.css";
+import { FiBookmark, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen, FiUserCheck, FiSearch } from "react-icons/fi";
+import basiclogo from "../basic-logo.png";
+import ttulogo from "../Ttulogo.png";
 
 const UserProfile = () => {
   const { userId } = useParams();
@@ -22,6 +25,45 @@ const UserProfile = () => {
   const [avatarUrl, setAvatarUrl] = useState("./default-image.png");
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
   const navigate = useNavigate();
+   const [isMobile, setIsMobile] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(() => {
+      // Восстанавливаем состояние из localStorage при инициализации
+      const savedState = localStorage.getItem('isMenuOpen');
+      return savedState ? JSON.parse(savedState) : true;
+    });
+  
+    // Сохраняем состояние в localStorage при изменении
+    useEffect(() => {
+      localStorage.setItem('isMenuOpen', JSON.stringify(isMenuOpen));
+    }, [isMenuOpen]);
+  
+    // Обработчик изменения размера окна
+    useEffect(() => {
+      const checkMobile = () => {
+        const mobile = window.innerWidth < 700;
+        setIsMobile(mobile);
+        if (mobile) {
+          setIsMenuOpen(false);
+        } else {
+          // Восстанавливаем состояние только для десктопа
+          const savedState = localStorage.getItem('isMenuOpen');
+          setIsMenuOpen(savedState ? JSON.parse(savedState) : true);
+        }
+      };
+  
+      checkMobile();
+      window.addEventListener('resize', checkMobile);
+      return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+  
+    // Модифицированная функция переключения меню
+    const toggleMenuDesktop = () => {
+      setIsMenuOpen(prev => {
+        const newState = !prev;
+        localStorage.setItem('isMenuOpen', JSON.stringify(newState));
+        return newState;
+      });
+    };
 
   useEffect(() => {
     const db = getDatabase();
@@ -119,6 +161,72 @@ const UserProfile = () => {
   }
 
   return (
+    <div className="glava">
+            <div className={`sidebar ${isMenuOpen ? "open" : "closed"}`}>
+        <div className="sidebar-header">
+          <img style={{ width: "50px", height: "45px" }} src={ttulogo} alt="" />
+          {isMenuOpen ? (
+            <>
+              <h2>TTU</h2>
+              <FiChevronLeft
+                className="toggle-menu"
+                onClick={toggleMenuDesktop}
+              />
+            </>
+          ) : (
+            <FiChevronRight
+              className="toggle-menu"
+              onClick={toggleMenuDesktop}
+            />
+          )}
+        </div>
+
+        <nav className="menu-items">
+          <Link to="/" className="menu-item">
+            <FiBookmark className="menu-icon" />
+            {isMenuOpen && <span>Новости</span>}
+          </Link>
+          <Link to="/searchpage" className="menu-item">
+            <FiSearch className="menu-icon" />
+            {isMenuOpen && <span>Поиск</span>}
+          </Link>
+          <Link to="/teachers" className="menu-item">
+            <FiUserCheck className="menu-icon" />
+            {isMenuOpen && <span>Преподаватели</span>}
+          </Link>
+          <Link to="/library" className="menu-item">
+            <FiBookOpen className="menu-icon" style={{ borderBottom: "1px solid rgb(200, 255, 0)", borderRadius: "15px", padding: "5px" }} />
+            {isMenuOpen && <span>Библиотека</span>}
+          </Link>
+          <Link to="/myprofile" className="menu-item">
+            <FiUser className="menu-icon" />
+            {isMenuOpen && <span>Профиль</span>}
+          </Link>
+          <Link to="/chats" className="menu-item">
+            <FiMessageSquare className="menu-icon" />
+            {isMenuOpen && <span>Сообщения</span>}
+          </Link>
+          <Link to="/notifications" className="menu-item">
+            <FiBell className="menu-icon" />
+            {isMenuOpen && <span>Уведомления</span>}
+          </Link>
+          <Link to="/authdetails" className="menu-item">
+            <FiSettings className="menu-icon" />
+            {isMenuOpen && <span>Настройки</span>}
+          </Link>
+        </nav>
+
+        <div className="logo-and-tik">
+          <img
+            src={basiclogo}
+            alt="logo"
+            className="tiklogo"
+          />
+          {isMenuOpen && (
+            <span style={{ fontSize: "35px", fontWeight: "bold", color: "#9daddf" }}>TIK</span>
+          )}
+        </div>
+      </div>
     <div className="up-profile-container">
       <div className="up-profile-header">
         <FaChevronLeft className="up-back-icon" onClick={() => navigate(-1)} />
@@ -188,6 +296,7 @@ const UserProfile = () => {
         Написать
       </button>
       
+    </div>
     </div>
   );
 };

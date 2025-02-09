@@ -1385,7 +1385,7 @@ import { BsChatTextFill } from "react-icons/bs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaPlusCircle, FaHeart, FaRegHeart, FaRegComment, FaRegBookmark } from "react-icons/fa";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch, faBell } from "@fortawesome/free-solid-svg-icons";
-import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen, FiUserCheck, FiUsers, FiSearch } from "react-icons/fi";
+import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen, FiUserCheck, FiBookmark, FiSearch } from "react-icons/fi";
 
 const HomePage = () => {
   const [notification, setNotification] = useState("");
@@ -1942,8 +1942,8 @@ const showNotificationError = (message) => {
 
         <nav className="menu-items">
           <Link to="/" className="menu-item">
-            <FiHome className="menu-icon" style={{borderBottom: "1px solid rgb(255, 255, 255)", borderRadius: "15px", padding: "5px"}}/>
-            {isMenuOpen && <span>Главная</span>}
+            <FiBookmark className="menu-icon" style={{borderBottom: "1px solid rgb(255, 255, 255)", borderRadius: "15px", padding: "5px"}}/>
+            {isMenuOpen && <span>Новости</span>}
           </Link>
           <Link to="/searchpage" className="menu-item">
              <FiSearch className="menu-icon" />
@@ -1996,7 +1996,7 @@ const showNotificationError = (message) => {
       <header>
         <nav style={HeaderDesktop}>
           <ul>
-            <li><Link to="/home">Главная</Link></li>
+            <li><Link to="/welcomepage">Главная</Link></li>
             <li><Link to="/about">О факультете</Link></li>
             <li><Link to="/teachers">Преподаватели</Link></li>
           </ul>

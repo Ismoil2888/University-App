@@ -272,7 +272,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { RiSettingsLine } from "react-icons/ri";
 import { FaPlusCircle } from "react-icons/fa";
-import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen, FiUserCheck, FiSearch } from "react-icons/fi";
+import { FiBookmark, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen, FiUserCheck, FiSearch } from "react-icons/fi";
 import basiclogo from "../basic-logo.png";
 import ttulogo from "../Ttulogo.png";
 import "../MyProfile.css";
@@ -483,8 +483,8 @@ const MyProfile = () => {
 
         <nav className="menu-items">
           <Link to="/" className="menu-item">
-            <FiHome className="menu-icon" />
-            {isMenuOpen && <span>Главная</span>}
+            <FiBookmark className="menu-icon" />
+            {isMenuOpen && <span>Новости</span>}
           </Link>
           <Link to="/searchpage" className="menu-item">
             <FiSearch className="menu-icon" />

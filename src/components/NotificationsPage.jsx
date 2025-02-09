@@ -6,7 +6,7 @@ import defaultAvatar from "../default-image.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaArrowLeft } from "react-icons/fa";
 import { faHome, faInfoCircle, faChalkboardTeacher, faCalendarAlt, faBook, faPhone, faUserCog } from "@fortawesome/free-solid-svg-icons";
-import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiUserCheck, FiBookOpen, FiSearch } from "react-icons/fi";
+import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiUserCheck, FiBookOpen, FiSearch, FiBookmark } from "react-icons/fi";
 import basiclogo from "../basic-logo.png";
 import ttulogo from "../Ttulogo.png";
 import "../NotificationsPage.css";
@@ -169,8 +169,8 @@ const NotificationsPage = () => {
 
         <nav className="menu-items">
           <Link to="/" className="menu-item">
-            <FiHome className="menu-icon" />
-            {isMenuOpen && <span>Главная</span>}
+            <FiBookmark className="menu-icon" />
+            {isMenuOpen && <span>Новости</span>}
           </Link>
           <Link to="/searchpage" className="menu-item">
             <FiSearch className="menu-icon" />

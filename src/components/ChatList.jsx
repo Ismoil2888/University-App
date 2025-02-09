@@ -12,7 +12,7 @@ import {
   remove,
 } from "firebase/database";
 import "../ChatWithTeacher.css";
-import { FiHome, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen, FiUserCheck, FiSearch } from "react-icons/fi";
+import { FiBookmark, FiUser, FiMessageSquare, FiBell, FiChevronLeft, FiChevronRight, FiSettings, FiBookOpen, FiUserCheck, FiSearch } from "react-icons/fi";
 import basiclogo from "../basic-logo.png";
 import ttulogo from "../Ttulogo.png";
 
@@ -234,8 +234,8 @@ const ChatList = () => {
 
         <nav className="menu-items">
           <Link to="/" className="menu-item">
-            <FiHome className="menu-icon" />
-            {isMenuOpen && <span>Главная</span>}
+            <FiBookmark className="menu-icon" />
+            {isMenuOpen && <span>Новости</span>}
           </Link>
           <Link to="/searchpage" className="menu-item">
             <FiSearch className="menu-icon" />
