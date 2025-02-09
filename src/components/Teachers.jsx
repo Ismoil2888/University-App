@@ -545,15 +545,15 @@ const Teachers = () => {
     setActionMenuId((prev) => (prev === commentId ? null : commentId));
   };
 
-  // const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpenMobile, setIsMenuOpenMobile] = useState(false);
 
-  const toggleMenu = () => {
-    if (isMenuOpen) {
+  const toggleMenuMobile = () => {
+    if (isMenuOpenMobile) {
       setTimeout(() => {
-        setIsMenuOpen(false);
+        setIsMenuOpenMobile(false);
       }, 0); // Задержка для плавного исчезновения
     } else {
-      setIsMenuOpen(true);
+      setIsMenuOpenMobile(true);
     }
   };
 
@@ -585,13 +585,13 @@ const Teachers = () => {
               <h2>TTU</h2>
               <FiChevronLeft
                 className="toggle-menu"
-                onClick={toggleMenu}
+                onClick={toggleMenuDesktop}
               />
             </>
           ) : (
             <FiChevronRight
               className="toggle-menu"
-              onClick={toggleMenu}
+              onClick={toggleMenuDesktop}
             />
           )}
         </div>
@@ -668,13 +668,13 @@ const Teachers = () => {
 
             <ul className="logo-app" style={{ color: "#58a6ff", fontSize: "25px" }}>Преподаватели</ul>
 
-            <div className={`burger-menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu}>
+            <div className={`burger-menu-icon ${isMenuOpenMobile ? 'open' : ''}`} onClick={toggleMenuMobile}>
               <span className="bm-span"></span>
               <span className="bm-span"></span>
               <span className="bm-span"></span>
             </div>
 
-            <div className={`burger-menu ${isMenuOpen ? 'open' : ''}`}>
+            <div className={`burger-menu ${isMenuOpenMobile ? 'open' : ''}`}>
               <ul>
                 <li><Link to="/home"><FontAwesomeIcon icon={faHome} /> Главная</Link></li>
                 <li><Link to="/about"><FontAwesomeIcon icon={faInfoCircle} /> О факультете</Link></li>
@@ -734,6 +734,7 @@ const Teachers = () => {
               )}
             </div>
           </section>
+          </motion.nav>
 
           {/* Модальное окно комментариев */}
           {commentModal.isOpen && (
@@ -807,8 +808,6 @@ const Teachers = () => {
               </div>
             </div>
           )}
-        </motion.nav>
-
 
         <footer className="footer-desktop">
           <p>&copy; 2025 Факультет Кибербезопасности. Все права защищены.</p>

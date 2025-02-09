@@ -186,7 +186,7 @@ const SearchPage = () => {
           )}
         </div>
       </div>
-      <div className="chat-page" style={mainContentStyle}>
+      <div className="search-page" style={mainContentStyle}>
         <header>
           <nav style={HeaderDesktop}>
             <ul>
