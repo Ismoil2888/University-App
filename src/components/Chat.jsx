@@ -771,17 +771,6 @@ const Chat = () => {
     transition: "margin 0.3s ease",
   };
 
-  const currentUserHeader = {
-    marginRight: isMenuOpen ? "400px" : "80px",
-    marginBottom: isMenuOpen ? "11px" : "0px",
-    transition: "margin 0.3s ease",
-  };
-
-  const HeaderDesktop = {
-    margin: isMenuOpen ? "12px" : "0 20px",
-    transition: "margin 0.3s ease",
-  };
-
   const goToProfile = (recipientId) => {
     navigate(`/profile/${recipientId}`);
   };
@@ -932,6 +921,7 @@ const Chat = () => {
         // Сортировка и обновление состояния
         messagesArray.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
         setMessages(messagesArray);
+        setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
       }
     });
 
