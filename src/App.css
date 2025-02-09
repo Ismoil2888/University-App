@@ -74,6 +74,7 @@ header nav ul {
   padding: 0;
   display: flex;
   justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 header nav ul li {
@@ -81,14 +82,14 @@ header nav ul li {
 }
 
 header nav ul li a {
-  color: #58a6ff;
+  color: white;
   text-decoration: none;
   font-weight: bold;
   transition: color 0.3s;
 }
 
 header nav ul li a:hover {
-  color: #1f71eb; 
+  color: #4791ff; 
 }
 
 .home-container{

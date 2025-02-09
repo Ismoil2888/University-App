@@ -621,10 +621,20 @@ width: 90%; */
 
 .currentUserHeader {
   position: absolute;
-  bottom: 8px;
+  top: 8px;
+  bottom: 0px;
   right: 105px;
   display: flex;
+  background-color: #394f65;
   align-items: center;
+  border: 1px solid #1e2c39;
+  border-radius: 15px;
+  padding: 10px;
+  transition: background-color 5s ease;
+}
+
+.currentUserHeader:hover{
+  background-color: #45607a;
 }
 
 .user-avatar {

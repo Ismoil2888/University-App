@@ -73,13 +73,13 @@ const SearchStudents = () => {
   };
 
   const currentUserHeader = {
-    marginRight: isMenuOpen ? "400px" : "80px",
-    marginBottom: isMenuOpen ? "11px" : "0px",
+    marginRight: isMenuOpen ? "220px" : "40px",
+    marginBottom: isMenuOpen ? "11px" : "8px",
     transition: "margin 0.3s ease",
   };
 
   const HeaderDesktop = {
-    margin: isMenuOpen ? "12px" : "0 20px",
+    margin: isMenuOpen ? "11.8px 192px" : "6px 75px",
     transition: "margin 0.3s ease",
   };
 
@@ -336,7 +336,7 @@ const SearchStudents = () => {
                   alt="User Avatar"
                   className="user-avatar"
                 />
-                <span style={{ fontSize: "25px" }}>{userDetails.username}</span>
+                <span style={{ fontSize: "25px", color: "lightgreen"}}>{userDetails.username}</span>
               </div>
             </Link>
           </nav>
