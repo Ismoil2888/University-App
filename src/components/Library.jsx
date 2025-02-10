@@ -462,7 +462,7 @@ const Library = ({ userId }) => {
             <ul>
               <li><Link to="/home">Главная</Link></li>
               <li><Link to="/about">О факультете</Link></li>
-              <li><Link to="/teachers">Преподаватели</Link></li>
+              <li><Link to="/teachers">Контакты</Link></li>
             </ul>
             <Link to="/myprofile">
               <div className="currentUserHeader" style={currentUserHeader}>
